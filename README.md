@@ -5,6 +5,12 @@ Projekt ma za zadanie wytworzenie analizatora danych zescrapowanych ze strony fi
 
 ![image-20191114122705238](assets/image-20191114122705238.png)
 
+## Zespół:
+
+- **Mateusz** (https://github.com/mateuszrusin/)
+- **Krzysiek** (https://github.com/krzysztofho )
+- **Arek** (https://github.com/alexiej)
+
 ## STRUKTURA PROJEKTU
 
 * `chrome_extension` - Rozszerzenie do Chrome
