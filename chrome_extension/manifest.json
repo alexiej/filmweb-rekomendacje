@@ -1,0 +1,45 @@
+{
+  "name": "Filmweb Rekomendacje",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Pobierz najnowsze rekomendacje dotyczące filmweb i pokaż moje rekomendacje :) ",
+  "homepage_url": "https://filmweb.pl",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "browser_action": {  },
+  "background": {
+    "scripts": ["js/background.js"],
+    "persistent": true
+  },
+    "content_scripts": [
+    {
+     "matches": [
+       "http://www.filmweb.pl/user/*",
+     "https://www.filmweb.pl/user/*",
+     "http://filmweb.pl/user/*",
+     "https://filmweb.pl//user/*"
+     ],
+     "js": [
+        "js/jquery.js",
+        "js/filmweb.js"
+     ],
+      "all_frames": true
+    }
+  ],
+
+  "web_accessible_resources": [
+     "js/content.js"
+  ],
+
+  "permissions": [
+    "http://www.filmweb.pl/*",
+     "https://www.filmweb.pl/*",
+     "http://filmweb.pl/*",
+     "https://filmweb.pl/*",
+     "activeTab",
+     "tabs"
+  ]
+}
