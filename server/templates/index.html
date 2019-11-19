@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+</head>
+<body>
+<div id="example">
+    <div></div>
+
+    <div v-for="m in dane" >
+        <span>[[m.tytułpolski]]: </span> [[m.ocena]]
+    </div>
+
+</div>
+<script>
+function decodeHtml(html) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
+
+}
+
+    new Vue({
+        el: '#example',
+        delimiters: ['[[', ']]'],
+        data: {
+            hello: 'Hello World!',
+            dane: ''
+         },
+        mounted: function () {
+            this.dane = {{dane|safe}}
+        },
+        methods: {
+            submit_form: function (e) {
+                print('Form submitted', e)
+            }
+        }
+    })
+</script>
+</body>
+</html>

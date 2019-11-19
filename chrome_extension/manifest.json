@@ -17,7 +17,7 @@
     "content_scripts": [
     {
      "matches": [
-       "http://www.filmweb.pl/user/*",
+      "http://www.filmweb.pl/user/*",
      "https://www.filmweb.pl/user/*",
      "http://filmweb.pl/user/*",
      "https://filmweb.pl//user/*"
