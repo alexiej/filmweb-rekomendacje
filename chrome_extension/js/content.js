@@ -63,7 +63,7 @@ function openWindowWithPost(url, data) {
         var input = document.createElement("input");
         input.type = "hidden";
         input.name = key;
-        input.value =  data[key];
+        input.value =  JSON.stringify(data[key]);
         form.appendChild(input);
 //        console.log(key, JSON.stringify(data[key]))
     }

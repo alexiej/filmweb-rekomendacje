@@ -21,6 +21,72 @@ Projekt ma za zadanie wytworzenie analizatora danych zescrapowanych ze strony fi
 * `tests` - zbiór testów do aplikacji
 
 
+
+### URUCHAMIANIE:
+
+1. Ściągnięcie wszystkich danych do katalogu `dane`
+
+```python
+python setup.py
+```
+
+2. Instalacja wymagań
+
+```
+pip install -r requirements.txt
+```
+
+3. Uruchomienie serwera flask
+
+```
+python server.py
+```
+
+![image-20191119222643236](assets/image-20191119222643236.png)
+
+Sprawdż czy w `chrome_extension/js/content.js`  , `SERVER_URL` wskazuje na ten sam adres :
+
+```javascript
+var URL_SERVER = "http://127.0.0.1:5000/render"
+```
+
+### CHROME Extension
+
+1. Dodanie rozszerzenia do chrome:
+
+![image-20191119222743159](assets/image-20191119222743159.png)
+
+2. Zaznaczenie Tryb developera
+
+![image-20191119222759038](assets/image-20191119222759038.png)
+
+3. Załaduj rozpakowane:
+
+![image-20191119222818123](assets/image-20191119222818123.png)
+
+4. Wybieramy Chrome Extension
+
+![image-20191119222926022](assets/image-20191119222926022.png)
+
+5. Pobrany chrome Extension
+
+![image-20191119222948005](assets/image-20191119222948005.png)
+
+### Przejście do strony filmweb o sobie
+
+![image-20191119223041259](assets/image-20191119223041259.png)
+
+1. Klikamy `Statystyki filmweb-rekomendacje`
+
+2. Klikamy `Pokaż statystyki` jeśli nie pojawi się w nowym oknie:
+
+   ![image-20191119223331270](assets/image-20191119223331270.png)
+
+![image-20191119223323136](assets/image-20191119223323136.png)
+
+
+
+
 ## Dane
 
 ### FWAPI
