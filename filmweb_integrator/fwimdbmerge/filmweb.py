@@ -40,7 +40,7 @@ class Filmweb(object):
             scrapped[new_columns] = scrapped[new_columns].apply(lambda x: x.fillna(x.mean()), axis=0).astype(int)
             return scrapped
         else:
-            return pd.read_csv('./data_static/oceny_scraped.csv')
+            return pd.read_csv('../data_static/oceny_scraped.csv')
             #  'https://raw.githubusercontent.com/mateuszrusin/ml-filmweb-score/dw-poznan-project/oceny_scraped.csv')
 
     def dummies(self, series):
