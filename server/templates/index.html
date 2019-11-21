@@ -4,16 +4,26 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 </head>
 <body>
+<div id="main">
 <div id="example">
     <div></div>
 
     <div v-for="m in dane" >
-        <span>[[m.tytułpolski]]: </span> [[m.ocena]]
+        <span>[[m.originalTitle]] ([[m.Gatunek]]): </span> [[m.Ocena]]
     </div>
 
+
 </div>
+
+<div>
+
+    <canvas id="myChart" width="400" height="400"></canvas>
+
+</div>
+    </div>
 <script>
 function decodeHtml(html) {
     var txt = document.createElement("textarea");
@@ -21,6 +31,44 @@ function decodeHtml(html) {
     return txt.value;
 
 }
+var dane_gatunki =  {{ dane_gatunki|safe }}
+
+function getRandomColor(n) {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    var colors = [];
+    for(var j = 0; j < n; j++){
+        for (var i = 0; i < 6; i++ ) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        colors.push(color);
+        color = '#';
+    }
+    return colors;
+}
+
+var ctx = document.getElementById('myChart');
+console.log(ctx)
+var myChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: Object.keys(dane_gatunki),
+         datasets: [{
+            label: '# of Votes',
+            data:  Object.values(dane_gatunki),
+            backgroundColor: getRandomColor( Object.values(dane_gatunki).length)
+         }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
 
     new Vue({
         el: '#example',
@@ -30,7 +78,7 @@ function decodeHtml(html) {
             dane: ''
          },
         mounted: function () {
-            this.dane = {{dane|safe}}
+            this.dane = {{dane|tojson}}
         },
         methods: {
             submit_form: function (e) {
