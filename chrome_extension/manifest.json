@@ -9,37 +9,37 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "browser_action": {  },
+  "browser_action": {},
   "background": {
-    "scripts": ["js/background.js"],
+    "scripts": [
+      "js/background.js"
+    ],
     "persistent": true
   },
-    "content_scripts": [
+  "content_scripts": [
     {
-     "matches": [
-      "http://www.filmweb.pl/user/*",
-     "https://www.filmweb.pl/user/*",
-     "http://filmweb.pl/user/*",
-     "https://filmweb.pl//user/*"
-     ],
-     "js": [
+      "matches": [
+        "http://www.filmweb.pl/user/*",
+        "https://www.filmweb.pl/user/*",
+        "http://filmweb.pl/user/*",
+        "https://filmweb.pl//user/*"
+      ],
+      "js": [
         "js/jquery.js",
         "js/filmweb.js"
-     ],
+      ],
       "all_frames": true
     }
   ],
-
   "web_accessible_resources": [
-     "js/content.js"
+    "js/content.js"
   ],
-
   "permissions": [
     "http://www.filmweb.pl/*",
-     "https://www.filmweb.pl/*",
-     "http://filmweb.pl/*",
-     "https://filmweb.pl/*",
-     "activeTab",
-     "tabs"
+    "https://www.filmweb.pl/*",
+    "http://filmweb.pl/*",
+    "https://filmweb.pl/*",
+    "activeTab",
+    "tabs"
   ]
 }

@@ -44,8 +44,9 @@ def render():
         dfi = Filmweb(df).get_dataframe(True)
         dfi = Imdb().merge(dfi)
 
-        dane_gatunki = dfi.loc[:,'akcja':'western'].sum().to_dict()
+        dfi['diff'] = dfi.apply(lambda x: x.Ocena - x.averageRating, axis=1, result_type='expand')
 
+        dane_gatunki = dfi.loc[:,'akcja':'western'].sum().to_dict()
 
        #  dane_gatunki = dfi[['akcja', 'animacja',
        # 'anime', 'biograficzny', 'czarnakomedia', 'dladzieci', 'dokumentalny',
@@ -58,7 +59,9 @@ def render():
 
         # print(dfi.columns)
         # print(dfi.iloc[0])
-        return render_template("index.html", dane=dfi.to_dict(orient='records'),
+        return render_template("index.html",
+                               flow=dfi.fillna('').to_dict(),
+                               dane=dfi.fillna('').to_dict(orient='records'),
                                dane_gatunki = dane_gatunki)
         # return render_template("index.html", dane=dane)
     return 'BRAK DANYCH FILMÓW'
