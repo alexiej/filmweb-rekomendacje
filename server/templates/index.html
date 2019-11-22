@@ -8,22 +8,18 @@
 </head>
 <body>
 <div id="main">
-<div id="example">
-    <div></div>
-
-    <div v-for="m in dane" >
-        <span>[[m.originalTitle]] ([[m.Gatunek]]): </span> [[m.Ocena]]
+    <div id="example">
+        <div v-for="m in dane">
+            <span>[[m.originalTitle]] ([[m.Gatunek]]): </span> [[m.Ocena]]
+        </div>
     </div>
-
-
-</div>
-
-<div>
-
-    <canvas id="myChart" width="400" height="400"></canvas>
-
-</div>
+    <div>
+        <canvas id="myChart" width="400" height="400"></canvas>
     </div>
+    <div>
+        <canvas id="flowChart" width="400" height="400"></canvas>
+    </div>
+</div>
 <script>
 function decodeHtml(html) {
     var txt = document.createElement("textarea");
@@ -32,6 +28,8 @@ function decodeHtml(html) {
 
 }
 var dane_gatunki =  {{ dane_gatunki|safe }}
+var dane =  {{ dane|safe }}
+var flow =  {{ flow|safe }}
 
 function getRandomColor(n) {
     var letters = '0123456789ABCDEF'.split('');
@@ -48,7 +46,7 @@ function getRandomColor(n) {
 }
 
 var ctx = document.getElementById('myChart');
-console.log(ctx)
+console.log(flow)
 var myChart = new Chart(ctx, {
     type: 'pie',
     data: {
@@ -70,22 +68,81 @@ var myChart = new Chart(ctx, {
     }
 });
 
-    new Vue({
-        el: '#example',
-        delimiters: ['[[', ']]'],
-        data: {
-            hello: 'Hello World!',
-            dane: ''
-         },
-        mounted: function () {
-            this.dane = {{dane|tojson}}
-        },
-        methods: {
-            submit_form: function (e) {
-                print('Form submitted', e)
-            }
+var flw = document.getElementById('flowChart');
+var flowChart = new Chart(flw, {
+		    type: 'line',
+		    data: {
+                labels: Object.keys(flow['Data']),
+		        datasets: [{
+		            label: 'Filmweb',
+                    data:  Object.values(flow['Ocena']),
+		            backgroundColor: '#FF0000',
+		            borderWidth: 0,
+		            tension: 0,
+    				fill: false
+		        },{
+		            label: 'IMDb',
+                    data:  Object.values(flow['averageRating']),
+		            backgroundColor: '#0000FF',
+		            borderWidth: 0,
+		            tension: 0,
+    				fill: false
+		        },{
+		            label: 'Rating difference',
+                    data:  Object.values(flow['diff']),
+		            backgroundColor: '#00FF00',
+		            borderWidth: 0,
+		            tension: 0,
+    				fill: false
+		        }]
+		    },
+		    options: {
+		    	title: {
+		    		text: 'SCORE FLOW',
+		    		display: true
+		    	},
+		        scales: {
+		            yAxes: [{
+		                ticks: {
+		                    beginAtZero: true,
+		                    min: -10,
+		                    max: 10,
+		                    stepSize: 1
+		                },
+		                gridLines: {
+		                	zeroLineWidth: 3
+		                }
+		            }]
+		        },
+                layout: {
+		            padding: 40
+                },
+                elements:{
+                	point: {
+						radius:2,
+						pointStyle: 'circle'
+					}
+                }
+		    }
+		});
+
+new Vue({
+    el: '#example',
+    delimiters: ['[[', ']]'],
+    data: {
+        hello: 'Hello World!',
+        dane: ''
+     },
+    mounted: function () {
+        this.dane = {{dane|tojson}}
+    },
+    methods: {
+        submit_form: function (e) {
+            print('Form submitted', e)
         }
-    })
+    }
+})
+
 </script>
 </body>
 </html>

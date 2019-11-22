@@ -1,22 +1,23 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-from filmweb_integrator.fwimdbmerge import Merger
 import pandas as pd
-import filmweb_integrator.fwimdbmerge.filmweb as f
+from pathlib import Path
+from filmweb_integrator.fwimdbmerge.filmweb import Filmweb
+from filmweb_integrator.fwimdbmerge.imdb import Imdb
 
-merger = Merger()
+DATA_STATIC = str(Path(__file__).parent.parent.absolute()) + '/data_static'
 
-df = pd.read_csv('./data_static/filmweb_example.csv')
+df = pd.read_csv(DATA_STATIC + '/filmweb_example.csv')
 df.columns = ['ID', 'Tytuł polski', 'Tytuł oryginalny', 'Rok produkcji',
               'Ulubione', 'Ocena', 'Komentarz', 'Kraj produkcji', 'Gatunek', 'Data']
 
+df = Filmweb(df).get_dataframe(True)
+df.to_csv(DATA_STATIC + '/filmweb_example_after.csv')
+df = Imdb().merge(df)
+df.to_csv(DATA_STATIC + '/filmweb_example_final.csv')
 
-fw = f.Filmweb(df)
-df = fw.get_dataframe(True)
-df.to_csv('./data_static/filmweb_example_after.csv')
-
-merger.imdb.merge(df)
+print(df.head())
 ## merger.imdb.merge(dff)
 # # df['Gatunek']
 # #df = merger.process(df)
