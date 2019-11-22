@@ -6,13 +6,12 @@ from .utils import to_list
 from pathlib import Path
 
 ROOT = str(Path(__file__).parent.parent.parent.absolute())
-
 IMDB_MOVIES_PICLE = ROOT + '/data/imdb_movies.pkl'
 IMDB_COVERS_PICLE = ROOT + '/data/imdb_covers.pkl'
-
 IMDB_TITLE_GZIP = 'https://datasets.imdbws.com/title.basics.tsv.gz'
 IMDB_RATING_GZIP = 'https://datasets.imdbws.com/title.ratings.tsv.gz'
 IMDB_COVERS_CSV = ROOT + '/data_static/movie_covers.csv'
+
 
 class Imdb(object):
 
@@ -31,7 +30,11 @@ class Imdb(object):
 
     @staticmethod
     def prepare():
-        pd.merge(pd.read_csv(IMDB_TITLE_GZIP, sep='\t'), pd.read_csv(IMDB_RATING_GZIP, sep='\t'), how='left', on='tconst').to_pickle(IMDB_MOVIES_PICLE)
+        pd.merge(
+            pd.read_csv(IMDB_TITLE_GZIP, sep='\t'),
+            pd.read_csv(IMDB_RATING_GZIP, sep='\t'),
+            how='left',
+            on='tconst').to_pickle(IMDB_MOVIES_PICLE)
         pd.read_csv(IMDB_COVERS_CSV).to_pickle(IMDB_COVERS_PICLE)
 
     @staticmethod

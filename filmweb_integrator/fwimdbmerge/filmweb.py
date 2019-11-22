@@ -6,7 +6,9 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.cluster import KMeans
 from filmweb_integrator.fwapi.film import Film
 from .utils import to_list
+from pathlib import Path
 
+ROOT = str(Path(__file__).parent.parent.parent.absolute().resolve())
 
 class Filmweb(object):
     def __init__(self, df):
@@ -40,7 +42,7 @@ class Filmweb(object):
             scrapped[new_columns] = scrapped[new_columns].apply(lambda x: x.fillna(x.mean()), axis=0).astype(int)
             return scrapped
         else:
-            return pd.read_csv('../data_static/oceny_scraped.csv')
+            return pd.read_csv(ROOT + '/data_static/oceny_scraped.csv')
             #  'https://raw.githubusercontent.com/mateuszrusin/ml-filmweb-score/dw-poznan-project/oceny_scraped.csv')
 
     def dummies(self, series):
