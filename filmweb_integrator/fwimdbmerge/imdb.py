@@ -16,25 +16,23 @@ IMDB_COVERS_CSV = ROOT + '/data_static/movie_covers.csv'
 class Imdb(object):
 
     def __init__(self):
-
-        imdb_covers = pd.read_pickle(IMDB_COVERS_PICLE)
-
-        imdb = pd.read_pickle(IMDB_MOVIES_PICLE)
-        imdb = imdb.dropna(subset=['startYear', 'originalTitle'])
-        imdb = imdb[imdb['titleType']=='movie']
-
+        # imdb_covers = pd.read_pickle(IMDB_COVERS_PICLE)
         # imdb_covers['tconst'] = 'tt' + imdb_covers['imdbId'].astype(str)
         # imdb = pd.merge(imdb, imdb_covers, how='left', on='tconst')
-
-        self.imdb = imdb
+        self.imdb = pd.read_pickle(IMDB_MOVIES_PICLE)
 
     @staticmethod
     def prepare():
+        imdb_title = pd.read_csv(IMDB_TITLE_GZIP, sep='\t', dtype='str', index_col='tconst', engine='c')
+        imdb_title = imdb_title[imdb_title['titleType']=='movie']
+        imdb_title = imdb_title.dropna(subset=['startYear', 'originalTitle'])
+
         pd.merge(
-            pd.read_csv(IMDB_TITLE_GZIP, sep='\t'),
-            pd.read_csv(IMDB_RATING_GZIP, sep='\t'),
+            imdb_title,
+            pd.read_csv(IMDB_RATING_GZIP, sep='\t', dtype='str', index_col='tconst', engine='c'),
             how='left',
-            on='tconst').to_pickle(IMDB_MOVIES_PICLE)
+            left_index=True,
+            right_index=True).to_pickle(IMDB_MOVIES_PICLE)
         pd.read_csv(IMDB_COVERS_CSV).to_pickle(IMDB_COVERS_PICLE)
 
     @staticmethod
@@ -79,7 +77,7 @@ class Imdb(object):
         df['Gatunek'] = df['Gatunek'].fillna('')
         df['startYear'] = df['startYear'].astype(float).fillna(0).astype(int).astype(str)
 
-        df['genre_eng'] = df.apply(lambda x: self.change_type(x['Gatunek']), axis=1)
+        df['genre_eng'] = df['Gatunek'].map(lambda x: self.change_type(x))
 
         merged = pd.merge(
             df,
@@ -87,12 +85,13 @@ class Imdb(object):
             how='inner',
             on=['startYear','originalTitle'])
 
-        merged['similarity'] = merged.apply(self.get_similarity, axis=1)
-
-        top1 = merged.groupby(['ID']).apply(lambda x: x.sort_values(["similarity"], ascending = False)).reset_index(drop=True)
-        merged = top1.groupby('ID').head(1).copy()
-
-        merged[['averageRating']] = merged[['averageRating']].fillna(value=0)
-        merged[['averageRating_int']]  = merged[['averageRating']].round().astype(int)
+        merged = self.filter_duplicates(merged)
+        merged['averageRating'] = merged['averageRating'].fillna(value=0)
+        merged['averageRating_int'] = merged['averageRating'].astype(float).round().astype(int)
 
         return merged
+
+    def filter_duplicates(self, df):
+        df['similarity'] = df.apply(self.get_similarity, axis=1)
+        top1 = df.groupby(['ID']).apply(lambda x: x.sort_values(["similarity"], ascending = False)).reset_index(drop=True)
+        return top1.groupby('ID').head(1).copy()
