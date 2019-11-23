@@ -71,11 +71,9 @@ class Imdb(object):
 
     def merge(self, df):
         df['originalTitle'] = df['Tytuł oryginalny']
-        df['startYear'] = df['Rok produkcji'].astype(str)
+        df['startYear'] = df['Rok produkcji'].astype(str).astype(int).astype(str)
         df['originalTitle'] = df['originalTitle'].fillna(df['Tytuł polski'])
-
         df['Gatunek'] = df['Gatunek'].fillna('')
-        df['startYear'] = df['startYear'].astype(float).fillna(0).astype(int).astype(str)
 
         df['genre_eng'] = df['Gatunek'].map(lambda x: self.change_type(x))
 
@@ -86,8 +84,9 @@ class Imdb(object):
             on=['startYear','originalTitle'])
 
         merged = self.filter_duplicates(merged)
-        merged['averageRating'] = merged['averageRating'].fillna(value=0)
-        merged['averageRating_int'] = merged['averageRating'].astype(float).round().astype(int)
+        merged['averageRating'] = merged['averageRating'].fillna(value=0).astype(float)
+        merged['diff'] = (merged['Ocena'] - merged['averageRating'])
+        merged['averageRating_int'] = merged['averageRating'].round().astype(int)
 
         return merged
 
