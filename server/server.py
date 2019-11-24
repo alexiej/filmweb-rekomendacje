@@ -9,6 +9,7 @@ app = Flask(__name__, template_folder='templates')
 from pandas.io.json import json_normalize
 
 import pandas as pd
+import numpy as np
 
 @app.before_first_request
 def initialize():
@@ -32,13 +33,12 @@ def render():
     print(keys)
     if 'dane' in keys:
         dane_string = request.form['dane']
-        # print('Dane length: ', dane)
         dane = json.loads(dane_string)
         df = json_normalize(dane)
-        # df = pd.read_csv("filmweb_example.csv", index=False)
+        # df = pd.read_csv("data_static/filmweb_example.csv")
         # df =  df.drop(['Unnamed: 0'], axis=1)
         df.columns = ['ID', 'Tytuł polski', 'Tytuł oryginalny', 'Rok produkcji',
-                      'Ulubione', 'Ocena', 'Komentarz', 'Kraj produkcji', 'Gatunek', 'Data']
+                       'Ulubione', 'Ocena', 'Komentarz', 'Kraj produkcji', 'Gatunek', 'Data']
         # df.to_csv('filmweb_example.csv', index=False)#
 
         dfi = Filmweb(df).get_dataframe(True)
@@ -46,20 +46,16 @@ def render():
 
         dane_gatunki = dfi.loc[:,'akcja':'western'].sum().to_dict()
 
-       #  dane_gatunki = dfi[['akcja', 'animacja',
-       # 'anime', 'biograficzny', 'czarnakomedia', 'dladzieci', 'dokumentalny',
-       # 'dramat', 'dramatobyczajowy', 'familijny', 'fantasy', 'gangsterski',
-       # 'horror', 'komedia', 'komediakryminalna', 'komediarom.', 'kostiumowy',
-       # 'kryminał', 'melodramat', 'musical', 'muzyczny', 'obyczajowy',
-       # 'przygodowy', 'romans', 'sci-fi', 'sensacyjny', 'szpiegowski',
-       # 'thriller', 'western']].sum().to_dict()
-
-
-        # print(dfi.columns)
-        # print(dfi.iloc[0])
         return render_template("index.html",
                                flow=dfi.fillna('').to_dict(),
-                               dane=dfi.fillna('').to_dict(orient='records'),
+                               radar=get_radar_data(dfi),
                                dane_gatunki = dane_gatunki)
         # return render_template("index.html", dane=dane)
     return 'BRAK DANYCH FILMÓW'
+
+
+def get_radar_data(df):
+    radar = pd.DataFrame(np.zeros((10,2)), index=range(1, 11), columns=['fw', 'imdb'])
+    radar.fw = df.groupby('Ocena').size().astype(int)
+    radar.imdb = df.groupby('averageRating_int').size().astype(int)
+    return radar.fillna(0).to_dict()
