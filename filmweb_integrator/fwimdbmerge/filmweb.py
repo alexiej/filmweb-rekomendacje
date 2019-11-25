@@ -8,14 +8,18 @@ from filmweb_integrator.fwapi.film import Film
 from .utils import to_list
 from pathlib import Path
 
+
+FILMWEB_DATA_COLUMNS = ['ID', 'Tytuł polski', 'Tytuł oryginalny', 'Rok produkcji',
+                       'Ulubione', 'Ocena', 'Komentarz', 'Kraj produkcji', 'Gatunek', 'Data']
 ROOT = str(Path(__file__).parent.parent.parent.absolute().resolve())
 
 class Filmweb(object):
     def __init__(self, df):
         self.df = df
+        self.df.columns = FILMWEB_DATA_COLUMNS
 
     def get_dataframe(self, use_saved_scraped=False):
-        df = self.df #pd.read_csv(self.csv)
+        df = self.df
         df = df.drop(columns=['Komentarz'])
         df = df[df.Ocena != 'brak oceny']
         df['Ulubione'] = self.label_encode(df.Ulubione.fillna(''))

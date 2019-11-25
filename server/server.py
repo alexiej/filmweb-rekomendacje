@@ -1,61 +1,33 @@
-from flask import Flask, escape, request, render_template, jsonify
+from flask import Flask, request, render_template
 import json
 
-from filmweb_integrator.fwimdbmerge.filmweb import Filmweb
-from filmweb_integrator.fwimdbmerge.imdb import Imdb
+from filmweb_integrator.fwimdbmerge.merger import Merger
+from movies_analyzer.data_provider import flow_chart_data, pie_chart_data, radar_chart_data
 
 app = Flask(__name__, template_folder='templates')
 
-from pandas.io.json import json_normalize
-
-import pandas as pd
-import numpy as np
 
 @app.before_first_request
 def initialize():
-    # global merger
-    # merger = Merger()
     print("Called only once, when the first request comes in")
 
 
 @app.route('/')
 @app.route('/ping')
 def ping():
-    # age = request.args['age']
-    # print(age)
-    # full_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'shovon.jpg')
     return f'Hello world!'
 
 
 @app.route('/render', methods=['GET', 'POST'])
 def render():
-    keys = list(request.form.keys())
-    print(keys)
-    if 'dane' in keys:
-        dane_string = request.form['dane']
-        dane = json.loads(dane_string)
-        df = json_normalize(dane)
-        # df = pd.read_csv("data_static/filmweb_example.csv")
-        # df =  df.drop(['Unnamed: 0'], axis=1)
-        df.columns = ['ID', 'Tytuł polski', 'Tytuł oryginalny', 'Rok produkcji',
-                       'Ulubione', 'Ocena', 'Komentarz', 'Kraj produkcji', 'Gatunek', 'Data']
-        # df.to_csv('filmweb_example.csv', index=False)#
+    if 'dane' in request.form:
+        dane = json.loads(request.form['dane'])
 
-        dfi = Filmweb(df).get_dataframe(True)
-        dfi = Imdb().merge(dfi)
-
-        dane_gatunki = dfi.loc[:,'akcja':'western'].sum().to_dict()
+        df = Merger(dane).get_data()
 
         return render_template("index.html",
-                               flow=dfi.fillna('').to_dict(),
-                               radar=get_radar_data(dfi),
-                               dane_gatunki = dane_gatunki)
-        # return render_template("index.html", dane=dane)
+                               dane = df.fillna('').to_dict(),
+                               flow = flow_chart_data(df),
+                               radar = radar_chart_data(df),
+                               pie = pie_chart_data(df))
     return 'BRAK DANYCH FILMÓW'
-
-
-def get_radar_data(df):
-    radar = pd.DataFrame(np.zeros((10,2)), index=range(1, 11), columns=['fw', 'imdb'])
-    radar.fw = df.groupby('Ocena').size().astype(int)
-    radar.imdb = df.groupby('averageRating_int').size().astype(int)
-    return radar.fillna(0).to_dict()

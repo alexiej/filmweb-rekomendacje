@@ -16,9 +16,6 @@ IMDB_COVERS_CSV = ROOT + '/data_static/movie_covers.csv'
 class Imdb(object):
 
     def __init__(self):
-        # imdb_covers = pd.read_pickle(IMDB_COVERS_PICLE)
-        # imdb_covers['tconst'] = 'tt' + imdb_covers['imdbId'].astype(str)
-        # imdb = pd.merge(imdb, imdb_covers, how='left', on='tconst')
         self.imdb = pd.read_pickle(IMDB_MOVIES_PICLE)
 
     @staticmethod
@@ -71,7 +68,7 @@ class Imdb(object):
 
     def merge(self, df):
         df['originalTitle'] = df['Tytuł oryginalny']
-        df['startYear'] = df['Rok produkcji'].astype(str).astype(int).astype(str)
+        df['startYear'] = df['Rok produkcji'].fillna(0).astype(float).astype(int).astype(str)
         df['originalTitle'] = df['originalTitle'].fillna(df['Tytuł polski'])
         df['Gatunek'] = df['Gatunek'].fillna('')
 
