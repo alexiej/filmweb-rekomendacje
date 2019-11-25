@@ -19,6 +19,9 @@
     <div>
         <canvas id="flowChart" width="400" height="400"></canvas>
     </div>
+    <div>
+        <canvas id="radarChart" width="400" height="400"></canvas>
+    </div>
 </div>
 <script>
 function decodeHtml(html) {
@@ -28,7 +31,7 @@ function decodeHtml(html) {
 
 }
 var dane_gatunki =  {{ dane_gatunki|safe }}
-var dane =  {{ dane|safe }}
+var radar =  {{ radar|safe }}
 var flow =  {{ flow|safe }}
 
 function getRandomColor(n) {
@@ -46,7 +49,7 @@ function getRandomColor(n) {
 }
 
 var ctx = document.getElementById('myChart');
-console.log(flow)
+
 var myChart = new Chart(ctx, {
     type: 'pie',
     data: {
@@ -72,7 +75,7 @@ var flw = document.getElementById('flowChart');
 var flowChart = new Chart(flw, {
 		    type: 'line',
 		    data: {
-                labels: Object.keys(flow['Data']),
+                labels: Object.values(flow['Data']),
 		        datasets: [{
 		            label: 'Filmweb',
                     data:  Object.values(flow['Ocena']),
@@ -126,6 +129,35 @@ var flowChart = new Chart(flw, {
 		    }
 		});
 
+var rdr = document.getElementById('radarChart');
+var radarChart = new Chart(rdr, {
+		    type: 'radar',
+		    data: {
+                labels: Object.keys(radar['fw']),
+		        datasets: [{
+		            label: 'Filmweb',
+                    data:  Object.values(radar['fw']),
+		            borderColor: '#FF0000',
+		            backgroundColor: 'rgba(255, 0, 0, 0.5)',
+		            borderWidth: 2,
+    				fill: true
+		        },{
+		            label: 'IMDb',
+                    data:  Object.values(radar['imdb']),
+		            borderColor: '#0000FF',
+		            backgroundColor: 'rgba(0, 0, 255, 0.5);',
+		            borderWidth: 2,
+    				fill: true
+		        }]
+		    },
+		    options: {
+		    	title: {
+		    		text: 'SCORE RADAR',
+		    		display: true
+		    	}
+		    }
+		});
+
 new Vue({
     el: '#example',
     delimiters: ['[[', ']]'],
@@ -134,7 +166,7 @@ new Vue({
         dane: ''
      },
     mounted: function () {
-        this.dane = {{dane|tojson}}
+
     },
     methods: {
         submit_form: function (e) {
