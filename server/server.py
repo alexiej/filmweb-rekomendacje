@@ -4,7 +4,9 @@ import json
 from filmweb_integrator.fwimdbmerge.filmweb import Filmweb
 from filmweb_integrator.fwimdbmerge.imdb import Imdb
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__, 
+            static_folder='static',
+            template_folder='templates')
 
 from pandas.io.json import json_normalize
 
@@ -30,11 +32,12 @@ def ping():
 @app.route('/render', methods=['GET', 'POST'])
 def render():
     keys = list(request.form.keys())
-    print(keys)
+    # print(keys)
     if 'dane' in keys:
         dane_string = request.form['dane']
         dane = json.loads(dane_string)
         df = json_normalize(dane)
+
         # df = pd.read_csv("data_static/filmweb_example.csv")
         # df =  df.drop(['Unnamed: 0'], axis=1)
         df.columns = ['ID', 'Tytuł polski', 'Tytuł oryginalny', 'Rok produkcji',
@@ -47,6 +50,7 @@ def render():
         dane_gatunki = dfi.loc[:,'akcja':'western'].sum().to_dict()
 
         return render_template("index.html",
+                                dane=dfi.fillna('').to_dict(),
                                flow=dfi.fillna('').to_dict(),
                                radar=get_radar_data(dfi),
                                dane_gatunki = dane_gatunki)
