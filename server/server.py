@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# coding: utf-8
+
 from flask import Flask, request, render_template
 import json
 
@@ -15,7 +18,7 @@ def initialize():
 @app.route('/')
 @app.route('/ping')
 def ping():
-    return f'Hello world!'
+    return 'Hello world!'
 
 
 @app.route('/render', methods=['GET', 'POST'])

@@ -2,3 +2,6 @@ requests
 beautifulsoup4
 scikit-learn
 flask
+pandas
+sklearn
+wget

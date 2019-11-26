@@ -4,7 +4,6 @@
 import pickle
 
 from pathlib import Path
-
 from filmweb_integrator.fwimdbmerge.merger import Merger
 from filmweb_integrator.fwimdbmerge.utils import get_logger
 
@@ -13,7 +12,7 @@ DATA_STATIC = str(Path(__file__).parent.parent.absolute()) + '/data_static'
 logger = get_logger()
 
 logger.warning("Start import csv")
-dane = pickle.load(open('../pik.pik', 'rb'))
+dane = pickle.load(open(DATA_STATIC + '/filmweb_example.pkl', 'rb'))
 logger.warning("Start merging")
 df = Merger(dane).get_data()
 logger.warning("Save final.csv")
