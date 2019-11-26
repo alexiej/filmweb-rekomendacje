@@ -50,7 +50,7 @@ def render():
         dane_gatunki = dfi.loc[:,'akcja':'western'].sum().to_dict()
 
         return render_template("index.html",
-                                dane=dfi.fillna('').to_dict(),
+                                dane=dane,
                                flow=dfi.fillna('').to_dict(),
                                radar=get_radar_data(dfi),
                                dane_gatunki = dane_gatunki)
