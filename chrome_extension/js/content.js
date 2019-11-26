@@ -250,6 +250,7 @@ try {
 
                       window[TablicaPrzyciskow[i][j].selektor].style["border-radius"] = "5px";
                     window[TablicaPrzyciskow[i][j].selektor].style.border = "1px solid silver";
+                    window[TablicaPrzyciskow[i][j].selektor].style.background = "white";
                     window[TablicaDivow[i].selektor].appendChild(window[TablicaPrzyciskow[i][j].selektor]);
                 }
             }

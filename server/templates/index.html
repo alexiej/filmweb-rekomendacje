@@ -1,51 +1,241 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="{{url_for('static', filename='style.css')}}" rel="stylesheet" type="text/css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
 <body>
-<div id="main">
-    <div id="example">
-        <div v-for="m in dane">
-            <span>[[m.originalTitle]] ([[m.Gatunek]]): </span> [[m.Ocena]]
+    <div id="main">
+        <h1>Filmweb-Rekomendacje</h1>
+
+        <div class="tabs">
+
+            <input type="radio" id="tab1" name="tab-control" checked>
+            <input type="radio" id="tab2" name="tab-control">
+            <input type="radio" id="tab3" name="tab-control">
+            <input type="radio" id="tab4" name="tab-control">
+
+            <ul>
+                <li title="Dane">
+                    <label for="tab1" role="button">
+                        <span>Dane</span></label></li>
+                <li title="Wykres kołowy"><label for="tab2" role="button">
+                        <span>Wykres kołowy</span></label></li>
+                <li title="Score Flow">
+                    <label for="tab3" role="button"><span>Score Flow</span></label></li>
+                <li title="Score Radar"><label for="tab4" role="button">
+                        <span>Score Radar</span></label></li>
+            </ul>
+
+            <div class="slider">
+                <div class="indicator"></div>
+            </div>
+
+            <div class="content">
+                <section>
+                    <div id="example" class="dane">
+                        <div v-for="m in dane" class="row">
+                                <div class="ocena">[[m.ocena]]</div>
+                                <span class="fa fa-star" :class="{'checked': m.ocena>0}"></span>
+                                <span class="fa fa-star" :class="{'checked': m.ocena>1}"></span>
+                                <span class="fa fa-star" :class="{'checked': m.ocena>2}"></span>
+                                <span class="fa fa-star" :class="{'checked': m.ocena>3}"></span>
+                                <span class="fa fa-star" :class="{'checked': m.ocena>4}"></span>
+                                <span class="fa fa-star" :class="{'checked': m.ocena>5}"></span>
+                                <span class="fa fa-star" :class="{'checked': m.ocena>6}"></span>
+                                <span class="fa fa-star" :class="{'checked': m.ocena>7}"></span>
+                                <span class="fa fa-star" :class="{'checked': m.ocena>8}"></span>
+                                <span class="fa fa-star" :class="{'checked': m.ocena>9}"></span>
+     
+                            <div class="data"> [[m.data]] </div>
+                            <div class="info">[[m.tytułpolski]] [[m.rokprodukcji]]</div>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <div class='chart'>
+                        <canvas id="myChart" width="400" height="400"></canvas>
+                    </div>
+                </section>
+                <section>
+                    <div class='chart'>
+                        <canvas id="flowChart" width="400" height="400"></canvas>
+                    </div>
+                </section>
+                <section>
+                    <div class='chart'>
+                        <canvas id="radarChart" width="400" height="400"></canvas>
+                    </div>
+                </section>
+            </div>
         </div>
-    </div>
-    <div>
-        <canvas id="pieChart" width="400" height="400"></canvas>
-    </div>
-    <div>
-        <canvas id="flowChart" width="400" height="400"></canvas>
-    </div>
-    <div>
-        <canvas id="radarChart" width="400" height="400"></canvas>
-    </div>
-</div>
-<script>
-    var pie =  {{ pie|safe }}
-    var radar =  {{ radar|safe }}
-    var flow =  {{ flow|safe }}
-    var dane =  {{ dane|safe }}
 
-    new Vue({
-        el: '#example',
-        delimiters: ['[[', ']]'],
-        data: {
-            hello: 'Hello World!',
-            dane: ''
-         },
-        mounted: function () {
 
-        },
-        methods: {
-            submit_form: function (e) {
-                print('Form submitted', e)
-            }
+
+
+    </div>
+    <script>
+        function decodeHtml(html) {
+            var txt = document.createElement("textarea");
+            txt.innerHTML = html;
+            return txt.value;
+
         }
-    })
-</script>
-<script type=text/javascript src="{{ url_for('static', filename='charts.js') }}"></script>
+
+        console.log({{dane|safe}})                  
+        var dane_gatunki = {{ dane_gatunki| safe }}
+        var radar = {{ radar| safe }}
+        var flow = {{ flow| safe }}
+
+        function getRandomColor(n) {
+            var letters = '0123456789ABCDEF'.split('');
+            var color = '#';
+            var colors = [];
+            for (var j = 0; j < n; j++) {
+                for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                colors.push(color);
+                color = '#';
+            }
+            return colors;
+        }
+
+        var ctx = document.getElementById('myChart');
+
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(dane_gatunki),
+                datasets: [{
+                    label: '# of Votes',
+                    data: Object.values(dane_gatunki),
+                    backgroundColor: getRandomColor(Object.values(dane_gatunki).length)
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        var flw = document.getElementById('flowChart');
+        var flowChart = new Chart(flw, {
+            type: 'line',
+            data: {
+                labels: Object.values(flow['Data']),
+                datasets: [{
+                    label: 'Filmweb',
+                    data: Object.values(flow['Ocena']),
+                    backgroundColor: '#FF0000',
+                    borderWidth: 0,
+                    tension: 0,
+                    fill: false
+                }, {
+                    label: 'IMDb',
+                    data: Object.values(flow['averageRating']),
+                    backgroundColor: '#0000FF',
+                    borderWidth: 0,
+                    tension: 0,
+                    fill: false
+                }, {
+                    label: 'Rating difference',
+                    data: Object.values(flow['diff']),
+                    backgroundColor: '#00FF00',
+                    borderWidth: 0,
+                    tension: 0,
+                    fill: false
+                }]
+            },
+            options: {
+                title: {
+                    text: 'SCORE FLOW',
+                    display: true
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            min: -10,
+                            max: 10,
+                            stepSize: 1
+                        },
+                        gridLines: {
+                            zeroLineWidth: 3
+                        }
+                    }]
+                },
+                layout: {
+                    padding: 40
+                },
+                elements: {
+                    point: {
+                        radius: 2,
+                        pointStyle: 'circle'
+                    }
+                }
+            }
+        });
+
+        var rdr = document.getElementById('radarChart');
+        var radarChart = new Chart(rdr, {
+            type: 'radar',
+            data: {
+                labels: Object.keys(radar['fw']),
+                datasets: [{
+                    label: 'Filmweb',
+                    data: Object.values(radar['fw']),
+                    borderColor: '#FF0000',
+                    backgroundColor: 'rgba(255, 0, 0, 0.5)',
+                    borderWidth: 2,
+                    fill: true
+                }, {
+                    label: 'IMDb',
+                    data: Object.values(radar['imdb']),
+                    borderColor: '#0000FF',
+                    backgroundColor: 'rgba(0, 0, 255, 0.5);',
+                    borderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                title: {
+                    text: 'SCORE RADAR',
+                    display: true
+                }
+            }
+        });
+
+        new Vue({
+            el: '#example',
+            delimiters: ['[[', ']]'],
+            data: {
+                hello: 'Hello World!',
+                dane: {{dane|safe}}
+            },
+            mounted: function () {
+
+            },
+            methods: {
+                submit_form: function (e) {
+                    print('Form submitted', e)
+                }
+            }
+        })
+
+    </script>
+
 </body>
+
 </html>
