@@ -5,6 +5,9 @@ import pandas as pd
 import numpy as np
 
 
+def records_data(df):
+    return df.fillna('').to_dict(orient='records')
+
 def flow_chart_data(df):
     return df.fillna('').to_dict()
 
