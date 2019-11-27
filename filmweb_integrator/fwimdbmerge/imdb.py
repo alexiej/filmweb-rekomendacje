@@ -16,9 +16,6 @@ IMDB_COVERS_CSV = ROOT + '/data_static/movie_covers.csv'
 class Imdb(object):
 
     def __init__(self):
-        # imdb_covers = pd.read_pickle(IMDB_COVERS_PICLE)
-        # imdb_covers['tconst'] = 'tt' + imdb_covers['imdbId'].astype(str)
-        # imdb = pd.merge(imdb, imdb_covers, how='left', on='tconst')
         self.imdb = pd.read_pickle(IMDB_MOVIES_PICLE)
 
     @staticmethod
