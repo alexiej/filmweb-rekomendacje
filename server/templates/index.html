@@ -89,7 +89,7 @@
         }
 
         console.log({{dane|safe}})                  
-        var dane_gatunki = {{ dane_gatunki| safe }}
+        var pie = {{ pie| safe }}
         var radar = {{ radar| safe }}
         var flow = {{ flow| safe }}
 
@@ -112,11 +112,11 @@
         var myChart = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: Object.keys(dane_gatunki),
+                labels: Object.keys(pie),
                 datasets: [{
                     label: '# of Votes',
-                    data: Object.values(dane_gatunki),
-                    backgroundColor: getRandomColor(Object.values(dane_gatunki).length)
+                    data: Object.values(pie),
+                    backgroundColor: getRandomColor(Object.values(pie).length)
                 }]
             },
             options: {
