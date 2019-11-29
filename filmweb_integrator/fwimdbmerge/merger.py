@@ -11,7 +11,7 @@ from filmweb_integrator.fwimdbmerge.imdb import Imdb
 class Merger(object):
 
     @autowired
-    def __init__(self, filmweb: Filmweb, imdb: Imdb):
+    def __init__(self, *, filmweb: Filmweb, imdb: Imdb):
         self.filmweb = filmweb
         self.imdb = imdb
 

@@ -14,7 +14,7 @@ class TestMerger(unittest.TestCase):
     def setUp(self, mock_filmweb, mock_imdb):
         self.mock_filmweb = mock_filmweb
         self.mock_imdb = mock_imdb
-        self.sut = Merger(self.mock_filmweb, self.mock_imdb)
+        self.sut = Merger(filmweb=self.mock_filmweb, imdb=self.mock_imdb)
 
     def test_get_data_should_return_dataframe(self):
         # given

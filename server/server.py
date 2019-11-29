@@ -7,7 +7,9 @@ import json
 from filmweb_integrator.fwimdbmerge.merger import Merger
 from movies_analyzer.data_provider import records_data, flow_chart_data, pie_chart_data, radar_chart_data
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__,
+            static_folder='static',
+            template_folder='templates')
 
 
 @app.before_first_request
@@ -21,15 +23,14 @@ def ping():
     return 'Hello world!'
     
 
-
 @app.route('/render', methods=['GET', 'POST'])
 def render():
     if 'dane' in request.form:
         dane = json.loads(request.form['dane'])
-        df = Merger(dane).get_data()
+        df = Merger().get_data(dane)
 
         return render_template("index.html",
-                               dane = dane,
+                               dane = records_data(df),
                                flow = flow_chart_data(df),
                                radar = radar_chart_data(df),
                                pie = pie_chart_data(df))
