@@ -27,6 +27,7 @@ def ping():
 def render():
     if 'dane' in request.form:
         dane = json.loads(request.form['dane'])
+
         df = Merger().get_data(dane)
 
         return render_template("index.html",

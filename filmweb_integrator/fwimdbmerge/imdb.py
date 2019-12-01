@@ -68,7 +68,7 @@ class Imdb(object):
 
     def merge(self, df):
         df['originalTitle'] = df['Tytuł oryginalny']
-        df['startYear'] = df['Rok produkcji'].fillna(0).astype(float).astype(int).astype(str)
+        df['startYear'] = df['Rok produkcji'].fillna('0').astype(str).astype(int).astype(str)
         df['originalTitle'] = df['originalTitle'].fillna(df['Tytuł polski'])
         df['Gatunek'] = df['Gatunek'].fillna('')
 

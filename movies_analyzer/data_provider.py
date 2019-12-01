@@ -8,7 +8,7 @@ import numpy as np
 def records_data(df):
     return df.fillna('').to_dict(orient='records')
 
-
+  
 def flow_chart_data(df):
     df['Data'] = pd.to_datetime(df['Data'])
     df = df.fillna('').sort_values(by=['Data'])
