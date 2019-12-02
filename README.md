@@ -1,4 +1,8 @@
 # filmweb-rekomendacje
+
+https://api.travis-ci.org/alexiej/filmweb-rekomendacje.svg?branch=master
+
+
 Projekt ma za zadanie wytworzenie analizatora danych zescrapowanych ze strony filmweb. 
 
 * Stworzenie rozszerzenia do Google Chrome które scrapowałoby dane z filmwebu i pobierało informacje o ulubionych filmach, łączyło dane z. bazą imdb,  przeliczało przy pomocy systemu rekomendacji najlepsze filmy i pokazywało je użytkownikowi razem za analizą i wykresami.
