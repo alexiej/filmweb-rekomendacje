@@ -23,4 +23,4 @@ def get_logger():
 
 
 def to_list(textdata):
-    return "".join(textdata.lower().split()).split(',')
+    return [text.strip() for text in textdata.split(',')]
