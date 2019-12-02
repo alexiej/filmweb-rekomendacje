@@ -1,7 +1,6 @@
 # filmweb-rekomendacje
 
-https://api.travis-ci.org/alexiej/filmweb-rekomendacje.svg?branch=master
-
+[![Build Status](https://travis-ci.org/alexiej/filmweb-rekomendacje.svg?branch=master)](https://travis-ci.org/alexiej/filmweb-rekomendacje)
 
 Projekt ma za zadanie wytworzenie analizatora danych zescrapowanych ze strony filmweb. 
 
