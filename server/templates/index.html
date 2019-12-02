@@ -41,20 +41,20 @@
                 <section>
                     <div id="example" class="dane">
                         <div v-for="m in dane" class="row">
-                                <div class="ocena">[[m.ocena]]</div>
-                                <span class="fa fa-star" :class="{'checked': m.ocena>0}"></span>
-                                <span class="fa fa-star" :class="{'checked': m.ocena>1}"></span>
-                                <span class="fa fa-star" :class="{'checked': m.ocena>2}"></span>
-                                <span class="fa fa-star" :class="{'checked': m.ocena>3}"></span>
-                                <span class="fa fa-star" :class="{'checked': m.ocena>4}"></span>
-                                <span class="fa fa-star" :class="{'checked': m.ocena>5}"></span>
-                                <span class="fa fa-star" :class="{'checked': m.ocena>6}"></span>
-                                <span class="fa fa-star" :class="{'checked': m.ocena>7}"></span>
-                                <span class="fa fa-star" :class="{'checked': m.ocena>8}"></span>
-                                <span class="fa fa-star" :class="{'checked': m.ocena>9}"></span>
-     
-                            <div class="data"> [[m.data]] </div>
-                            <div class="info">[[m.tytułpolski]] [[m.rokprodukcji]]</div>
+                                <div class="ocena">[[m.Ocena]]</div>
+                                <span class="fa fa-star" :class="{'checked': m.Ocena>0}"></span>
+                                <span class="fa fa-star" :class="{'checked': m.Ocena>1}"></span>
+                                <span class="fa fa-star" :class="{'checked': m.Ocena>2}"></span>
+                                <span class="fa fa-star" :class="{'checked': m.Ocena>3}"></span>
+                                <span class="fa fa-star" :class="{'checked': m.Ocena>4}"></span>
+                                <span class="fa fa-star" :class="{'checked': m.Ocena>5}"></span>
+                                <span class="fa fa-star" :class="{'checked': m.Ocena>6}"></span>
+                                <span class="fa fa-star" :class="{'checked': m.Ocena>7}"></span>
+                                <span class="fa fa-star" :class="{'checked': m.Ocena>8}"></span>
+                                <span class="fa fa-star" :class="{'checked': m.Ocena>9}"></span>
+
+                            <div class="data"> [[m.Data]] </div>
+                            <div class="info">[[ m['Tytuł polski'] ]] ([[ m['Rok produkcji'] ]])</div>
                         </div>
                     </div>
                 </section>
@@ -88,7 +88,6 @@
 
         }
 
-        console.log({{dane|safe}})                  
         var pie = {{ pie| safe }}
         var radar = {{ radar| safe }}
         var flow = {{ flow| safe }}
@@ -108,7 +107,6 @@
         }
 
         var ctx = document.getElementById('myChart');
-
         var myChart = new Chart(ctx, {
             type: 'pie',
             data: {

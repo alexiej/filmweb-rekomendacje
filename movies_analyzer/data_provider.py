@@ -8,8 +8,12 @@ import numpy as np
 def records_data(df):
     return df.fillna('').to_dict(orient='records')
 
+  
 def flow_chart_data(df):
-    return df.fillna('').to_dict()
+    df['Data'] = pd.to_datetime(df['Data'])
+    df = df.fillna('').sort_values(by=['Data'])
+    df['Data'] = df['Data'].dt.strftime('%Y-%m-%d')
+    return df.reset_index().to_dict()
 
 
 def pie_chart_data(df):
