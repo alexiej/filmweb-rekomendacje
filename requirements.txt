@@ -8,3 +8,4 @@ sklearn
 wget
 injectable
 numpy
+pyarrow
