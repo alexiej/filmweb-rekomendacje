@@ -17,5 +17,5 @@ class Merger(object):
 
     def get_data(self, json):
         df = json_normalize(json)
-        df = self.filmweb.get_dataframe(df, True)
+        df = self.filmweb.get_dataframe(df, False)
         return self.imdb.merge(df)
