@@ -7,6 +7,7 @@ from sklearn.cluster import KMeans
 from filmweb_integrator.fwapi.film import Film
 from .utils import to_list
 from pathlib import Path
+from datetime import datetime
 
 FILMWEB_DATA_MAPPING = {'id':'ID', 'tytułpolski':'Tytuł polski', 'tytułoryginalny':'Tytuł oryginalny',
                         'rokprodukcji':'Rok produkcji', 'ulubione':'Ulubione', 'ocena':'Ocena',
