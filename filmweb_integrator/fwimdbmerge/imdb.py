@@ -4,6 +4,8 @@
 import pandas as pd
 from .utils import to_list
 from pathlib import Path
+import pyarrow.parquet as pq
+import pyarrow as pa
 
 ROOT = str(Path(__file__).parent.parent.parent.absolute())
 IMDB_MOVIES_PICLE = ROOT + '/data/imdb_movies.pkl'
@@ -11,12 +13,14 @@ IMDB_COVERS_PICLE = ROOT + '/data/imdb_covers.pkl'
 IMDB_TITLE_GZIP = 'https://datasets.imdbws.com/title.basics.tsv.gz'
 IMDB_RATING_GZIP = 'https://datasets.imdbws.com/title.ratings.tsv.gz'
 IMDB_COVERS_CSV = ROOT + '/data_static/movie_covers.csv'
+IMDB_MOVIES_PARQUET = ROOT + '/data/imdb_movies.parquet.gzip'
+IMDB_COVERS_PARQUET = ROOT + '/data/imdb_covers.parquet.gzip'
 
 
 class Imdb(object):
 
     def __init__(self):
-        self.imdb = pd.read_pickle(IMDB_MOVIES_PICLE)
+        self.imdb = pd.read_parquet(IMDB_MOVIES_PARQUET, engine='pyarrow')
 
     @staticmethod
     def prepare():
@@ -24,13 +28,16 @@ class Imdb(object):
         imdb_title = imdb_title[imdb_title['titleType']=='movie']
         imdb_title = imdb_title.dropna(subset=['startYear', 'originalTitle'])
 
-        pd.merge(
+        table = pa.Table.from_pandas(pd.merge(
             imdb_title,
             pd.read_csv(IMDB_RATING_GZIP, sep='\t', dtype='str', index_col='tconst', engine='c'),
             how='left',
             left_index=True,
-            right_index=True).to_pickle(IMDB_MOVIES_PICLE)
-        pd.read_csv(IMDB_COVERS_CSV).to_pickle(IMDB_COVERS_PICLE)
+            right_index=True, sort=False), preserve_index=False)
+        pq.write_table(table, IMDB_MOVIES_PARQUET, compression='gzip')
+
+        table = pa.Table.from_pandas(pd.read_csv(IMDB_COVERS_CSV), preserve_index=False)
+        pq.write_table(table, IMDB_COVERS_PARQUET, compression='gzip')
 
     @staticmethod
     def get_similarity(row):

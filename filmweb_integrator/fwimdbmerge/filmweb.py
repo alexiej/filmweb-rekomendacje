@@ -7,6 +7,7 @@ from sklearn.cluster import KMeans
 from filmweb_integrator.fwapi.film import Film
 from .utils import to_list
 from pathlib import Path
+from datetime import datetime
 
 FILMWEB_DATA_MAPPING = {'id':'ID', 'tytułpolski':'Tytuł polski', 'tytułoryginalny':'Tytuł oryginalny',
                         'rokprodukcji':'Rok produkcji', 'ulubione':'Ulubione', 'ocena':'Ocena',
@@ -17,7 +18,7 @@ ROOT = str(Path(__file__).parent.parent.parent.absolute().resolve())
 
 class Filmweb(object):
 
-    def get_dataframe(self, df, use_saved_scraped=False):
+    def get_dataframe(self, df, extended=False, use_saved_scraped=True):
         df = df.rename(columns=FILMWEB_DATA_MAPPING)
         df = df.drop(columns=['Komentarz'])
         df = df[df.Ocena != 'brak oceny']
@@ -25,6 +26,13 @@ class Filmweb(object):
         df['Ocena'] = df.Ocena.astype(int)
 
         df = df.reset_index(drop=True)
+
+        if extended:
+            return self._with_analytics(df, use_saved_scraped)
+
+        return df
+
+    def _with_analytics(self, df, use_saved_scraped):
         df = pd.concat([
             df,
             self._dummies(df['Gatunek'].fillna('')),
@@ -48,7 +56,6 @@ class Filmweb(object):
             return scrapped
         else:
             return pd.read_csv(ROOT + '/data_static/oceny_scraped.csv')
-            #  'https://raw.githubusercontent.com/mateuszrusin/ml-filmweb-score/dw-poznan-project/oceny_scraped.csv')
 
     @staticmethod
     def _dummies(series):
