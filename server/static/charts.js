@@ -127,3 +127,32 @@ var radarChart = new Chart(rdr, {
         }
     }
 });
+
+var dsh = document.getElementById('Dashboard');
+var Dashboard = new Chart(dsh, {
+     type: 'radar',
+    data: {
+        labels: Object.keys(radar['fw']),
+        datasets: [{
+            label: 'Filmweb',
+            data:  Object.values(radar['fw']),
+            borderColor: '#FF0000',
+            backgroundColor: 'rgba(255, 0, 0, 0.5)',
+            borderWidth: 2,
+            fill: true
+        },{
+            label: 'IMDb',
+            data:  Object.values(radar['imdb']),
+            borderColor: '#0000FF',
+            backgroundColor: 'rgba(0, 0, 255, 0.5);',
+            borderWidth: 2,
+            fill: true
+        }]
+    },
+    options: {
+        title: {
+            text: 'Dashboard',
+            display: true
+        }
+    }
+});

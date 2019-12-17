@@ -5,7 +5,7 @@ from flask import Flask, request, render_template
 import json
 
 from filmweb_integrator.fwimdbmerge.merger import Merger
-from movies_analyzer.data_provider import records_data, flow_chart_data, pie_chart_data, radar_chart_data
+from movies_analyzer.data_provider import records_data, flow_chart_data, pie_chart_data, radar_chart_data, dashboard
 
 app = Flask(__name__,
             static_folder='static',
@@ -34,5 +34,6 @@ def render():
                                dane = records_data(df),
                                flow = flow_chart_data(df),
                                radar = radar_chart_data(df),
-                               pie = pie_chart_data(df))
+                               pie = pie_chart_data(df),
+                               dsh = dashboard(df))
     return 'BRAK DANYCH FILMÓW'

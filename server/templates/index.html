@@ -20,6 +20,7 @@
             <input type="radio" id="tab2" name="tab-control">
             <input type="radio" id="tab3" name="tab-control">
             <input type="radio" id="tab4" name="tab-control">
+            <input type="radio" id="tab5" name="tab-control">
 
             <ul>
                 <li title="Dane">
@@ -31,6 +32,9 @@
                     <label for="tab3" role="button"><span>Score Flow</span></label></li>
                 <li title="Score Radar"><label for="tab4" role="button">
                         <span>Score Radar</span></label></li>
+                <li title="Dashboard">
+                    <label for="tab5" role="button">
+                    <span>Dashboard</span></label></li>
             </ul>
 
             <div class="slider">
@@ -71,6 +75,11 @@
                 <section>
                     <div class='chart'>
                         <canvas id="radarChart" width="400" height="400"></canvas>
+                    </div>
+                </section>
+                <section>
+                    <div class='chart'>
+                        <canvas id="Dashboard" width="400" height="400"></canvas>
                     </div>
                 </section>
             </div>
@@ -214,7 +223,34 @@
                 }
             }
         });
-
+        var dsh = document.getElementById('Dashboard');
+        var Dashboard = new Chart(rdr, {
+            type: 'radar',
+            data: {
+                labels: Object.keys(radar['fw']),
+                datasets: [{
+                    label: 'Filmweb',
+                    data: Object.values(radar['fw']),
+                    borderColor: '#FF0000',
+                    backgroundColor: 'rgba(255, 0, 0, 0.5)',
+                    borderWidth: 2,
+                    fill: true
+                }, {
+                    label: 'IMDb',
+                    data: Object.values(radar['imdb']),
+                    borderColor: '#0000FF',
+                    backgroundColor: 'rgba(0, 0, 255, 0.5);',
+                    borderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                title: {
+                    text: 'Dashboard',
+                    display: true
+                }
+            }
+        });
         new Vue({
             el: '#example',
             delimiters: ['[[', ']]'],
