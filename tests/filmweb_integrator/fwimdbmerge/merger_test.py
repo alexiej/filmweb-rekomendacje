@@ -3,8 +3,8 @@ from unittest import mock
 
 import pandas as pd
 from pandas.errors import EmptyDataError
-
-from filmweb_integrator.fwimdbmerge.merger import Merger
+from json.decoder import JSONDecodeError
+from filmweb_integrator.fwimdbmerge.merger import Merger,get_json_df
 
 
 class TestMerger(unittest.TestCase):
@@ -23,7 +23,7 @@ class TestMerger(unittest.TestCase):
         self.mock_imdb.merge.return_value = df
 
         # when
-        result = self.sut.get_data({})
+        filmweb_df, result = self.sut.get_data({})
 
         # then
         self.assertIsInstance(result, pd.DataFrame)
@@ -37,15 +37,15 @@ class TestMerger(unittest.TestCase):
         self.mock_imdb.merge.assert_not_called()
 
         # then
-        self.assertRaises(AttributeError, self.sut.get_data, json)
+        self.assertRaises(JSONDecodeError, get_json_df, json)
 
     def test_get_data_should_throw_exception_when_processing_error(self):
         # given
-        json = {}
+        df = get_json_df('{}')
         self.mock_filmweb.get_dataframe.side_effect = EmptyDataError()
 
         # expect
         self.mock_imdb.merge.assert_not_called()
 
         # then
-        self.assertRaises(EmptyDataError, self.sut.get_data, json)
+        self.assertRaises(EmptyDataError, self.mock_filmweb.get_dataframe, df)

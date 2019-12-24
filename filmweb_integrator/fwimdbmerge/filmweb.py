@@ -22,8 +22,13 @@ class Filmweb(object):
         df = df.rename(columns=FILMWEB_DATA_MAPPING)
         df = df.drop(columns=['Komentarz'])
         df = df[df.Ocena != 'brak oceny']
+        df.fillna('', inplace=True)
+
         df['Ulubione'] = self._label_encode(df.Ulubione.fillna(''))
         df['Ocena'] = df.Ocena.astype(int)
+        
+        # df['DataRaw'] = df['Data']
+        # df['Data'] = pd.to_datetime(df['Data'])
 
         df = df.reset_index(drop=True)
 

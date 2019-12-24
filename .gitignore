@@ -5,6 +5,7 @@ data/*.csv
 data/*.tsv
 data/*.gz
 
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

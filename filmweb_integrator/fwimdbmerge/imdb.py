@@ -8,8 +8,6 @@ import pyarrow.parquet as pq
 import pyarrow as pa
 
 ROOT = str(Path(__file__).parent.parent.parent.absolute())
-IMDB_MOVIES_PICLE = ROOT + '/data/imdb_movies.pkl'
-IMDB_COVERS_PICLE = ROOT + '/data/imdb_covers.pkl'
 IMDB_TITLE_GZIP = 'https://datasets.imdbws.com/title.basics.tsv.gz'
 IMDB_RATING_GZIP = 'https://datasets.imdbws.com/title.ratings.tsv.gz'
 IMDB_COVERS_CSV = ROOT + '/data_static/movie_covers.csv'
