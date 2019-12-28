@@ -5,7 +5,7 @@ from injectable import autowired
 from pandas.io.json import json_normalize
 
 from filmweb_integrator.fwimdbmerge.filmweb import Filmweb
-from filmweb_integrator.fwimdbmerge.imdb import Imdb
+from movies_analyzer.Imdb import Imdb
 import json
 
 

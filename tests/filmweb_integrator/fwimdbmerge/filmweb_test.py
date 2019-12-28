@@ -35,7 +35,7 @@ class TestFilmweb(unittest.TestCase):
         result = self.sut.get_dataframe(df, extended=False, use_saved_scraped=True)
 
         # then
-        self.assertEqual(9, len(result.columns))
+        self.assertEqual(10, len(result.columns))
 
     def test_get_dataframe_should_return_extended_dataframe(self):
         # given
@@ -45,4 +45,4 @@ class TestFilmweb(unittest.TestCase):
         result = self.sut.get_dataframe(df, extended=True, use_saved_scraped=True)
 
         # then
-        self.assertEqual(58, len(result.columns))
+        self.assertEqual(59, len(result.columns))

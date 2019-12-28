@@ -4,13 +4,13 @@ from unittest import mock
 import pandas as pd
 from pandas.errors import EmptyDataError
 from json.decoder import JSONDecodeError
-from filmweb_integrator.fwimdbmerge.merger import Merger,get_json_df
+from filmweb_integrator.fwimdbmerge.merger import Merger, get_json_df
 
 
 class TestMerger(unittest.TestCase):
 
     @mock.patch('filmweb_integrator.fwimdbmerge.filmweb.Filmweb')
-    @mock.patch('filmweb_integrator.fwimdbmerge.imdb.Imdb')
+    @mock.patch('movies_analyzer.Imdb.Imdb')
     def setUp(self, mock_filmweb, mock_imdb):
         self.mock_filmweb = mock_filmweb
         self.mock_imdb = mock_imdb

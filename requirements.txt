@@ -9,3 +9,4 @@ wget
 injectable
 numpy
 pyarrow
+surprise

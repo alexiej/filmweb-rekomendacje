@@ -6,8 +6,10 @@ from pathlib import Path
 import pickle
 import os
 
+from filmweb_integrator.fwimdbmerge.filmweb import Filmweb
 from filmweb_integrator.fwimdbmerge.utils import get_logger
 from filmweb_integrator.fwimdbmerge.merger import Merger, get_json_df
+from movies_analyzer.Movies import Movies, SMALL_MOVIELENS
 from movies_analyzer.data_provider import records_data, flow_chart_data, pie_chart_data, radar_chart_data
 
 ROOT = Path(os.getcwd()) / 'data_static'
@@ -23,13 +25,17 @@ def debug_dump(json_text, filmweb_df, df):
         with open(JSON_EXAMPLE, "w") as text_file:
             text_file.write(json_text)
         filmweb_df.to_csv(FILMWEB_EXAMPLE,index=False)
-        df.to_csv(MERGE_EXAMPLE,index=False)
+        df.to_csv(MERGE_EXAMPLE,index=True)
 
 
 logger = get_logger()
 app = Flask(__name__,
             static_folder='static',
             template_folder='templates')
+
+movies = Movies(movielens_path=SMALL_MOVIELENS)
+filmweb = Filmweb()
+merger = Merger(filmweb=filmweb, imdb=movies.imdb)
 
 
 @app.before_first_request
@@ -55,7 +61,7 @@ def render():
             json_text = request.form['dane']
 
     if json_text is not None:
-        filmweb_df, df = Merger().get_data(get_json_df(json_text))
+        filmweb_df, df = merger.get_data(get_json_df(json_text))
         debug_dump(json_text, filmweb_df, df)
 
         return render_template("index.html",

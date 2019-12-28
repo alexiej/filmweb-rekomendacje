@@ -2,12 +2,13 @@
 # coding: utf-8
 
 import pandas as pd
-from .utils import to_list
+from filmweb_integrator.fwimdbmerge.utils import to_list
 from pathlib import Path
 import pyarrow.parquet as pq
 import pyarrow as pa
 
-ROOT = str(Path(__file__).parent.parent.parent.absolute())
+ROOT = str(Path(__file__).parent.parent.absolute())
+# import os; ROOT = os.getcwd()
 IMDB_TITLE_GZIP = 'https://datasets.imdbws.com/title.basics.tsv.gz'
 IMDB_RATING_GZIP = 'https://datasets.imdbws.com/title.ratings.tsv.gz'
 IMDB_COVERS_CSV = ROOT + '/data_static/movie_covers.csv'
@@ -16,7 +17,6 @@ IMDB_COVERS_PARQUET = ROOT + '/data/imdb_covers.parquet.gzip'
 
 
 class Imdb(object):
-
     def __init__(self):
         self.imdb = pd.read_parquet(IMDB_MOVIES_PARQUET, engine='pyarrow')
 
@@ -31,7 +31,7 @@ class Imdb(object):
             pd.read_csv(IMDB_RATING_GZIP, sep='\t', dtype='str', index_col='tconst', engine='c'),
             how='left',
             left_index=True,
-            right_index=True, sort=False), preserve_index=False)
+            right_index=True, sort=False), preserve_index=True)
         pq.write_table(table, IMDB_MOVIES_PARQUET, compression='gzip')
 
         table = pa.Table.from_pandas(pd.read_csv(IMDB_COVERS_CSV), preserve_index=False)
@@ -80,16 +80,16 @@ class Imdb(object):
         df['genre_eng'] = df['Gatunek'].map(lambda x: self.change_type(x))
 
         merged = pd.merge(
+            self.imdb.reset_index(),
             df,
-            self.imdb,
             how='inner',
-            on=['startYear','originalTitle'])
+            on=['startYear', 'originalTitle'])
 
         merged = self.filter_duplicates(merged)
         merged['averageRating'] = merged['averageRating'].fillna(value=0).astype(float)
         merged['diff'] = (merged['Ocena'] - merged['averageRating'])
         merged['averageRating_int'] = merged['averageRating'].round().astype(int)
-
+        merged.set_index('tconst', inplace=True)
         return merged
 
     def filter_duplicates(self, df):

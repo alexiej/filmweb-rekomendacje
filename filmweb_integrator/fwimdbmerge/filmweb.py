@@ -26,7 +26,8 @@ class Filmweb(object):
 
         df['Ulubione'] = self._label_encode(df.Ulubione.fillna(''))
         df['Ocena'] = df.Ocena.astype(int)
-        
+        df['OcenaImdb'] = df.Ocena.astype(float)/2
+
         # df['DataRaw'] = df['Data']
         # df['Data'] = pd.to_datetime(df['Data'])
 
