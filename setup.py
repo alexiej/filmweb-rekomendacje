@@ -5,8 +5,8 @@ from filmweb_integrator.fwimdbmerge.utils import get_logger
 
 logger = get_logger()
 
-# logger.warning("Start import example_mariusz_01_json.csv")
-# os.system("wget -O data/example_mariusz_01_json.csv https://raw.githubusercontent.com/mateuszrusin/ml-filmweb-score/master/oceny.csv")
+# logger.warning("Start import example_mateusz_01_json.csv")
+# os.system("wget -O data/example_mateusz_01_json.csv https://raw.githubusercontent.com/mateuszrusin/ml-filmweb-score/master/oceny.csv")
 # logger.warning("Start import genre.txt")
 # os.system("wget -O data/genre.txt https://raw.githubusercontent.com/dataworkshop/dw-poznan-project/master/spotkania/2019-11-12/wykresy/genre.txt")
 
