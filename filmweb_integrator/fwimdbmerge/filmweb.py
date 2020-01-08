@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
-
+import numpy as np
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.cluster import KMeans
 from filmweb_integrator.fwapi.film import Film
-from .utils import to_list
+from filmweb_integrator.fwimdbmerge.utils import to_list
 from pathlib import Path
 from datetime import datetime
 
@@ -14,22 +14,39 @@ FILMWEB_DATA_MAPPING = {'id':'ID', 'tytułpolski':'Tytuł polski', 'tytułorygin
                         'komentarz': 'Komentarz', 'krajprodukcji':'Kraj produkcji', 'gatunek':'Gatunek', 'data':'Data'}
 
 ROOT = str(Path(__file__).parent.parent.parent.absolute().resolve())
+FILMWEB_KODY_KRAJOW = ROOT + '/data_static/kody_krajow.csv'
+
+def get_kody_krajow():
+    kody_krajow = pd.read_csv(FILMWEB_KODY_KRAJOW)
+    kody_krajow["polska nazwa"] = kody_krajow["polska nazwa"].str.upper()
+    kody_krajow.set_index("polska nazwa",inplace=True)
+    return kody_krajow
+kody_krajow = get_kody_krajow()
+
+def kraj_to_kod(nazwa):
+    return [
+            kody_krajow.loc[n]["kod alfa-3"] if n in kody_krajow.index
+            else "UNK"
+            for n in to_list(nazwa.upper())]
+    
+
 
 
 class Filmweb(object):
-
     def get_dataframe(self, df, extended=False, use_saved_scraped=True):
         df = df.rename(columns=FILMWEB_DATA_MAPPING)
         df = df.drop(columns=['Komentarz'])
         df = df[df.Ocena != 'brak oceny']
         df.fillna('', inplace=True)
 
+        df["Data"] = df.apply(lambda row: row["Data"] if row["Data"]!='' else row["Rok produkcji"]+'-01-01', axis=1)
+        df["Rok"]  = pd.to_datetime(df["Data"]).dt.year
+       
         df['Ulubione'] = self._label_encode(df.Ulubione.fillna(''))
         df['Ocena'] = df.Ocena.astype(int)
         df['OcenaImdb'] = df.Ocena.astype(float)/2
 
-        # df['DataRaw'] = df['Data']
-        # df['Data'] = pd.to_datetime(df['Data'])
+        df["KrajKod"] = df["Kraj produkcji"].apply(kraj_to_kod)
 
         df = df.reset_index(drop=True)
 

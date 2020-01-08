@@ -24,3 +24,7 @@ def get_logger():
 
 def to_list(textdata):
     return [text.strip() for text in textdata.split(',')]
+
+
+def read_file(file):
+    return open(file,"r",encoding="utf-8").read()

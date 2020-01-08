@@ -10,7 +10,7 @@ from pathlib import Path
 import pandas as pd
 
 from filmweb_integrator.fwimdbmerge.merger import Merger, get_json_df
-from filmweb_integrator.fwimdbmerge.utils import get_logger
+from filmweb_integrator.fwimdbmerge.utils import get_logger, read_file
 from movies_analyzer.Movies import Movies
 
 DATA_STATIC = Path(os.getcwd()) / 'data_static'
@@ -28,7 +28,7 @@ logger = get_logger()
 
 if EXAMPLE_USE_JSON:
     logger.warning(f"Load json file:  {DATA_STATIC}/{FILMWEB_EXAMPLE_CSV}")
-    df = get_json_df(open(FILMWEB_EXAMPLE_JSON,"r").read())
+    df = get_json_df(read_file(FILMWEB_EXAMPLE_JSON))
 
     logger.warning(f"Write to csv ({len(df)})")
     df.to_csv(FILMWEB_EXAMPLE_CSV)
@@ -37,7 +37,7 @@ else:
     df = pd.read_csv(FILMWEB_EXAMPLE_CSV)
 
     logger.warning(f"Write to json ({len(df)})")
-    with open(FILMWEB_EXAMPLE_JSON, "w") as file_wr:
+    with open(FILMWEB_EXAMPLE_JSON, "w", encoding="utf-8") as file_wr:
         df.to_json(file_wr, orient='records')
 
 

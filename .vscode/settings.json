@@ -1,0 +1,10 @@
+{
+    "python.testing.pytestArgs": [
+        "."
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.pythonPath": "/Users/klemenka/opt/anaconda3/envs/dw-poznan/bin/python",
+    "python.dataScience.notebookFileRoot": "${workspaceFolder}"
+}

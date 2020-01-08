@@ -3,19 +3,130 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>🎥 Filmweb Recomendacje</title>
     <link href="{{url_for('static', filename='style.css')}}" rel="stylesheet" type="text/css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+
+
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+<script src="static/datamaps.world.min.js"></script>
+
+
 </head>
 
 <body>
-    <div id="main">
-        <h1>Filmweb-Rekomendacje</h1>
 
-        <div class="tabs">
 
+    <div id="app">
+        <div id="content">
+            <div id="top" class="box">
+                <div>
+                    
+                <a class="logo" href="https://github.com/alexiej/filmweb-rekomendacje" target="_blank">
+                    <img src="static/img/movie.png" alt="">
+            
+                    <span>    FILMEB REKOMENDACJE</span>
+                </a>
+
+            </div>
+                <div>
+                   
+                    <button id="zobacz" v-on:click="show_dane=!show_dane"
+                    >[[ show_dane ? 'Pokaż Dashboard' : 'Pokaż dane'  ]]</button>
+            
+                    <a class="github" href="https://github.com/alexiej/filmweb-rekomendacje" target="_blank">
+
+                        <img width="32px" height="32px" src="static/img/github.svg" alt="">
+                            </a>
+                </div>
+              
+            </div>
+
+            <div v-show="!show_dane" id="dashboard"  class="dashboard animated slideInUp faster">
+
+                <div class="box oceny">
+                    <div ref="oceny_histogram" id="oceny_histogramChart"></div>
+                </div>
+
+                <div class="box aktorzy">
+                    Aktorzy
+                                    </div>
+
+            <div class="box gatunki">
+                <div ref="gatunki" id="gatunkiChart"></div>
+            </div>
+
+
+            <div class="box mapa">
+                <span>Mapa twoich filmów</span>
+                <div ref="mapa" id="container" style="position: relative; min-width: 400px; min-height: 300px;"></div>
+ 
+            </div>
+
+
+    <div class="box radar">
+        <div ref="radar" id="radarChart"></div>
+
+        <!-- <div><canvas ref="radar" id="radarChart" width="400" height="400"></canvas></div> -->
+    </div>
+
+
+    <div class="box gatunki_historia">
+        <div ref="gatunki_historia" id="gatunki_historiaChart"></div>
+    </div>
+
+            <div class="box wykres">
+                Wykres 
+            </div>
+
+            </div>
+
+            <div v-show="show_dane" id="dane" class="box dane animated slideInUp faster">
+                <div v-for="m in dane" class="row">
+
+                    
+
+                    <!-- <div class="ocena">[[m.Ocena]]</div> -->
+                    <span class="fa fa-star" :class="{'checked': m.Ocena>0}"></span>
+                    <span class="fa fa-star" :class="{'checked': m.Ocena>1}"></span>
+                    <span class="fa fa-star" :class="{'checked': m.Ocena>2}"></span>
+                    <span class="fa fa-star" :class="{'checked': m.Ocena>3}"></span>
+                    <span class="fa fa-star" :class="{'checked': m.Ocena>4}"></span>
+                    <span class="fa fa-star" :class="{'checked': m.Ocena>5}"></span>
+                    <span class="fa fa-star" :class="{'checked': m.Ocena>6}"></span>
+                    <span class="fa fa-star" :class="{'checked': m.Ocena>7}"></span>
+                    <span class="fa fa-star" :class="{'checked': m.Ocena>8}"></span>
+                    <span class="fa fa-star" :class="{'checked': m.Ocena>9}"></span>
+
+                <div class="data"> [[m.Data]] </div>
+
+                <a class="imdb" :href="[['https://www.imdb.com/title/' + m.tconst + '']]" target="_blank"><img src="static/img/icons8-imdb.png" alt="IMDB"></a>
+              
+                <div class="info">[[ m['Tytuł polski'] ]] ([[ m['Rok produkcji'] ]])</div>
+            </div>
+
+
+        </div>
+        <!-- <h1>Filmweb-Rekomendacje</h1> -->
+
+
+        </div>
+  
+
+ <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+ <div>Icons get from <a href="https://icons8.com" title="Icons8">https://icons8.com</a></div>
+
+        <!-- <div class="tabs">
             <input type="radio" id="tab1" name="tab-control" checked>
             <input type="radio" id="tab2" name="tab-control">
             <input type="radio" id="tab3" name="tab-control">
@@ -23,8 +134,11 @@
             <input type="radio" id="tab5" name="tab-control">
 
             <ul>
-                <li title="Dane">
+                <li title="Dashboard">
                     <label for="tab1" role="button">
+                    <span>Dashboard</span></label></li>
+                <li title="Dane">
+                    <label for="tab2" role="button">
                         <span>Dane</span></label></li>
                 <li title="Wykres kołowy"><label for="tab2" role="button">
                         <span>Wykres kołowy</span></label></li>
@@ -32,9 +146,7 @@
                     <label for="tab3" role="button"><span>Score Flow</span></label></li>
                 <li title="Score Radar"><label for="tab4" role="button">
                         <span>Score Radar</span></label></li>
-                <li title="Dashboard">
-                    <label for="tab5" role="button">
-                    <span>Dashboard</span></label></li>
+    
             </ul>
 
             <div class="slider">
@@ -42,37 +154,23 @@
             </div>
 
             <div class="content">
-                <section>
-                    <div id="example" class="dane">
-                        <div v-for="m in dane" class="row">
-                                <div class="ocena">[[m.Ocena]]</div>
-                                <span class="fa fa-star" :class="{'checked': m.Ocena>0}"></span>
-                                <span class="fa fa-star" :class="{'checked': m.Ocena>1}"></span>
-                                <span class="fa fa-star" :class="{'checked': m.Ocena>2}"></span>
-                                <span class="fa fa-star" :class="{'checked': m.Ocena>3}"></span>
-                                <span class="fa fa-star" :class="{'checked': m.Ocena>4}"></span>
-                                <span class="fa fa-star" :class="{'checked': m.Ocena>5}"></span>
-                                <span class="fa fa-star" :class="{'checked': m.Ocena>6}"></span>
-                                <span class="fa fa-star" :class="{'checked': m.Ocena>7}"></span>
-                                <span class="fa fa-star" :class="{'checked': m.Ocena>8}"></span>
-                                <span class="fa fa-star" :class="{'checked': m.Ocena>9}"></span>
 
-                            <div class="data"> [[m.Data]] </div>
-                            <div class="info">[[ m['Tytuł polski'] ]] ([[ m['Rok produkcji'] ]])</div>
-                        </div>
-                    </div>
-                </section>
                 <section>
                     <div class='chart'>
                         <canvas id="myChart" width="400" height="400"></canvas>
                     </div>
                 </section>
                 <section>
+                    <div id="example" class="dane">
+
+                    </div>
+                </section>
+              <section>
                     <div class='chart'>
                         <canvas id="flowChart" width="400" height="400"></canvas>
                     </div>
-                </section>
-                <section>
+                </section> 
+             <section>
                     <div class='chart'>
                         <canvas id="radarChart" width="400" height="400"></canvas>
                     </div>
@@ -81,184 +179,288 @@
                     <div class='chart'>
                         <canvas id="Dashboard" width="400" height="400"></canvas>
                     </div>
-                </section>
+                </section> 
             </div>
         </div>
-
-
-
+ -->
 
     </div>
+
+    A
+A
     <script>
+    //   var map = new Datamap({element: document.getElementById('container')});
+
+
         function decodeHtml(html) {
             var txt = document.createElement("textarea");
             txt.innerHTML = html;
             return txt.value;
-
         }
 
         var pie = {{ pie| safe }}
         var radar = {{ radar| safe }}
-        var flow = {{ flow| safe }}
+        var hist = {{ hist|safe}}
+        var dane = {{ dane|safe}}
+        var gatunki_historia = {{gatunki_historia|safe}}
+        var gatunki_lata = {{gatunki_lata|safe}}
+        var gatunki_ilosc = {{gatunki_ilosc|safe}}
+        var mapa_dane = {{mapa_dane|safe}}
 
-        function getRandomColor(n) {
-            var letters = '0123456789ABCDEF'.split('');
-            var color = '#';
-            var colors = [];
-            for (var j = 0; j < n; j++) {
-                for (var i = 0; i < 6; i++) {
-                    color += letters[Math.floor(Math.random() * 16)];
-                }
-                colors.push(color);
-                color = '#';
-            }
-            return colors;
+        //======= INIT MAP
+        function init_map(rd) {
+            var map = new Datamap(
+                {element: rd,
+                    projection: 'mercator', //style of projection to be used. try "mercator"
+                    fills: {
+                        None: 'rgba(200,200,200,0.9)',
+                        N0: '#FFE5E9',
+                        N1: '#FFCCD3',
+                        N2: '#FFB1BC',
+                        N3: '#FF96A5',
+                        N4: '#FF7B8E',
+                        N5: '#FF6077',
+                        N6: '#FF4560',
+                        N7: '#D83C4F',
+                        N8: '#B23040',
+                        N9: '#8C2431',
+                        N10: '#8C2431', //mostly USA
+                        defaultFill: 'rgba(200,200,200,0.9)'
+                    },
+                    data: mapa_dane,
+                    geographyConfig: {
+                        highlightBorderColor: 'rgba(255,69,96,0.2)',
+                        highlightFillColor: 'rgba(255,69,96,0.2)',
+            popupTemplate: function(geo, data) {
+                return ['<div class="hoverinfo"><strong>',
+                        'W kraju: ' + geo.properties.name,
+                        ' oceniłeś ' + data.ilosc + " filmów, średnia ocena to: " + data.ocena.toFixed(2),
+                        '</strong></div>'].join('');
+                    }
+                },
+                });
+                // map.legend();
         }
 
-        var ctx = document.getElementById('myChart');
-        var myChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: Object.keys(pie),
-                datasets: [{
-                    label: '# of Votes',
-                    data: Object.values(pie),
-                    backgroundColor: getRandomColor(Object.values(pie).length)
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
 
-        var flw = document.getElementById('flowChart');
-        var flowChart = new Chart(flw, {
-            type: 'line',
-            data: {
-                labels: Object.values(flow['Data']),
-                datasets: [{
-                    label: 'Filmweb',
-                    data: Object.values(flow['Ocena']),
-                    backgroundColor: '#FF0000',
-                    borderWidth: 0,
-                    tension: 0,
-                    fill: false
-                }, {
-                    label: 'IMDb',
-                    data: Object.values(flow['averageRating']),
-                    backgroundColor: '#0000FF',
-                    borderWidth: 0,
-                    tension: 0,
-                    fill: false
-                }, {
-                    label: 'Rating difference',
-                    data: Object.values(flow['diff']),
-                    backgroundColor: '#00FF00',
-                    borderWidth: 0,
-                    tension: 0,
-                    fill: false
-                }]
+        //============= HISTOGRAM ============
+        var options_oceny_histogram = {
+        series: [{
+          name: 'Ocen',
+          data: Object.values(hist)
+        }],
+        xaxis: {
+          categories: Object.keys(hist),
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false
+          }
+        },
+        title: {
+            text: "Rozkład twoich ocen",
+            align: 'center'
+        },
+        chart: {
+          type: 'histogram'
+         }
+        }
+
+        function init_oceny_histogram(rd) {
+            var chart = new ApexCharts(rd, options_oceny_histogram)
+            chart.render()
+        }
+
+        //============+RADAR CHART============
+
+        var radar_options = {
+        chart: {
+            type: 'radar'
+        },
+        title: {
+            text: "Twój radar zgodności do ocen z IMDB",
+            align: 'center'
+        },
+        series: [
+        {
+            name: "Filmweb",
+            data: Object.values(radar['fw'])
+        },
+        {
+            name: "Imdb",
+            data: Object.values(radar['imdb'])
+        }
+        ],
+        tooltip: {
+        enabled: true,
+        x: {
+            formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
+                return "Ocena: " + value
             },
-            options: {
-                title: {
-                    text: 'SCORE FLOW',
-                    display: true
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-                            min: -10,
-                            max: 10,
-                            stepSize: 1
-                        },
-                        gridLines: {
-                            zeroLineWidth: 3
-                        }
+        },
+        y: {
+            formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
+                return   value + " ocen"
+            },
+        }
+        },
+        yaxis: {
+            show: false,
+        },
+        labels: Object.keys(radar['fw'])
+        }
+
+
+        function init_radar(rd) {
+            var chart = new ApexCharts(rd, radar_options)
+            chart.render()
+        }
+
+        function init_radar2(rdr) {
+            var radarChart = new Chart(rdr, {
+                type: 'radar',
+                data: {
+                    labels: Object.keys(radar['fw']),
+                    datasets: [{
+                        label: 'Filmweb',
+                        data: Object.values(radar['fw']),
+                        borderColor: 'rgba(255, 0, 0, 0.9)',
+                        backgroundColor: 'rgba(255, 0, 0, 0.5)',
+                        borderWidth: 2,
+                        fill: true
+                    }, {
+                        label: 'IMDb',
+                        data: Object.values(radar['imdb']),
+                        borderColor: 'rgba(255, 235, 59, 0.9)',
+                        backgroundColor: 'rgba(255, 235, 59, 0.5)',
+                        borderWidth: 2,
+                        fill: true
                     }]
                 },
-                layout: {
-                    padding: 40
-                },
-                elements: {
-                    point: {
-                        radius: 2,
-                        pointStyle: 'circle'
+                options: {
+                    title: {
+                        text: 'Twój radar zgodności do ocen IMDB',
+                        display: true
+                    },
+                    legend: {
+                        position: 'bottom',
+                        display: true
                     }
+           
                 }
-            }
-        });
+            });
+            return radarChart;
+        }
 
-        var rdr = document.getElementById('radarChart');
-        var radarChart = new Chart(rdr, {
-            type: 'radar',
-            data: {
-                labels: Object.keys(radar['fw']),
-                datasets: [{
-                    label: 'Filmweb',
-                    data: Object.values(radar['fw']),
-                    borderColor: '#FF0000',
-                    backgroundColor: 'rgba(255, 0, 0, 0.5)',
-                    borderWidth: 2,
-                    fill: true
-                }, {
-                    label: 'IMDb',
-                    data: Object.values(radar['imdb']),
-                    borderColor: '#0000FF',
-                    backgroundColor: 'rgba(0, 0, 255, 0.5);',
-                    borderWidth: 2,
-                    fill: true
-                }]
-            },
-            options: {
-                title: {
-                    text: 'SCORE RADAR',
-                    display: true
-                }
+      // ====== GATUNKI
+      function format_prc(x) {
+          return (Math.round(x,2) + '%');
+      }
+
+
+      var options_gatunki = {
+        chart: {
+            type: 'donut'
+        },
+        plotOptions: {
+            pie: {
+            donut: {
+                size: '55%'
             }
-        });
-        var dsh = document.getElementById('Dashboard');
-        var Dashboard = new Chart(rdr, {
-            type: 'radar',
-            data: {
-                labels: Object.keys(radar['fw']),
-                datasets: [{
-                    label: 'Filmweb',
-                    data: Object.values(radar['fw']),
-                    borderColor: '#FF0000',
-                    backgroundColor: 'rgba(255, 0, 0, 0.5)',
-                    borderWidth: 2,
-                    fill: true
-                }, {
-                    label: 'IMDb',
-                    data: Object.values(radar['imdb']),
-                    borderColor: '#0000FF',
-                    backgroundColor: 'rgba(0, 0, 255, 0.5);',
-                    borderWidth: 2,
-                    fill: true
-                }]
-            },
-            options: {
-                title: {
-                    text: 'Dashboard',
-                    display: true
-                }
             }
-        });
+        },
+        title: {
+            text: "Najczęściej oglądane gatunki to:",
+            align: 'center'
+        },
+        dataLabels: {
+            formatter: function (val, { seriesIndex, dataPointIndex, w }) {
+                return  w.config.series[seriesIndex] + " (" + pie['srednia'][w.config.labels[seriesIndex]].toFixed(2) + ")"
+            },
+        },
+        fill: {
+                fill: ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800'],
+                },
+            stroke: {
+                curve: 'smooth',
+                fill: ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800'],
+        },
+        tooltip: {
+            enabled: true,
+            y: {
+                show: true,
+                formatter: (val,index) => "Ocen: " + val,
+                title: {
+                    formatter: (seriesName) => seriesName + " (Średnia: " + pie['srednia'][seriesName].toFixed(2)+ ")",
+                },
+            },
+        },
+ 
+        series: Object.values(pie['ilosc']),
+        labels: Object.keys(pie['ilosc'])
+        }
+
+        function init_gatunki(rd) {
+            var chart = new ApexCharts(rd, options_gatunki)
+            chart.render()
+        }
+
+        var options_gatunki_historia = {
+            chart: {
+                height: 380,
+                width: "100%",
+                type: "line"
+            },
+            title: {
+            text: "Twoja historia ocen na przesrzeni lat:",
+            align: 'center'
+            },
+            fill: {
+                fill: ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800'],
+                },
+            stroke: {
+                curve: 'smooth',
+                fill: ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800'],
+            },
+            series: gatunki_historia,
+            xaxis: {
+                categories: gatunki_lata
+            },
+            labels: gatunki_lata,
+            tooltip: {
+                y: {
+                    formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
+                        ilosc = gatunki_ilosc[w.config.series[seriesIndex].name][gatunki_lata[dataPointIndex]]
+                        return value + " (" + ilosc + " ocen)"
+    },
+
+                },
+            }
+            };
+
+        function init_gatunki_historia(rd) {
+            var chart = new ApexCharts(rd, options_gatunki_historia)
+            chart.render()
+        }
+                
+        
+        // === INIT
         new Vue({
-            el: '#example',
+            el: '#app',
             delimiters: ['[[', ']]'],
             data: {
-                hello: 'Hello World!',
-                dane: {{dane|safe}}
+                show_dane: false,
+                dane: dane
             },
             mounted: function () {
+
+                init_oceny_histogram(this.$refs.oceny_histogram);
+                init_radar(this.$refs.radar);
+                init_gatunki(this.$refs.gatunki);
+                init_gatunki_historia(this.$refs.gatunki_historia)
+
+                init_map(this.$refs.mapa);
 
             },
             methods: {

@@ -10,7 +10,7 @@ from filmweb_integrator.fwimdbmerge.filmweb import Filmweb
 from filmweb_integrator.fwimdbmerge.utils import get_logger
 from filmweb_integrator.fwimdbmerge.merger import Merger, get_json_df
 from movies_analyzer.Movies import Movies, SMALL_MOVIELENS
-from movies_analyzer.data_provider import records_data, flow_chart_data, pie_chart_data, radar_chart_data
+from movies_analyzer.data_provider import map_data, records_data,gatunki_rozszerz_dataframe,year_gatunek_data, histogram_data, flow_chart_data, pie_chart_data, radar_chart_data
 
 ROOT = Path(os.getcwd()) / 'data_static'
 JSON_EXAMPLE = ROOT/'example_last_01_json.json'
@@ -64,10 +64,22 @@ def render():
         filmweb_df, df = merger.get_data(get_json_df(json_text))
         debug_dump(json_text, filmweb_df, df)
 
+        # print(records_data(df)[:5])
+        pie = pie_chart_data(df)
+        df_gatunki = gatunki_rozszerz_dataframe(df)
+        gatunki = list(pie['ilosc'].keys())
+
+        gatunki_historia,gatunki_ilosc, gatunki_lata = year_gatunek_data(df_gatunki,gatunki)
+        map_data_df = map_data(df)
+
         return render_template("index.html",
                                dane=records_data(df),
-                               flow=flow_chart_data(df),
+                               pie=pie,
                                radar=radar_chart_data(df),
-                               pie=pie_chart_data(df))
+                               hist=histogram_data(df),
+                               gatunki_historia = gatunki_historia,
+                               gatunki_ilosc = gatunki_ilosc,
+                               gatunki_lata = gatunki_lata,
+                               mapa_dane = map_data_df)
 
     return 'BRAK DANYCH FILMÓW'

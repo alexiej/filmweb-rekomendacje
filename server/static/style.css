@@ -2,12 +2,325 @@
 body {
     background: red;
 } */
+
+
+/*==============================================
+01. GENERAL CSS
+================================================*/
+
+html,
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -ms-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font: 16px/1.6 'Raleway', Arial, Helvetica, sans-serif;
+  color: #fff;
+  text-align:center;
+  /* background: #222; */
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: rgba(250, 250, 250, 0.99);
+}
+
+img {
+  border: 0;
+  max-width: 100%;
+}
+html {
+  -ms-overflow-style: scrollbar;
+}
+.alltrans,
+.social-icons li a,
+.owl-nav > button,
+.owl-nav > button:after,
+.counter-box,
+.about-img:after,
+.gallery-img img,
+.form-control,
+.owl-dot,
+.subscribe-row,
+.close-btn,
+.close-btn:before,
+.close-btn:after,
+.tag-btn,
+.btn {
+  -webkit-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+}
+a {
+
+
+  color: #191c91;
+  font-weight: 500;
+  /* color: #fff; */
+  text-decoration: none;
+}
+a:hover,
+a:focus {
+
+  text-decoration: none;
+
+  color: #191c91;
+  font-weight: 500;
+
+  /* color: #fff; */
+  outline: none;
+  text-decoration: none;
+}
+@media screen and (-ms-high-contrast:active), (-ms-high-contrast:none) {
+  a:active {
+    background-color: transparent;
+  }
+}
+p {
+  margin: 0 0 20px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.2;
+  margin: 0 0 20px;
+  font-weight: 600;
+  text-transform:uppercase;
+}
+h1,
+h2 {
+  font-size: 32px;
+}
+h3 {
+  font-size: 30px;
+  font-weight: 600;
+}
+h4 {
+  font-size: 22px;
+  font-weight: 600;
+}
+h5 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+h6 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+#app {
+  width: 100%;
+/* height: 100%; */
+
+  margin: 0;
+  padding: 0;
+
+
+  color: #191c51;
+  background: rgba(250, 250, 250, 0.99);
+}
+.no-margin {
+  margin: 0 !important;
+}
+figure {
+  margin:0;
+}
+.opacity-no {
+  opacity: 1 !important;
+}
+
+/*
+======================CAFLE================================================
+*/
+
+.box {
+
+
+  color: #191c51;
+  border: 1px solid #eaeefb;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.08);
+  background: white;
+  box-shadow: 0 6px 18px 0 rgba(232,237,250,.5);
+  /* box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22); */
+  border-radius: 5px;
+  padding: 1rem;;
+  border-radius: 5px;
+}
+
+.box:hover {
+  border: 1px solid rgba(25,28,81,0.2);
+
+}
+
+
+button {
+  border: 1px solid #191c51;
+  padding: 0.5rem;
+  background: white;
+  color: #191c51;
+  border-radius: 5px;
+
+  text-align: center;
+  transition: all .3s ease-in-out;
+  border: 1px solid #eaeefb;
+
+  font-weight: 600;;
+
+}
+
+
+button:active {
+  outline: none;
+  border: none;
+
+
+  transform: scale(.98);
+}
+
+button:focus {outline:0;}
+
+
+button:hover {
+  bottom: 6px;
+  box-shadow: 0 6px 18px 0 rgba(232,237,250,.5);
+
+  background: rgba(232,237,250,.9);
+
+
+  cursor: pointer;
+
+}
+
+/*
+======================GRID================================================
+*/
+
+
+#dane {
+  /* display: none; */
+  margin-top: 1rem;
+}
+
+.logo {
+  font-family: 'Raleway', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.logo img {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.github {
+  margin-left: 15px;
+}
+
+#top {
+  height:2rem;
+  line-height: 2rem;
+  display: flex;
+  justify-content: space-between;
+
+ 
+}
+
+button#zobacz {
+  /* float: right; */
+  display: inline-block;
+  margin-top: -1rem;
+  vertical-align: middle;
+
+}
+
+#content {
+
+  margin: 0;
+  padding: 1rem;
+
+  /* padding: 1rem; */
+  /* display: grid; */
+  background: rgba(250, 250, 250, 0.99);
+
+}
+
+#dashboard {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: 1fr  1fr;
+  grid-template-rows: auto  auto 1fr 1fr;
+
+  grid-template-areas: "_  a"
+
+  "o  g"
+ 
+  "r  m"
+  "gh gh"
+  "w  w";
+}
+
+#dashboard .box {
+  margin: 0.5rem;
+}
+
+#dashboard .oceny {
+  grid-area: o;
+}
+
+#dashboard .aktorzy {
+  grid-area: a;
+}
+
+#dashboard .gatunki {
+  grid-area: g;
+}
+
+#dashboard .gatunki_historia {
+  grid-area: gh;
+}
+#dashboard .radar {
+  grid-area: r;
+}
+
+#dashboard .mapa {
+  grid-area: m;
+}
+
+#dashboard .wykres {
+  grid-area: w;
+}
+
+/* 
+#oceny_histogramChart {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+} */
+/*
+======================DANE================================================
+*/
 .dane .checked {
   color: #929daf;
 }
 
-.dane .row .checked {
-  color: #428BFF;
+.dane .fa.fa-star.checked {
+  color: #472684;
+}
+
+.dane .fa.fa-star {
+  color: rgba(0, 0, 0, 0.08);
 }
 
 .dane .active {
@@ -34,6 +347,12 @@ body {
   margin-left: 15px;
 }
 
+.dane a.imdb img  {
+  width: 32px;
+  vertical-align: top;
+  margin-top: -5px;
+}
+
 .dane .ocena {
   margin-left: 15px;
   /* color: #929daf; */
@@ -50,7 +369,7 @@ body {
 }
 
 .dane .data {
-  color: #428BFF;
+  color: #472684;
 
   font-family: "Montserrat";
   /* font-weight: bold; */
@@ -59,17 +378,25 @@ body {
   /* color: #929daf; */
   font-size: 15px;
   margin-left: 15px;
-  width: 100px;
+  width: 90px;
 }
 
 .dane .row {
   border: 1px solid silver;
+
   border-radius: 5px;
   padding: 5px;
   margin-bottom: 5px;
   display: flex;
 }
+/* 
+======================DANE================================================ 
+*/
 
+
+/* 
+======================TABS================================================ 
+*/
 .tabs {
     left: 50%;
     -webkit-transform: translateX(-50%);
@@ -319,4 +646,8 @@ body {
       display: block;
     }
   }
+
+  /* 
+======================TABS================================================ 
+*/
   
