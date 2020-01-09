@@ -6,13 +6,46 @@ import numpy as np
 
 from filmweb_integrator.fwimdbmerge.utils import to_list
 
+# def replace_comma(df, columns):
+#     for c in columns:
+#         df[c] = df[c].str.replace(",","|")
+#     return df
 
 def records_data(df):
-    return sort_by_date(df, False).to_dict(orient='records')
+     dane = sort_by_date(df, False).copy()
+
+     dane["ImdbId"] = dane["tconst"]
+     dane["Ilość Ocen Imdb"] = dane["numVotes"]
+     
+     dane["Czas Trwania"] = dane["runtimeMinutes"]
+     dane["ImdbLink"] = "https://www.imdb.com/title/" + dane["tconst"] +"/"
+     dane["Tytuł polski"] = dane["Tytuł polski"].str.replace(",","")
+     dane["Tytuł oryginalny"] = dane["Tytuł oryginalny"].str.replace(",","")
+     dane["Kraj produkcji"] = dane["Kraj produkcji"].str.replace(","," |")
+
+     dane["Gatunek"] = dane["Gatunek"].str.replace(","," |")
+     dane["Kraj produkcji"] = dane["Kraj produkcji"].str.replace(","," |")
+     dane["Ocena Imdb"] = dane["averageRating"]
+
+     return dane[["Tytuł polski","Tytuł oryginalny","Ocena","Ulubione","Data", "Kraj produkcji","Czas Trwania","Gatunek","Rok produkcji","ImdbId", "ImdbLink", "Ocena Imdb", "Ilość Ocen Imdb" ]].to_dict(orient='records')
 
 
 def flow_chart_data(df):
     return sort_by_date(df).to_dict()
+
+
+def get_top_actors(imdb, df,topn=5):
+    aktorzy = imdb.imdb_actors.merge(df, 
+        left_index=True,
+        right_index=True)[["primaryName","Ocena"]].reset_index()
+
+    return aktorzy.groupby("primaryName").agg({
+        "Ocena": "mean",
+        "tconst": "count"
+    }).round(2).sort_values("tconst",ascending=False)\
+        .rename(columns={"Ocena": "ocena", "tconst": "ilosc"})\
+            .head(topn).to_dict(orient="index")
+
 
 
 def pie_chart_data(df, topn=5):
@@ -95,6 +128,37 @@ def year_gatunek_data(df_gatunki, gatunki=[]):
     }
     return lata_srednia, lata_ilosc, lata
 
+def get_topn(df,column,topn, id="tconst"):
+    return  df.groupby(column).count()[id].nlargest(topn)
+
+def bubble_data(df_gatunki, gatunki=[]):
+    # srednia oceny, ilosc ocen, srednia oceny Imdb
+    bubble_dict = [{
+        "name": g,
+        "data":  [[*df_gatunki[df_gatunki["Gatunek"]==g].agg(
+        {"Ocena": "mean","averageRating": "mean" , "tconst": "count"}).round(2).values.tolist()
+        , g]]
+    } for g in gatunki]
+
+    wybrane_gatunki = df_gatunki[df_gatunki["Gatunek"].isin(gatunki)].groupby("Gatunek")
+    ocena_avg  = wybrane_gatunki["Ocena"].mean()
+    ocenaimdb_avg  = wybrane_gatunki["averageRating"].mean()
+
+    x_min, x_max = (ocena_avg.min()-0.1).round(2),(ocena_avg.max()+0.1).round(2)
+    y_min, y_max = (ocenaimdb_avg.min()-0.1).round(2),(ocenaimdb_avg.max()+0.1).round(2)
+
+    # bubble_dict.append(
+    # {
+    #     "name": "Inne",
+    #     "data": df_gatunki[~df_gatunki["Gatunek"]\
+    #         .isin(gatunki)].groupby("Gatunek")\
+    #             .agg({"Ocena": "mean","tconst": "count", "averageRating": "mean" })\
+    #                 .round(2)\
+    #                     .reset_index()[["Ocena","averageRating","tconst","Gatunek"]]\
+    #                     .values.tolist()
+    # })
+    return bubble_dict, [x_min, x_max, y_min, y_max]
+
 def radar_chart_data(df):
     radar = pd.DataFrame(np.zeros((10, 2)), index=range(1, 11), columns=['fw', 'imdb'])
     radar.fw = df.groupby('Ocena').size().astype(int)
@@ -116,10 +180,9 @@ def map_data(df):
 
     df_krajkod["fillKey"] = "N" + df_krajkod["fillKey"].astype(int).apply(str)
     
-    # pd.cut(df_krajkod["procent"], bins=[0,0.1,0.2,0.3])
-
     return df_krajkod.to_dict(orient="index")
     
+
 
 def sort_by_date(df, ascending=True):
     df['Data'] = pd.to_datetime(df['Data'])

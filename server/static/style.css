@@ -144,6 +144,41 @@ figure {
 ======================CAFLE================================================
 */
 
+.statystyki .box {
+  padding: 0rem;
+  height: 150px
+
+}
+
+.statystyki .top {
+  padding: 1rem;
+  border-radius: 5px 5px 0 0;
+  height: 60px;
+  color: white;
+  font-weight: 600;
+}
+
+.statystyki .top.filmweb {
+  background: rgb(255, 69, 96);
+
+}
+
+.statystyki .top.imdb {
+  background: rgb(254, 176, 25);
+
+}
+
+.statystyki .top.srednia {
+  background: rgb(0, 143, 251);
+}
+
+
+.statystyki .bottom {
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+
 .box {
 
 
@@ -224,6 +259,11 @@ button:hover {
   height: 1.5rem;
 }
 
+#csv {
+  margin-left: 1rem;
+
+}
+
 .github {
   margin-left: 15px;
 }
@@ -262,18 +302,27 @@ button#zobacz {
   grid-template-columns: 1fr  1fr;
   grid-template-rows: auto  auto 1fr 1fr;
 
-  grid-template-areas: "_  a"
+  grid-template-areas: "s  a"
 
   "o  g"
  
   "r  m"
   "gh gh"
-  "w  w";
+  "bc  bc";
 }
 
 #dashboard .box {
   margin: 0.5rem;
 }
+
+#dashboard .statystyki {
+  grid-area: s;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-self: flex-end;
+}
+
 
 #dashboard .oceny {
   grid-area: o;
@@ -281,6 +330,8 @@ button#zobacz {
 
 #dashboard .aktorzy {
   grid-area: a;
+
+
 }
 
 #dashboard .gatunki {
@@ -298,8 +349,18 @@ button#zobacz {
   grid-area: m;
 }
 
-#dashboard .wykres {
-  grid-area: w;
+#dashboard .bubble_chart {
+  grid-area: bc;
+}
+
+/* 
+#dashboard .aktorzy .actor {
+  display: flex;
+  justify-content: space-between;
+} */
+
+#dashboard .aktorzy .actor .title h4 {
+  font-size: 14px;
 }
 
 /* 

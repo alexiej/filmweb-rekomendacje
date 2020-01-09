@@ -5,7 +5,10 @@ import pandas as pd
 import numpy as np
 # from filmweb_integrator.fwimdbmerge.filmweb import Filmweb
 # from pandas.io.json import json_normalize
-from movies_analyzer.data_provider import gatunki_rozszerz_dataframe,map_data, records_data,pie_chart_data,histogram_data
+from movies_analyzer.data_provider import get_topn, gatunki_rozszerz_dataframe, get_top_actors
+from movies_analyzer.data_provider import map_data, records_data
+from movies_analyzer.data_provider import pie_chart_data,histogram_data
+
 from filmweb_integrator.fwimdbmerge.utils import read_file
 DATA_STATIC = str(Path(__file__).parent.parent.parent.absolute()) + '/data_static'
 FILMWEB_EXAMPLE_MERGE_TEST = DATA_STATIC + '/example_test_03_merge.csv'
@@ -16,13 +19,14 @@ FILMWEB_EXAMPLE_JSON_AREK = DATA_STATIC + '/example_arek_01_json.json'
 
 from filmweb_integrator.fwimdbmerge.merger import Merger, get_json_df
 
-
-def get_json_merge_df(filename):
-    # filename = FILMWEB_EXAMPLE_JSON_AREK
-    merger = Merger()
+def get_json_df_from_merger(merger, filename):
     json_text = read_file(filename)
     filmweb_df, df = merger.get_data(df=get_json_df(json_text))
     return filmweb_df, df
+
+def get_json_merge_df(filename):
+    return get_json_df_from_merger(merger=Merger(), filename=filename)
+
 
 
 """
@@ -131,4 +135,40 @@ class TestDataProvider(unittest.TestCase):
         self.assertTrue(
             "USA" in df_mapa.keys()
         )
+
+    def test_bubbles(self):
+        # given
+        filmweb_df, df = get_json_merge_df(FILMWEB_EXAMPLE_JSON_AREK)
+
+        df_gatunki = gatunki_rozszerz_dataframe(df)
+        gatunki = list(get_topn(df_gatunki,"Gatunek", 10).keys())
+        df_bubbles, xy_minmax = bubble_data(df_gatunki,gatunki)
+
+        self.assertEqual(type(df_bubbles), list)
+        
+        first_element = df_bubbles[0];
+        self.assertEqual(type(first_element), dict)
+        self.assertTrue(
+            np.isin(list(first_element.keys()),["name", "data"]).all()
+        )
+        first_data = first_element["data"]
+        self.assertEqual(type(first_data), list)
+        self.assertEqual(len(first_data[0]),4)
+
+
+    def test_get_actors(self):
+        # given
+        merger = Merger()
+        filmweb_df, df = get_json_df_from_merger(merger=merger,filename= FILMWEB_EXAMPLE_JSON_AREK)
+        aktorzy = get_top_actors(merger.imdb,df, topn=10)
+
+        self.assertEqual(len(aktorzy), 10)
+        # self.assertTrue(
+        #     np.isin(list(aktorzy),["Ocena", "tconst"]).all()
+        # )
+
+
+
+
+
 

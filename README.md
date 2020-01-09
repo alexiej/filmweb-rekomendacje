@@ -4,6 +4,10 @@
 
 Projekt ma za zadanie wytworzenie analizatora danych zescrapowanych ze strony filmweb. 
 
+![image-20191114122705238](assets/movie.gif)
+
+
+
 * Stworzenie rozszerzenia do Google Chrome które scrapowałoby dane z filmwebu i pobierało informacje o ulubionych filmach, łączyło dane z. bazą imdb,  przeliczało przy pomocy systemu rekomendacji najlepsze filmy i pokazywało je użytkownikowi razem za analizą i wykresami.
 
 ![image-20191114122705238](assets/image-20191114122705238.png)

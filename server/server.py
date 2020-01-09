@@ -11,6 +11,7 @@ from filmweb_integrator.fwimdbmerge.utils import get_logger
 from filmweb_integrator.fwimdbmerge.merger import Merger, get_json_df
 from movies_analyzer.Movies import Movies, SMALL_MOVIELENS
 from movies_analyzer.data_provider import map_data, records_data,gatunki_rozszerz_dataframe,year_gatunek_data, histogram_data, flow_chart_data, pie_chart_data, radar_chart_data
+from movies_analyzer.data_provider import get_topn, bubble_data,get_top_actors
 
 ROOT = Path(os.getcwd()) / 'data_static'
 JSON_EXAMPLE = ROOT/'example_last_01_json.json'
@@ -69,8 +70,14 @@ def render():
         df_gatunki = gatunki_rozszerz_dataframe(df)
         gatunki = list(pie['ilosc'].keys())
 
+        gatunki_bubbles = list(get_topn(df_gatunki,"Gatunek", 10).keys())
+        bubble_dane, xy_minmax = bubble_data(df_gatunki, gatunki_bubbles)
+
         gatunki_historia,gatunki_ilosc, gatunki_lata = year_gatunek_data(df_gatunki,gatunki)
         map_data_df = map_data(df)
+
+        top_aktorzy = get_top_actors(merger.imdb,df,topn=10)
+
 
         return render_template("index.html",
                                dane=records_data(df),
@@ -80,6 +87,10 @@ def render():
                                gatunki_historia = gatunki_historia,
                                gatunki_ilosc = gatunki_ilosc,
                                gatunki_lata = gatunki_lata,
-                               mapa_dane = map_data_df)
+                               mapa_dane = map_data_df,
+                               bubble_dane = bubble_dane,
+                               bubble_xy=xy_minmax,
+                               top_aktorzy=top_aktorzy,
+                               statystyki=[len(filmweb_df), len(df), df["Ocena"].mean().round(2)])
 
     return 'BRAK DANYCH FILMÓW'

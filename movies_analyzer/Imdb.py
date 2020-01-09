@@ -11,21 +11,27 @@ ROOT = str(Path(__file__).parent.parent.absolute())
 # import os; ROOT = os.getcwd()
 IMDB_TITLE_GZIP = 'https://datasets.imdbws.com/title.basics.tsv.gz'
 IMDB_RATING_GZIP = 'https://datasets.imdbws.com/title.ratings.tsv.gz'
+IMDB_ACTORS_GZIP = 'https://datasets.imdbws.com/title.principals.tsv.gz'
+IMDB_ACTORS_NAMES_GZIP = 'https://datasets.imdbws.com/name.basics.tsv.gz'
+
 IMDB_COVERS_CSV = ROOT + '/data_static/movie_covers.csv'
 IMDB_MOVIES_PARQUET = ROOT + '/data/imdb_movies.parquet.gzip'
 IMDB_COVERS_PARQUET = ROOT + '/data/imdb_covers.parquet.gzip'
-
-
+IMDB_ACTORS_PARQUET = ROOT + '/data/imdb_actors.parquet.gzip'
+ 
 class Imdb(object):
     def __init__(self):
         self.imdb = pd.read_parquet(IMDB_MOVIES_PARQUET, engine='pyarrow')
+        self.imdb_actors = pd.read_parquet(IMDB_ACTORS_PARQUET, engine='pyarrow')
 
     @staticmethod
     def prepare():
+        print("Download titles....")
         imdb_title = pd.read_csv(IMDB_TITLE_GZIP, sep='\t', dtype='str', index_col='tconst', engine='c')
         imdb_title = imdb_title[imdb_title['titleType']=='movie']
         imdb_title = imdb_title.dropna(subset=['startYear', 'originalTitle'])
 
+        print("Download ratings....")
         table = pa.Table.from_pandas(pd.merge(
             imdb_title,
             pd.read_csv(IMDB_RATING_GZIP, sep='\t', dtype='str', index_col='tconst', engine='c'),
@@ -34,6 +40,17 @@ class Imdb(object):
             right_index=True, sort=False), preserve_index=True)
         pq.write_table(table, IMDB_MOVIES_PARQUET, compression='gzip')
 
+        print("Download actors....")
+        imdb_actors = pd.read_csv(IMDB_ACTORS_GZIP, sep='\t', dtype='str', index_col='tconst', engine='c')
+        imdb_actors = imdb_actors[(imdb_actors["ordering"] == '1') & (
+                    (imdb_actors["category"] == 'actor') | (imdb_actors["category"] == 'actress'))]
+        imdb_actors_names = pd.read_csv(IMDB_ACTORS_NAMES_GZIP, sep='\t', dtype='str', index_col='nconst', engine='c')
+        imdb_actors_with_names = imdb_actors.merge(imdb_actors_names, right_index=True, left_on="nconst")
+        imdb_actors_with_names = imdb_actors_with_names[["primaryName", "characters"]]
+        pa_actors = pa.Table.from_pandas(imdb_actors_with_names)
+        pq.write_table(pa_actors, IMDB_ACTORS_PARQUET, compression='gzip')
+
+        print("Download covers....")
         table = pa.Table.from_pandas(pd.read_csv(IMDB_COVERS_CSV), preserve_index=False)
         pq.write_table(table, IMDB_COVERS_PARQUET, compression='gzip')
 

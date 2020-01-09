@@ -40,10 +40,12 @@
 
             </div>
                 <div>
-                   
+               
+
                     <button id="zobacz" v-on:click="show_dane=!show_dane"
                     >[[ show_dane ? 'Pokaż Dashboard' : 'Pokaż dane'  ]]</button>
             
+                    <a id="csv" title="Export do programu Excel (.csv)" v-on:click="csv_export" href=""> <img width="32px" height="32px" src="static/img/csv.svg" alt="export"></a>
                     <a class="github" href="https://github.com/alexiej/filmweb-rekomendacje" target="_blank">
 
                         <img width="32px" height="32px" src="static/img/github.svg" alt="">
@@ -54,13 +56,46 @@
 
             <div v-show="!show_dane" id="dashboard"  class="dashboard animated slideInUp faster">
 
+                <div class="statystyki">
+                    <div class="box">
+                        <div class="top filmweb">Oceniłeś z filmweb</div>
+                        <div class="bottom">[[ statystyki[0] ]] filmów</div>
+                    </div>
+                    <div class="box">
+                        <div class="top imdb">Z IMDB ściągneliśmy:</div>
+                        <div class="bottom">[[ statystyki[1] ]] filmów</div>
+
+                    </div>
+                    <div class="box">
+                        <div class="top srednia">Twoja średnia to:</div>
+                        <div class="bottom">[[ statystyki[2] ]]</div>
+
+                    </div>
+                </div>
+                
+       
+
+                <div class="box aktorzy">
+                    <span>Twoimi top aktorami są:</span>
+
+                    <table style="width:100%">
+                        <tr>
+                            <th></th>
+                            <th>Ocena</th>
+                            <th>Filmów</th>
+                        </tr>
+                        <tr v-for="i,k in top_aktorzy" class="actor">
+                          <td class="title">[[k]]</td>
+                          <td>[[ i["ocena"] ]]</td>
+                          <td>[[ i["ilosc"] ]]</td>
+                        </tr>
+  
+                      </table>
+                </div>
+
                 <div class="box oceny">
                     <div ref="oceny_histogram" id="oceny_histogramChart"></div>
                 </div>
-
-                <div class="box aktorzy">
-                    Aktorzy
-                                    </div>
 
             <div class="box gatunki">
                 <div ref="gatunki" id="gatunkiChart"></div>
@@ -76,17 +111,17 @@
 
     <div class="box radar">
         <div ref="radar" id="radarChart"></div>
-
-        <!-- <div><canvas ref="radar" id="radarChart" width="400" height="400"></canvas></div> -->
     </div>
 
 
-    <div class="box gatunki_historia">
-        <div ref="gatunki_historia" id="gatunki_historiaChart"></div>
-    </div>
+        <div class="box gatunki_historia">
+            <div ref="gatunki_historia" id="gatunki_historiaChart"></div>
+        </div>
 
-            <div class="box wykres">
-                Wykres 
+            <div class="box bubble_chart">
+                
+                <div ref="bubble_chart" id="bubble_chartChart" ></div>
+           
             </div>
 
             </div>
@@ -96,7 +131,7 @@
 
                     
 
-                    <!-- <div class="ocena">[[m.Ocena]]</div> -->
+                    <!-- ["Tytuł Polski","Tytuł oryginalny","Ocena","Ulubione","Data", "Kraj Produkcji", "Gatunek","Rok produkcji","OcenaImdb", "ImdbId","ImdbLink"] -->
                     <span class="fa fa-star" :class="{'checked': m.Ocena>0}"></span>
                     <span class="fa fa-star" :class="{'checked': m.Ocena>1}"></span>
                     <span class="fa fa-star" :class="{'checked': m.Ocena>2}"></span>
@@ -110,7 +145,7 @@
 
                 <div class="data"> [[m.Data]] </div>
 
-                <a class="imdb" :href="[['https://www.imdb.com/title/' + m.tconst + '']]" target="_blank"><img src="static/img/icons8-imdb.png" alt="IMDB"></a>
+                <a class="imdb" :href="[[m.ImdbLink]]" target="_blank"><img src="static/img/icons8-imdb.png" alt="IMDB"></a>
               
                 <div class="info">[[ m['Tytuł polski'] ]] ([[ m['Rok produkcji'] ]])</div>
             </div>
@@ -186,10 +221,9 @@
 
     </div>
 
-    A
-A
     <script>
     //   var map = new Datamap({element: document.getElementById('container')});
+
 
 
         function decodeHtml(html) {
@@ -206,8 +240,12 @@ A
         var gatunki_lata = {{gatunki_lata|safe}}
         var gatunki_ilosc = {{gatunki_ilosc|safe}}
         var mapa_dane = {{mapa_dane|safe}}
+        var bubble_dane = {{bubble_dane|safe}}
+        var bubble_xy = {{bubble_xy|safe}}
+        var top_aktorzy = {{top_aktorzy|safe}}
+        var statystyki = {{statystyki|safe}}
 
-        //======= INIT MAP
+        //=======  MAPA
         function init_map(rd) {
             var map = new Datamap(
                 {element: rd,
@@ -239,8 +277,106 @@ A
                     }
                 },
                 });
-                // map.legend();
         }
+
+
+        //============== BUBBLES ==============
+        // function generateData(baseval, count, yrange) {
+        //     var i = 0;
+        //     var series = [];
+        //     while (i < count) {
+        //         var x = Math.floor(Math.random() * (750 - 1 + 1)) + 1;;
+        //         var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+        //         var z = Math.floor(Math.random() * (75 - 15 + 1)) + 15;
+
+        //         series.push([x, y, z, "text"]);
+        //         baseval += 86400000;
+        //         i++;
+        //     }
+        //     console.log(series)
+        //     return series;
+        // }
+
+        var options_bubble = {
+            series: bubble_dane,
+        chart: {
+            type: 'bubble',
+        },
+        dataLabels: {
+            enabledOnSeries: true,
+            offsetY: 0,
+            textAnchor: 'middle',
+            enabled: false,
+            // style: {
+            //     fontSize: '14px',
+            //     fontFamily: 'Helvetica, Arial, sans-serif',
+            //     fontWeight: 'bold',
+            //     colors: ['black']
+            // },
+            // formatter: function (val, {seriesIndex,w}) {
+            //     return w.config.series[seriesIndex].name
+            // },
+        },
+        fill: {
+            opacity: 0.8
+        },
+        // title: {
+        //     text: 'Porównan',
+        //     align: 'center'
+
+        // },
+        tooltip: {
+            x: {
+                formatter: function (val, opts) {
+                return "Twoja średnia ocena: " + val
+                },
+            },
+            y: {
+                formatter: function (val, opts) {
+                return "średnia ocena Imdb: " + val
+                },
+            },
+            z: {
+                title: "Ilość ocen: "
+            },
+
+        marker: {
+            show: false,
+        },
+        onDatasetHover: {
+          highlightDataSeries: false,
+      },
+        },
+        xaxis: {
+            // show: true,
+            // categories: [5.9,6.0,6.1],
+            // tickAmount: 0.1,
+            // floating: true,
+            tickAmount: 12,
+            min: bubble_xy[0],
+            max: bubble_xy[1],
+            type: 'numeric',
+            title: {
+                text: "Twoja średnia Ocena"
+            }
+        },
+        yaxis: {
+            min: bubble_xy[2],
+            max: bubble_xy[3],
+            type: 'numeric',
+            title: {
+                text: "Średnia Ocena Imdb"
+            }
+        },
+
+        
+        };
+
+        function init_bubblechart(rd) {
+            var chart = new ApexCharts(rd, options_bubble)
+            chart.render()
+        }
+
 
 
         //============= HISTOGRAM ============
@@ -451,21 +587,35 @@ A
             delimiters: ['[[', ']]'],
             data: {
                 show_dane: false,
-                dane: dane
+                dane: dane,
+                top_aktorzy: top_aktorzy,
+                statystyki: statystyki
             },
             mounted: function () {
 
                 init_oceny_histogram(this.$refs.oceny_histogram);
                 init_radar(this.$refs.radar);
                 init_gatunki(this.$refs.gatunki);
-                init_gatunki_historia(this.$refs.gatunki_historia)
+                init_gatunki_historia(this.$refs.gatunki_historia);
 
                 init_map(this.$refs.mapa);
+                init_bubblechart(this.$refs.bubble_chart);
 
             },
             methods: {
                 submit_form: function (e) {
                     print('Form submitted', e)
+                },
+                csv_export: function () {
+                    rows = this.dane;
+                    let csvContent = "data:text/csv;charset=utf-8,";
+
+                    csvContent += Object.keys(dane[0]).join(",") + "\r\n"
+                    rows.forEach(function(rowArray) {
+                        csvContent += Object.values(rowArray) + "\r\n";
+                    });
+                    var encodedUri = encodeURI(csvContent);
+                    window.open(encodedUri);
                 }
             }
         })
