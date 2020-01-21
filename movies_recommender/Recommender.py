@@ -170,7 +170,7 @@ def get_example_df(file):
 
 def test_recommendation(recommender: Recommender, example_items=None):
     if example_items is None:
-        example_items = ['arek']
+        example_items = ['arek', 'mateusz']
 
     recommender.evaluate(test_size=.25)
 
@@ -184,18 +184,18 @@ def test_recommendation(recommender: Recommender, example_items=None):
         k = 10
         moviescore_df = movielens_df[['movieId', 'OcenaImdb']]
 
-        print(f'========================================================\n'
-              f'Recommendation from UserBased for "{i}":')
-        print(recommender.get_similar_user_movies(
-            moviescore_df=moviescore_df,
-            columns=['movieId', 'OcenaImdb'], k=k))
-        print(f'========================================================')
+        # print(f'========================================================\n'
+        #       f'Recommendation from UserBased for "{i}":')
+        # print(recommender.get_similar_user_movies(
+        #     moviescore_df=moviescore_df,
+        #     columns=['movieId', 'OcenaImdb'], k=k))
+        # print(f'========================================================')
 
-        print(f'Recommendation from ItemBased for "{i}":')
-        print(recommender.get_similar_item_movies(
-            moviescore_df=movielens_df,
-            columns=['movieId', 'OcenaImdb'], k=k))
-        print(f'========================================================')
+        # print(f'Recommendation from ItemBased for "{i}":')
+        # print(recommender.get_similar_item_movies(
+        #     moviescore_df=movielens_df,
+        #     columns=['movieId', 'OcenaImdb'], k=k))
+        # print(f'========================================================')
 
         recommender.train()
         print(f'Recommendation from SVD by similar Users "{i}":')
