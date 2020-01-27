@@ -35,6 +35,19 @@ class RecommenderSVD(Recommender):
         topn_items = [full_dataset.to_raw_iid(i[0]) for i in get_top_n(test_items, n=k, minimum_rating=1.0)[inner_user_id]]
         return self.movies.get_movie_by_movie_ids(topn_items)
 
+    def process(self, movielens_df, i):
+        k=10
+        self.algorithm.fit(self.recommendation_dataset.full_dataset)
+        print(f'Recommendation from SVD by similar Users "{i}":')
+        print(self.get_recommendation_by_similar_user(
+            moviescore_df=movielens_df,
+            columns=['movieId', 'OcenaImdb'], k=k))
+
+        print(f'Recommendation from SVD "{i}":')
+        print(recommender.get_recommendation(
+            moviescore_df=movielens_df,
+            columns=['movieId', 'OcenaImdb'], k=k))
+
 
 if __name__ == '__main__':
     movies = Movies()
