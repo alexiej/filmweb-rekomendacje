@@ -13,7 +13,19 @@ from surprise import KNNBasic
 
 class RecommenderUserBased(Recommender):
     def __init__(self, recommendation_dataset):
-        super(RecommenderUserBased, self).__init__(recommendation_dataset, algorithm=SVD())
+        super(RecommenderUserBased, self).__init__(recommendation_dataset)
+        self.algorithm = SVD()
+
+    def evaluate(self, test_size=.25):
+        print("TODO: For evaluate(): test() not yet implemented")
+        pass
+
+    def fit(self, dataset):
+        self.algorithm.fit(self.recommendation_dataset.full_dataset)
+
+    def test(self, test_set):
+        # TODO: Evaluate for UserBased
+        pass
 
     def get_recommendation(self, moviescore_df, columns, k=20, name='cosine', k_inner_item=100):
         similar_users = self.get_similar_users_raw(moviescore_df, columns, k=k)
@@ -67,15 +79,6 @@ class RecommenderUserBased(Recommender):
         inner_nearest_id = model.get_neighbors(inner_user_id, k=k)
 
         return inner_user_id, inner_nearest_id, model.sim, dataset_full
-
-    def process(self, movielens_df, i):
-        k = 10
-        print(f'========================================================\n'
-              f'Recommendation from UserBased for "{i}":')
-        print(self.get_recommendation(
-            moviescore_df=movielens_df[['movieId', 'OcenaImdb']],
-            columns=['movieId', 'OcenaImdb'], k=k))
-        print(f'========================================================')
 
 
 if __name__ == '__main__':

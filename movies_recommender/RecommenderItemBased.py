@@ -5,6 +5,7 @@ from operator import itemgetter
 from surprise.prediction_algorithms.matrix_factorization import SVD
 
 from movies_analyzer.Movies import Movies
+from movies_recommender.Evaluator import get_evaluation
 from movies_analyzer.RecommendationDataset import RecommendationDataSet
 
 from movies_recommender.Recommender import Recommender, test_recommendation
@@ -13,13 +14,25 @@ from surprise import KNNBasic
 
 class RecommenderItemBased(Recommender):
     def __init__(self, recommendation_dataset):
-        super(RecommenderItemBased, self).__init__(recommendation_dataset, algorithm=SVD())
+        super(RecommenderItemBased, self).__init__(recommendation_dataset)
+        self.algorithm = SVD()
 
     def get_recommendation(self, moviescore_df, columns, k=20, name='cosine', k_inner_item=100):
-            similar_items = self.get_similar_item_movie_ids(moviescore_df, columns,
-                                                            k=k, name=name,
-                                                            k_inner_item=k_inner_item)
-            return self.movies.get_movie_by_movie_ids([c[0] for c in similar_items])
+        similar_items = self.get_similar_item_movie_ids(moviescore_df, columns,
+                                                        k=k, name=name,
+                                                        k_inner_item=k_inner_item)
+        return self.movies.get_movie_by_movie_ids([c[0] for c in similar_items])
+
+    def evaluate(self, test_size=.25):
+        print("TODO: For evaluate(): test() not yet implemented")
+        pass
+
+    def fit(self, dataset):
+        print("No fit required")
+
+    def test(self, test_set):
+        # TODO: Evaluate for ItemBase
+        print("TODO: Not yet implemented")
 
     def get_similar_item_movie_ids(self, moviescore_df, columns, k=20, name='cosine', k_inner_item=100):
         """
@@ -57,14 +70,6 @@ class RecommenderItemBased(Recommender):
         return [(dataset_full.to_raw_iid(c[0]), c[1])
                 for c in sorted(candidates.items(), key=itemgetter(1), reverse=True)
                 if c[0] not in watched][:k]
-
-    def process(self, movielens_df, i):
-        k = 10
-        print(f'Recommendation from ItemBased for "{i}":')
-        print(self.get_recommendation(
-            moviescore_df=movielens_df,
-            columns=['movieId', 'OcenaImdb'], k=k))
-        print(f'========================================================')
 
 
 if __name__ == '__main__':

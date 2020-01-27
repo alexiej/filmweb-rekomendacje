@@ -144,21 +144,21 @@ def Novelty(topNPredicted, rankings):
 
 
 def get_evaluation(recommender: 'Recommender', verbose=True):
-    algorithm = recommender.algorithm
+    # algorithm = recommender.algorithm
     recommendation_dataset = recommender.recommendation_dataset
 
     metrics = {}
-    predictions = algorithm.test(recommendation_dataset.test_set)
+    predictions = recommender.test(recommendation_dataset.test_set)
 
     metrics['MAE'] = accuracy.mae(predictions, verbose=False)
     metrics['RMSE'] = accuracy.rmse(predictions, verbose=False)
 
     # LEAVE ONE OUT FIT/TEST
-    algorithm.fit(recommendation_dataset.leave_one_out_train_set)
-    leave_one_out_test_prediction = algorithm.test(recommendation_dataset.leave_one_out_test_set)
+    recommender.fit(recommendation_dataset.leave_one_out_train_set)
+    leave_one_out_test_prediction = recommender.test(recommendation_dataset.leave_one_out_test_set)
 
     #  LEAVE ONE OUT ANTI TEST PREDICTION/TOP-N
-    leave_one_out_anti_test_prediction = algorithm.test(recommendation_dataset.leave_one_out_anti_test_set)
+    leave_one_out_anti_test_prediction = recommender.test(recommendation_dataset.leave_one_out_anti_test_set)
     leave_one_out_anti_test_topn = get_top_n(leave_one_out_anti_test_prediction, 10, 4.0)
 
     # See how often we recommended a movie the user actually rated
@@ -174,8 +174,8 @@ def get_evaluation(recommender: 'Recommender', verbose=True):
     metrics["rHR"] = RatingHitRate(leave_one_out_anti_test_topn, leave_one_out_test_prediction)
 
     # BASED ON FULL DATASET
-    algorithm.fit(recommendation_dataset.full_dataset)
-    anti_test_prediction = algorithm.test(recommendation_dataset.anti_test_set)
+    recommender.fit(recommendation_dataset.full_dataset)
+    anti_test_prediction = recommender.test(recommendation_dataset.anti_test_set)
     anti_test_topn = get_top_n(anti_test_prediction, 10, 4.0)
 
     # Coverage

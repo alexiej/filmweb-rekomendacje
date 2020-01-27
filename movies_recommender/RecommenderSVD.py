@@ -7,14 +7,21 @@ from movies_analyzer.RecommendationDataset import RecommendationDataSet
 from movies_recommender.Evaluator import get_evaluation
 
 from movies_recommender.Recommender import Recommender, test_recommendation
-from surprise import SVD
+from surprise import SVD, KNNBasic
 
 from movies_recommender.utils import get_top_n
 
 
 class RecommenderSVD(Recommender):
     def __init__(self, recommendation_dataset):
-        super(RecommenderSVD, self).__init__(recommendation_dataset, algorithm=SVD())
+        super(RecommenderSVD, self).__init__(recommendation_dataset)
+        self.algorithm = SVD()
+
+    def fit(self, dataset):
+        return self.algorithm.fit(dataset)
+
+    def test(self, test_set):
+        return self.algorithm.test(test_set)
 
     def get_recommendation(self,
                            moviescore_df, columns, k=20):
@@ -32,21 +39,9 @@ class RecommenderSVD(Recommender):
             if i not in watched
         ])
 
-        topn_items = [full_dataset.to_raw_iid(i[0]) for i in get_top_n(test_items, n=k, minimum_rating=1.0)[inner_user_id]]
+        topn_items = [full_dataset.to_raw_iid(i[0]) for i in
+                      get_top_n(test_items, n=k, minimum_rating=1.0)[inner_user_id]]
         return self.movies.get_movie_by_movie_ids(topn_items)
-
-    def process(self, movielens_df, i):
-        k=10
-        self.algorithm.fit(self.recommendation_dataset.full_dataset)
-        print(f'Recommendation from SVD by similar Users "{i}":')
-        print(self.get_recommendation_by_similar_user(
-            moviescore_df=movielens_df,
-            columns=['movieId', 'OcenaImdb'], k=k))
-
-        print(f'Recommendation from SVD "{i}":')
-        print(recommender.get_recommendation(
-            moviescore_df=movielens_df,
-            columns=['movieId', 'OcenaImdb'], k=k))
 
 
 if __name__ == '__main__':
