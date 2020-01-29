@@ -25,9 +25,14 @@ class RecommenderSVD(Recommender):
 
     def get_recommendation(self,
                            moviescore_df, columns, k=20):
+        # get dataset 
         new_user_id, dataset = self.recommendation_dataset.get_dataset_with_extended_user(moviescore_df, columns)
         full_dataset = dataset.build_full_trainset()
         inner_user_id = full_dataset.to_inner_uid(new_user_id)
+
+        # after new dataset we need again train our model with the new user for the whole 
+        # dataset with the new user.
+        self.algorithm.fit(full_dataset)
 
         # watched movies
         watched = {full_dataset.to_inner_iid(i): 1 for i in moviescore_df[columns[0]].values}

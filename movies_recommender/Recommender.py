@@ -8,7 +8,9 @@ from movies_analyzer.RecommendationDataset import RecommendationDataSet
 import pandas as pd
 import os
 from pathlib import Path
-
+from filmweb_integrator.fwimdbmerge.filmweb import Filmweb
+from filmweb_integrator.fwimdbmerge.merger import Merger, get_json_df
+from movies_analyzer.Movies import Movies, SMALL_MOVIELENS
 
 class Recommender(object):
     def __init__(self, recommendation_dataset: RecommendationDataSet):
@@ -30,8 +32,10 @@ class Recommender(object):
         raise NotImplementedError
 
 
-def get_example_df(file):
-    return pd.read_csv(Path(os.getcwd()) / f'data_static/example_{file}_03_merge.csv').set_index('tconst')
+def get_moviescore_df(merger, movies, file):
+    path = Path(os.getcwd()) / f'data_static/example_{file}_01_json.json'
+    filmweb_df, df = merger.get_data(get_json_df(open(path, "r",encoding="utf-8").read()))
+    return movies.merge_imdb_movielens(df)
 
 
 def test_recommendation(recommender: Recommender, example_items=None):
@@ -49,22 +53,17 @@ def test_recommendation(recommender: Recommender, example_items=None):
     print("--- FIT %s seconds ---" % (time.time() - start_time))
 
     k = 10
+    merger = Merger(filmweb=Filmweb(), imdb=recommender.movies.imdb)
 
     # Test recommendation for the user
     for i in example_items:
-        movielens_df = recommender.movies.merge_imdb_movielens(get_example_df(i))
-
+        moviescore_df = get_moviescore_df(merger, recommender.movies,i)
         start_time = time.time()
-        # recommender.process(movielens_df, i)
-        # print(f'Recommendation from SVD by similar Users "{i}":')
-        # print(self.get_recommendation_by_similar_user(
-        #     moviescore_df=movielens_df,
-        #     columns=['movieId', 'OcenaImdb'], k=k))
 
         print(f'========================================================\n')
         print(f'Recommendation from {recommender.__class__} "{i}":')
         print(recommender.get_recommendation(
-            moviescore_df=movielens_df,
+            moviescore_df=moviescore_df,
             columns=['movieId', 'OcenaImdb'], k=k))
         print("--- %s seconds ---" % (time.time() - start_time))
         print(f'========================================================')

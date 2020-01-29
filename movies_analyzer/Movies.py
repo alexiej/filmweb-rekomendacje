@@ -31,15 +31,15 @@ class Movies(object):
             right_on='movieId', sort=False)
 
         data['movieId'] = data['movieId'].astype(int)
-
         data.set_index('imdbId', inplace=True)
-
+ 
         self.data = pd.merge(
             self.imdb.imdb,
             data,
             how='inner',
             left_index=True,
             right_index=True, sort=False)
+        self.data['averageRating'] = self.data['averageRating'].astype(float)
 
     def merge_imdb_movielens(self, merge_df):
         return pd.merge(self.data,

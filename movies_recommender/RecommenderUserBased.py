@@ -14,18 +14,16 @@ from surprise import KNNBasic
 class RecommenderUserBased(Recommender):
     def __init__(self, recommendation_dataset):
         super(RecommenderUserBased, self).__init__(recommendation_dataset)
-        self.algorithm = SVD()
-
-    def evaluate(self, test_size=.25):
-        print("TODO: For evaluate(): test() not yet implemented")
-        pass
+        sim_options = {'name': similarity,
+                       'user_based': True
+                       }
+        self.algorithm = KNNBasic(sim_options=sim_options)
 
     def fit(self, dataset):
-        self.algorithm.fit(self.recommendation_dataset.full_dataset)
+        self.algorithm.fit(dataset)
 
     def test(self, test_set):
-        # TODO: Evaluate for UserBased
-        pass
+        self.algorithm.test(test_set)
 
     def get_recommendation(self, moviescore_df, columns, k=20, name='cosine', k_inner_item=100):
         similar_users = self.get_similar_users_raw(moviescore_df, columns, k=k)
