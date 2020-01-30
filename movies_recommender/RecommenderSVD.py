@@ -35,23 +35,21 @@ class RecommenderSVD(Recommender):
         self.algorithm.fit(full_dataset)
 
         # watched movies
-        watched = {full_dataset.to_inner_iid(i): 1 for i in moviescore_df[columns[0]].values}
+        watched = {full_dataset.to_inner_iid(str(int(i[0]))): i[1] for i in moviescore_df[columns].values}
 
         # Calculate for all similar user, predictions
-        test_items = self.algorithm.test([
-            (inner_user_id, i, 3.5)
+        test_items = [
+            self.algorithm.predict(new_user_id, full_dataset.to_raw_iid(i))
             for i in range(0, full_dataset.n_items)
             if i not in watched
-        ])
+        ]
 
-        topn_items = [full_dataset.to_raw_iid(i[0]) for i in
-                      get_top_n(test_items, n=k, minimum_rating=1.0)[inner_user_id]]
+        topn_items = [i[0] for i in get_top_n(test_items, n=k, minimum_rating=1.0)[new_user_id]]
         return self.movies.get_movie_by_movie_ids(topn_items)
 
 
 if __name__ == '__main__':
-    movies = Movies()
-    recommendation_dataset = RecommendationDataSet(movies=movies)
+    recommendation_dataset = RecommendationDataSet(movies=Movies())
     recommender = RecommenderSVD(recommendation_dataset)
 
     test_recommendation(recommender=recommender, example_items=['arek'])

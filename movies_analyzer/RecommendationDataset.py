@@ -3,11 +3,14 @@ from surprise.model_selection import LeaveOneOut
 from surprise import KNNBaseline
 from surprise import Dataset, KNNBasic
 from surprise import Reader
+import heapq
 
 from movies_analyzer.Movies import Movies, RATINGS, LINKS, MOVIES
 from movies_recommender.utils import get_popularity_ranking
 import pandas as pd
 
+from operator import itemgetter
+from surprise.similarities import cosine
 
 class RecommendationDataSet:
     def __init__(self, movies: Movies):
@@ -34,6 +37,39 @@ class RecommendationDataSet:
         self.leave_one_out_test_set = None
         self.leave_one_out_anti_test_set = None
         self.similarity_algorithm = None
+
+
+    def get_similar_user_ids(self, moviescore_df, columns, k=20, similirarity_fn = cosine):
+        """
+            using cosine similarity find similar users, based on the current one.
+        :param
+            moviescore_df: converted movielens dataframe with movies
+            columns: Tuple(str,str) - First column of MovieID, second of Imdb Score (1,5)
+        :return: dict(inner_user_id, similarity)
+        """
+        # cosine
+        new_user_id, ir = self.get_ir_with_extended_user(moviescore_df, columns)
+
+        # user based cosine similarities, without last one with is the user
+        similarity = similirarity_fn(self.full_dataset.n_users+1, 
+                            ir, min_support=1)[new_user_id][:-1]
+
+        similar_users = heapq.nlargest(k, enumerate(similarity), itemgetter(1))
+        return dict(similar_users)
+
+    def get_ir_with_extended_user(self, moviescore_df, columns):
+        """
+            Create ir dataset with new user, based only on the score of current movies.
+        :param
+        """
+        copy = self.full_dataset.ir.copy()
+        new_user_id = self.full_dataset.n_users
+        for index, row in moviescore_df.iterrows():
+            copy[
+                self.full_dataset.to_inner_iid(str(row[columns[0]]))
+            ].append( (new_user_id, row[columns[1]])  )
+           
+        return new_user_id, copy
 
     def get_dataset_with_extended_user(self, moviescore_df, columns):
         """

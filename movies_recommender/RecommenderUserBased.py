@@ -1,7 +1,6 @@
 import heapq
 from collections import defaultdict
 from operator import itemgetter
-# python -m movies_recommender.RecommenderUserBased
 from surprise.prediction_algorithms.matrix_factorization import SVD
 
 from movies_analyzer.Movies import Movies
@@ -10,9 +9,8 @@ from movies_analyzer.RecommendationDataset import RecommendationDataSet
 from movies_recommender.Recommender import Recommender, test_recommendation
 from surprise import KNNBasic
 
-
 class RecommenderUserBased(Recommender):
-    def __init__(self, recommendation_dataset):
+    def __init__(self, recommendation_dataset, similarity = 'cosine'):
         super(RecommenderUserBased, self).__init__(recommendation_dataset)
         sim_options = {'name': similarity,
                        'user_based': True
@@ -20,68 +18,58 @@ class RecommenderUserBased(Recommender):
         self.algorithm = KNNBasic(sim_options=sim_options)
 
     def fit(self, dataset):
-        self.algorithm.fit(dataset)
+        return self.algorithm.fit(dataset)
 
     def test(self, test_set):
-        self.algorithm.test(test_set)
+        return self.algorithm.test(test_set)
 
-    def get_recommendation(self, moviescore_df, columns, k=20, name='cosine', k_inner_item=100):
-        similar_users = self.get_similar_users_raw(moviescore_df, columns, k=k)
+    def get_recommendation(self, moviescore_df, columns, k=20,  k_inner_item=200):
+        similar_users = self.recommendation_dataset.get_similar_user_ids(moviescore_df, columns, k=k_inner_item)
         full_dataset = self.algorithm.trainset
 
         # watched movies
-        watched = {full_dataset.to_inner_iid(str(i)): 1 for i in moviescore_df[columns[0]].values}
+        watched = {full_dataset.to_inner_iid(str(int(i[0]))): i[1] for i in moviescore_df[columns].values}
 
-        # Calculate for all similar user, predictions
-        test_items = self.algorithm.test(
-            [
-                (full_dataset.to_inner_uid(str(user_id)), i, 3.5)
-                for user_id in similar_users.keys()
-                for i in range(0, full_dataset.n_items)
-                if i not in watched
-            ])
-
-        # Get the stuff they rated, and add up ratings for each item, weighted by user similarity
+        # get most similar items, based on cosine similarity and most similar users
         candidates = defaultdict(float)
-        for p in test_items:
-            candidates[p.iid] += p.est * similar_users[int(full_dataset.to_raw_uid(p.uid))]
+        for user_id, similarity in similar_users.items():
+            for inner_movie_id, rate in full_dataset.ur[user_id]:
+                if inner_movie_id not in watched:
+                    candidates[inner_movie_id] += similarity * rate
 
-        return self.movies.get_movie_by_movie_ids(
-            [full_dataset.to_raw_iid(c[0])
-             for c in sorted(candidates.items(), key=itemgetter(1), reverse=True)][:k])
+        # return top-n movies
+        movie_ids = [
+                full_dataset.to_raw_iid(i) 
+                for i in heapq.nlargest(k, candidates, key = candidates.get)]
 
-    def get_similar_users_raw(self, moviescore_df, columns, k=20, name='cosine'):
-        inner_user_id, inner_nearest_ids, sims_matrix, dataset_full = self.get_similar_users(moviescore_df,
-                                                                                             columns,
-                                                                                             k=k, name=name)
-        return {dataset_full.to_raw_uid(i): sims_matrix[inner_user_id][i] for i in inner_nearest_ids}
-
-    def get_similar_users(self, moviescore_df, columns, k=20, name='cosine'):
-        """
-            using cosine similarity find similar users, based on the current one.
-        :param
-            moviescore_df: converted movielens dataframe with movies
-            columns: Tuple(str,str) - First column of MovieID, second of Imdb Score (1,5)
-        :return: inner_user_id, inner_nearest_id, model.sim, dataset_full
-        """
-        sim_options = {'name': name,
-                       'user_based': True}
-
-        model = KNNBasic(sim_options=sim_options)
-        new_user_id, dataset = self.recommendation_dataset.get_dataset_with_extended_user(
-            moviescore_df, columns)
-
-        dataset_full = dataset.build_full_trainset()
-        model.fit(dataset_full)
-        inner_user_id = dataset_full.to_inner_uid(new_user_id)
-        inner_nearest_id = model.get_neighbors(inner_user_id, k=k)
-
-        return inner_user_id, inner_nearest_id, model.sim, dataset_full
+        return self.movies.get_movie_by_movie_ids(movie_ids)
 
 
 if __name__ == '__main__':
-    movies = Movies()
-    recommendation_dataset = RecommendationDataSet(movies=movies)
+    recommendation_dataset = RecommendationDataSet(movies=Movies())
     recommender = RecommenderUserBased(recommendation_dataset)
 
-    test_recommendation(recommender=recommender, example_items=['arek'])
+    """ For test only
+    %load_ext autoreload
+    %autoreload 2
+    
+    from filmweb_integrator.fwimdbmerge.filmweb import Filmweb
+    from filmweb_integrator.fwimdbmerge.merger import Merger, get_json_df
+    from movies_recommender.Recommender import get_moviescore_df
+    
+
+    recommendation_dataset = RecommendationDataSet(movies=Movies())
+    recommender = RecommenderUserBased(recommendation_dataset)
+    recommender.fit(recommender.recommendation_dataset.full_dataset)
+
+    merger = Merger(filmweb=Filmweb(), imdb=recommender.movies.imdb)
+    moviescore_df = get_moviescore_df(merger, recommender.movies,'arek')
+    k = 20
+    k_inner_item = 20
+    columns=['movieId', 'OcenaImdb']
+
+    self = recommender
+    self.get_recommendation(moviescore_df,columns)
+    """
+
+    test_recommendation(recommender=recommender, example_items=['arek'], anti_test=False)

@@ -20,10 +20,9 @@ class Recommender(object):
     def get_recommendation(self, moviescore_df, columns, k=20):
         raise NotImplementedError
 
-    def evaluate(self, test_size=.25):
+    def evaluate(self, test_size=.25, anti_test=True):
         self.recommendation_dataset.build_train_test(test_size=test_size)
-        self.fit(self.recommendation_dataset.train_set)
-        get_evaluation(self)
+        get_evaluation(self,verbose=True,anti_test=anti_test)
 
     def fit(self, dataset):
         raise NotImplementedError
@@ -38,14 +37,13 @@ def get_moviescore_df(merger, movies, file):
     return movies.merge_imdb_movielens(df)
 
 
-def test_recommendation(recommender: Recommender, example_items=None):
+def test_recommendation(recommender: Recommender, example_items=None, anti_test=True):
     if example_items is None:
         example_items = ['arek', 'mateusz']
-
-    recommender.evaluate(test_size=.25)
-
     pd.set_option('display.max_columns', None)
     pd.set_option('display.width', 500)
+
+    recommender.evaluate(test_size=.25, anti_test=anti_test)
 
     import time
     start_time = time.time()
@@ -61,7 +59,7 @@ def test_recommendation(recommender: Recommender, example_items=None):
         start_time = time.time()
 
         print(f'========================================================\n')
-        print(f'Recommendation from {recommender.__class__} "{i}":')
+        print(f'Recommendation from {type(recommender).__name__} "{i}":')
         print(recommender.get_recommendation(
             moviescore_df=moviescore_df,
             columns=['movieId', 'OcenaImdb'], k=k))
