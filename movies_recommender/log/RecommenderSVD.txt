@@ -1,0 +1,31 @@
+Estimating biases using als...
+Computing the cosine similarity matrix...
+Done computing similarity matrix.
+Computing the cosine similarity matrix...
+Done computing similarity matrix.
+Mean Absolute Error: 0.6746795309742898
+Root Mean Square Error: 0.8796962482604193
+Hit Rate (HR): 0.021311475409836064
+Cumulative Hit Rate (cHR): 0.021311475409836064
+Average Reciprocal HitRate  (ARHR): 0.008060109289617486
+Rating  HitRate  (rHR): {3.0: 0.008695652173913044, 3.5: 0.020833333333333332, 4.0: 0.016666666666666666, 4.5: 0.03773584905660377, 5.0: 0.04878048780487805}
+Coverage: 0.9163934426229509
+Diversity: 0.03380731062064024
+Novelty: 556.0283529192315
+--- FIT 5.494091033935547 seconds ---
+========================================================
+
+Recommendation from RecommenderSVD "arek":
+          titleType                  primaryTitle                 originalTitle isAdult startYear endYear runtimeMinutes                    genres  averageRating numVotes  movieId tmdbId                                   link ml_title ml_genres
+tt0050212     movie  The Bridge on the River Kwai  The Bridge on the River Kwai       0      1957      \N            161       Adventure,Drama,War            8.1   190880     1250    826  https://www.imdb.com/title/tt0050212/  0050212       826
+tt0058385     movie                  My Fair Lady                  My Fair Lady       0      1964      \N            170      Drama,Family,Musical            7.8    81584      914  11113  https://www.imdb.com/title/tt0058385/  0058385     11113
+tt0059578     movie        For a Few Dollars More    Per qualche dollaro in più       0      1965      \N            132                   Western            8.3   214482     3681    938  https://www.imdb.com/title/tt0059578/  0059578       938
+tt0061512     movie                Cool Hand Luke                Cool Hand Luke       0      1967      \N            127               Crime,Drama            8.1   152598     1276    903  https://www.imdb.com/title/tt0061512/  0061512       903
+tt0071562     movie        The Godfather: Part II        The Godfather: Part II       0      1974      \N            202               Crime,Drama            9.0  1046723     1221    240  https://www.imdb.com/title/tt0071562/  0071562       240
+tt0088846     movie                        Brazil                        Brazil       0      1985      \N            132              Drama,Sci-Fi            7.9   178810     1199     68  https://www.imdb.com/title/tt0088846/  0088846        68
+tt0093779     movie            The Princess Bride            The Princess Bride       0      1987      \N             98  Adventure,Family,Fantasy            8.1   370021     1197   2493  https://www.imdb.com/title/tt0093779/  0093779      2493
+tt0097165     movie            Dead Poets Society            Dead Poets Society       0      1989      \N            128              Comedy,Drama            8.1   385949     1246    207  https://www.imdb.com/title/tt0097165/  0097165       207
+tt0110912     movie                  Pulp Fiction                  Pulp Fiction       0      1994      \N            154               Crime,Drama            8.9  1704490      296    680  https://www.imdb.com/title/tt0110912/  0110912       680
+tt0118694     movie          In the Mood for Love              Faa yeung nin wa       0      2000      \N             98             Drama,Romance            8.1   110619     4144    843  https://www.imdb.com/title/tt0118694/  0118694       843
+--- 5.836965322494507 seconds ---
+========================================================
