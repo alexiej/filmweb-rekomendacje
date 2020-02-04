@@ -13,7 +13,7 @@ class RecommenderUserBased(Recommender):
     def __init__(self, recommendation_dataset, similarity = 'cosine'):
         super(RecommenderUserBased, self).__init__(recommendation_dataset)
         sim_options = {'name': similarity,
-                       'user_based': True
+                       'user_based': 
                        }
         self.algorithm = KNNBasic(sim_options=sim_options)
 
@@ -60,7 +60,6 @@ if __name__ == '__main__':
     from filmweb_integrator.fwimdbmerge.filmweb import Filmweb
     from filmweb_integrator.fwimdbmerge.merger import Merger, get_json_df
     from movies_recommender.Recommender import get_moviescore_df
-    
 
     recommendation_dataset = RecommendationDataSet(movies=Movies())
     recommender = RecommenderUserBased(recommendation_dataset)
