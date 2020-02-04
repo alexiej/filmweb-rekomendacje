@@ -13,7 +13,7 @@ class RecommenderUserBased(Recommender):
     def __init__(self, recommendation_dataset, similarity = 'cosine'):
         super(RecommenderUserBased, self).__init__(recommendation_dataset)
         sim_options = {'name': similarity,
-                       'user_based': 
+                       'user_based': True
                        }
         self.algorithm = KNNBasic(sim_options=sim_options)
 

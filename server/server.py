@@ -70,6 +70,7 @@ def get_recommendation():
     recommendation = recommender.get_recommendation(moviescore_df, columns=['movieId', 'OcenaImdb'])
     recommendation = recommendation[['primaryTitle','startYear','runtimeMinutes','link','averageRating']]
     recommendation["image"] = ''
+
     # from tqdm import tqdm
     for i in recommendation.index:
         tmbdid, movie = get_imdb_movie(i)
@@ -80,17 +81,7 @@ def get_recommendation():
        'data': recommendation.to_dict(orient='records')
     }
 
-@app.route('/render', methods=['GET', 'POST'])
-def render():
-    json_text = None
-    if app.debug and request.method == 'GET':
-        logger.warn(f"DEBUG MODE using file {JSON_GET}")
-        json_text = open(JSON_GET, "r",encoding="utf-8").read()
-
-    else:
-        if 'dane' in request.form:
-            json_text = request.form['dane']
-
+def render_json(json_text):
     if json_text is not None:
         filmweb_df, df = merger.get_data(get_json_df(json_text))
         debug_dump(json_text, filmweb_df, df)
@@ -127,3 +118,24 @@ def render():
                                moviescore_df=moviescore_df.to_dict(orient='list'))
 
     return 'BRAK DANYCH FILMÓW'
+
+@app.route('/example', methods=['GET'])
+def example():
+    json_text = open(JSON_GET, "r",encoding="utf-8").read()
+    return render_json(json_text)
+
+
+
+@app.route('/render', methods=['GET', 'POST'])
+def render():
+    json_text = None
+    if app.debug and request.method == 'GET':
+        logger.warn(f"DEBUG MODE using file {JSON_GET}")
+        json_text = open(JSON_GET, "r",encoding="utf-8").read()
+
+    else:
+        if 'dane' in request.form:
+            json_text = request.form['dane']
+    return render_json(json_text)
+
+

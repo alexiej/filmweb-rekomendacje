@@ -54,10 +54,14 @@ def get_imdb_movie(tmbdid: str):
 
     if os.path.isfile(pickle_file):
         movie = pickle.load(open(pickle_file,"rb"))
-        return tmbdid,movie
+        return   tmbdid if os.path.isfile(image_file) else 'no-cover' , movie
 
     movie = ia.get_movie(tmbdid)
-    urllib.request.urlretrieve(movie['cover url'], image_file)
+    if 'cover url' in movie:
+        urllib.request.urlretrieve(movie['cover url'], image_file)
+    else:
+        tmbdid = 'no-cover'
+
     with open(pickle_file,"wb") as f:
         pickle.dump(movie,f)
     return tmbdid, movie
