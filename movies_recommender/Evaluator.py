@@ -143,62 +143,76 @@ def Novelty(topNPredicted, rankings):
     return total / n
 
 
-def get_evaluation(recommender: 'Recommender', verbose=True):
+def get_evaluation(recommender: 'Recommender', verbose=True, anti_test=True):
     # algorithm = recommender.algorithm
     recommendation_dataset = recommender.recommendation_dataset
 
     metrics = {}
+    if verbose: print('Precalculations')
+    recommender.fit(recommendation_dataset.train_set)
     predictions = recommender.test(recommendation_dataset.test_set)
 
+    if verbose: print('calculating MAE, RMSE')
     metrics['MAE'] = accuracy.mae(predictions, verbose=False)
     metrics['RMSE'] = accuracy.rmse(predictions, verbose=False)
 
-    # LEAVE ONE OUT FIT/TEST
-    recommender.fit(recommendation_dataset.leave_one_out_train_set)
-    leave_one_out_test_prediction = recommender.test(recommendation_dataset.leave_one_out_test_set)
+    if anti_test:
+        # LEAVE ONE OUT FIT/TEST
+        if verbose: print('LEAVE ONE OUT FIT/TEST')
+        recommender.fit(recommendation_dataset.leave_one_out_train_set)
+        leave_one_out_test_prediction = recommender.test(recommendation_dataset.leave_one_out_test_set)
 
-    #  LEAVE ONE OUT ANTI TEST PREDICTION/TOP-N
-    leave_one_out_anti_test_prediction = recommender.test(recommendation_dataset.leave_one_out_anti_test_set)
-    leave_one_out_anti_test_topn = get_top_n(leave_one_out_anti_test_prediction, 10, 4.0)
+        #  LEAVE ONE OUT ANTI TEST PREDICTION/TOP-N
+        if verbose: print('LEAVE ONE OUT ANTI TEST PREDICTION/TOP-N, very long calculation')
+        leave_one_out_anti_test_prediction = recommender.test(recommendation_dataset.leave_one_out_anti_test_set)
+        leave_one_out_anti_test_topn = get_top_n(leave_one_out_anti_test_prediction, 10, 4.0)
 
-    # See how often we recommended a movie the user actually rated
-    metrics["HR"] = HitRate(leave_one_out_anti_test_topn, leave_one_out_test_prediction)
+        # See how often we recommended a movie the user actually rated
+        if verbose: print('HR')
+        metrics["HR"] = HitRate(leave_one_out_anti_test_topn, leave_one_out_test_prediction)
 
-    # See how often we recommended a movie the user actually liked
-    metrics["cHR"] = CumulativeHitRate(leave_one_out_anti_test_topn, leave_one_out_test_prediction)
+        # See how often we recommended a movie the user actually liked
+        if verbose: print('cHR')
+        metrics["cHR"] = CumulativeHitRate(leave_one_out_anti_test_topn, leave_one_out_test_prediction)
 
-    # Compute ARHR
-    metrics["ARHR"] = AverageReciprocalHitRank(leave_one_out_anti_test_topn, leave_one_out_test_prediction)
+        # Compute ARHR
+        if verbose: print('ARHR')
+        metrics["ARHR"] = AverageReciprocalHitRank(leave_one_out_anti_test_topn, leave_one_out_test_prediction)
 
-    # Rating HitRate
-    metrics["rHR"] = RatingHitRate(leave_one_out_anti_test_topn, leave_one_out_test_prediction)
+        # Rating HitRate
+        if verbose: print('rHR')
+        metrics["rHR"] = RatingHitRate(leave_one_out_anti_test_topn, leave_one_out_test_prediction)
 
     # BASED ON FULL DATASET
+    if verbose: print('BASED ON FULL DATASET')
     recommender.fit(recommendation_dataset.full_dataset)
     anti_test_prediction = recommender.test(recommendation_dataset.anti_test_set)
     anti_test_topn = get_top_n(anti_test_prediction, 10, 4.0)
 
     # Coverage
+    if verbose: print('Coverage')
     metrics["Coverage"] = UserCoverage(anti_test_topn,
                                        recommendation_dataset.full_dataset.n_users,
                                        ratingThreshold=4.0)
 
     # Measure diversity of recommendations:
+    if verbose: print('Diversity')
     metrics["Diversity"] = Diversity(anti_test_topn,
                                      recommendation_dataset.similarity_algorithm, str)
 
     # Measure novelty (average popularity rank of recommendations):
+    if verbose: print('Novelty')
     metrics["Novelty"] = Novelty(anti_test_topn, recommendation_dataset.rankings)
 
     if verbose:
         print('Mean Absolute Error:', metrics['MAE'])
         print('Root Mean Square Error:', metrics['RMSE'])
 
-        print('Hit Rate (HR):', metrics['HR'])
-        print('Cumulative Hit Rate (cHR):', metrics['cHR'])
-        print('Average Reciprocal HitRate  (ARHR):', metrics['ARHR'])
-
-        print('Rating  HitRate  (rHR):', metrics['rHR'])
+        if anti_test:
+            print('Hit Rate (HR):', metrics['HR'])
+            print('Cumulative Hit Rate (cHR):', metrics['cHR'])
+            print('Average Reciprocal HitRate  (ARHR):', metrics['ARHR'])
+            print('Rating  HitRate  (rHR):', metrics['rHR'])
 
         print('Coverage:', metrics['Coverage'])
         print('Diversity:', metrics['Diversity'])

@@ -1,0 +1,28 @@
+Mean Absolute Error: 0.7610169078515616
+Root Mean Square Error: 0.9787736703737636
+Hit Rate (HR): 0.0
+Cumulative Hit Rate (cHR): 0.0
+Average Reciprocal HitRate  (ARHR): 0.0
+Rating  HitRate  (rHR): {}
+Coverage: 0.9885245901639345
+Diversity: 0.7204060469128939
+Novelty: 6933.130047106326
+Computing the cosine similarity matrix...
+Done computing similarity matrix.
+--- FIT 17.888773202896118 seconds --- a
+========================================================
+
+Recommendation from RecommenderItemBased "arek":
+          titleType      primaryTitle                  originalTitle isAdult startYear endYear runtimeMinutes                      genres  averageRating numVotes  movieId tmdbId                                   link ml_title ml_genres
+tt0105236     movie    Reservoir Dogs                 Reservoir Dogs       0      1992      \N             99        Crime,Drama,Thriller            8.3   858289     1089    500  https://www.imdb.com/title/tt0105236/  0105236       500
+tt0107048     movie     Groundhog Day                  Groundhog Day       0      1993      \N            101      Comedy,Fantasy,Romance            8.0   551848     1265    137  https://www.imdb.com/title/tt0107048/  0107048       137
+tt0114369     movie             Se7en                          Se7en       0      1995      \N            127         Crime,Drama,Mystery            8.6  1334880       47    807  https://www.imdb.com/title/tt0114369/  0114369       807
+tt0116282     movie             Fargo                          Fargo       0      1996      \N             98        Crime,Drama,Thriller            8.1   577050      608    275  https://www.imdb.com/title/tt0116282/  0116282       275
+tt0209144     movie           Memento                        Memento       0      2000      \N            113            Mystery,Thriller            8.4  1057168     4226     77  https://www.imdb.com/title/tt0209144/  0209144        77
+tt0240772     movie    Ocean's Eleven                 Ocean's Eleven       0      2001      \N            116              Crime,Thriller            7.8   485029     4963    161  https://www.imdb.com/title/tt0240772/  0240772       161
+tt0245429     movie     Spirited Away  Sen to Chihiro no kamikakushi       0      2001      \N            125  Adventure,Animation,Family            8.6   580588     5618    129  https://www.imdb.com/title/tt0245429/  0245429       129
+tt0289043     movie  28 Days Later...               28 Days Later...       0      2002      \N            113         Drama,Horror,Sci-Fi            7.6   353600     6502    170  https://www.imdb.com/title/tt0289043/  0289043       170
+tt0317248     movie       City of God                 Cidade de Deus       0      2002      \N            130                 Crime,Drama            8.6   661934     6016    598  https://www.imdb.com/title/tt0317248/  0317248       598
+tt0443706     movie            Zodiac                         Zodiac       0      2007      \N            157         Crime,Drama,Mystery            7.7   410031    51540   1949  https://www.imdb.com/title/tt0443706/  0443706      1949
+--- 0.5928256511688232 seconds ---
+========================================================

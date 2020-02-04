@@ -1,0 +1,31 @@
+Estimating biases using als...
+Computing the cosine similarity matrix...
+Done computing similarity matrix.
+Computing the cosine similarity matrix...
+Done computing similarity matrix.
+Mean Absolute Error: 0.6759505397168916
+Root Mean Square Error: 0.8804446357424027
+Hit Rate (HR): 0.021311475409836064
+Cumulative Hit Rate (cHR): 0.021311475409836064
+Average Reciprocal HitRate  (ARHR): 0.006208691126723913
+Rating  HitRate  (rHR): {3.0: 0.008695652173913044, 3.5: 0.020833333333333332, 4.0: 0.011111111111111112, 4.5: 0.05660377358490566, 5.0: 0.04878048780487805}
+Coverage: 0.9147540983606557
+Diversity: 0.03261219093243828
+Novelty: 508.79475164011245
+--- FIT 5.097231864929199 seconds ---
+========================================================
+
+Recommendation from RecommenderSVDSimilarUsers "arek":
+          titleType            primaryTitle                  originalTitle isAdult startYear endYear runtimeMinutes                      genres  averageRating numVotes  movieId tmdbId                                   link ml_title ml_genres
+tt0032904     movie  The Philadelphia Story         The Philadelphia Story       0      1940      \N            112              Comedy,Romance            7.9    59803      898    981  https://www.imdb.com/title/tt0032904/  0032904       981
+tt0043014     movie            Sunset Blvd.                   Sunset Blvd.       0      1950      \N            110             Drama,Film-Noir            8.4   185774      922    599  https://www.imdb.com/title/tt0043014/  0043014       599
+tt0047396     movie             Rear Window                    Rear Window       0      1954      \N            112            Mystery,Thriller            8.4   412568      904    567  https://www.imdb.com/title/tt0047396/  0047396       567
+tt0053125     movie      North by Northwest             North by Northwest       0      1959      \N            136  Adventure,Mystery,Thriller            8.3   279988      908    213  https://www.imdb.com/title/tt0053125/  0053125       213
+tt0056172     movie      Lawrence of Arabia             Lawrence of Arabia       0      1962      \N            228   Adventure,Biography,Drama            8.3   250211     1204    947  https://www.imdb.com/title/tt0056172/  0056172       947
+tt0061512     movie          Cool Hand Luke                 Cool Hand Luke       0      1967      \N            127                 Crime,Drama            8.1   152598     1276    903  https://www.imdb.com/title/tt0061512/  0061512       903
+tt0068646     movie           The Godfather                  The Godfather       0      1972      \N            175                 Crime,Drama            9.2  1495196      858    238  https://www.imdb.com/title/tt0068646/  0068646       238
+tt0082096     movie                Das Boot                       Das Boot       0      1981      \N            149    Adventure,Drama,Thriller            8.3   216982     1233    387  https://www.imdb.com/title/tt0082096/  0082096       387
+tt0105695     movie              Unforgiven                     Unforgiven       0      1992      \N            130               Drama,Western            8.2   351154     1266     33  https://www.imdb.com/title/tt0105695/  0105695        33
+tt0245429     movie           Spirited Away  Sen to Chihiro no kamikakushi       0      2001      \N            125  Adventure,Animation,Family            8.6   580588     5618    129  https://www.imdb.com/title/tt0245429/  0245429       129
+--- 0.6933510303497314 seconds ---
+========================================================

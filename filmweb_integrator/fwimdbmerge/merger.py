@@ -7,10 +7,14 @@ from pandas.io.json import json_normalize
 from filmweb_integrator.fwimdbmerge.filmweb import Filmweb
 from movies_analyzer.Imdb import Imdb
 import json
-
+import pandas as pd
 
 def get_json_df(json_text):
     return json_normalize(json.loads(json_text))
+
+
+def get_json_list_df(json_text):
+    return pd.DataFrame(json.loads(json_text))
 
 
 class Merger(object):

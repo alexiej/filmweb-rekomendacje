@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>🎥 Filmweb Recomendacje</title>
+    <title>🎥 Filmy Recomendacje (FILMWEB)</title>
     <link href="{{url_for('static', filename='style.css')}}" rel="stylesheet" type="text/css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
     
@@ -20,6 +20,8 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
 <script src="static/datamaps.world.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 
 
 </head>
@@ -35,7 +37,7 @@
                 <a class="logo" href="https://github.com/alexiej/filmweb-rekomendacje" target="_blank">
                     <img src="static/img/movie.png" alt="">
             
-                    <span>    FILMEB REKOMENDACJE</span>
+                    <span>    FILMY REKOMENDACJE (FILMWEB)</span>
                 </a>
 
             </div>
@@ -113,6 +115,18 @@
         <div ref="radar" id="radarChart"></div>
     </div>
 
+        <div class="box rekomendacje">
+            <span v-if="rekomendacje_loaded">Nasze rekomendacje:</span>
+            <span v-else>Pobieramy twoje rekomendację</span>
+            <div v-if="rekomendacje_loaded" class="movie-list">
+                <a class="movie-item" v-for="i in rekomendacje" :href="i.link" target="_blank" :title="i.plot">
+                    <img :src="i.image" alt="image">
+                    <div class="title">[[i.primaryTitle]] ([[i.startYear]])</div>
+                </a>
+            </div>
+            <div v-else class="loader"></div>
+        </div>
+
 
         <div class="box gatunki_historia">
             <div ref="gatunki_historia" id="gatunki_historiaChart"></div>
@@ -161,71 +175,10 @@
  <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
  <div>Icons get from <a href="https://icons8.com" title="Icons8">https://icons8.com</a></div>
 
-        <!-- <div class="tabs">
-            <input type="radio" id="tab1" name="tab-control" checked>
-            <input type="radio" id="tab2" name="tab-control">
-            <input type="radio" id="tab3" name="tab-control">
-            <input type="radio" id="tab4" name="tab-control">
-            <input type="radio" id="tab5" name="tab-control">
-
-            <ul>
-                <li title="Dashboard">
-                    <label for="tab1" role="button">
-                    <span>Dashboard</span></label></li>
-                <li title="Dane">
-                    <label for="tab2" role="button">
-                        <span>Dane</span></label></li>
-                <li title="Wykres kołowy"><label for="tab2" role="button">
-                        <span>Wykres kołowy</span></label></li>
-                <li title="Score Flow">
-                    <label for="tab3" role="button"><span>Score Flow</span></label></li>
-                <li title="Score Radar"><label for="tab4" role="button">
-                        <span>Score Radar</span></label></li>
-    
-            </ul>
-
-            <div class="slider">
-                <div class="indicator"></div>
-            </div>
-
-            <div class="content">
-
-                <section>
-                    <div class='chart'>
-                        <canvas id="myChart" width="400" height="400"></canvas>
-                    </div>
-                </section>
-                <section>
-                    <div id="example" class="dane">
-
-                    </div>
-                </section>
-              <section>
-                    <div class='chart'>
-                        <canvas id="flowChart" width="400" height="400"></canvas>
-                    </div>
-                </section> 
-             <section>
-                    <div class='chart'>
-                        <canvas id="radarChart" width="400" height="400"></canvas>
-                    </div>
-                </section>
-                <section>
-                    <div class='chart'>
-                        <canvas id="Dashboard" width="400" height="400"></canvas>
-                    </div>
-                </section> 
-            </div>
-        </div>
- -->
 
     </div>
 
     <script>
-    //   var map = new Datamap({element: document.getElementById('container')});
-
-
-
         function decodeHtml(html) {
             var txt = document.createElement("textarea");
             txt.innerHTML = html;
@@ -244,6 +197,22 @@
         var bubble_xy = {{bubble_xy|safe}}
         var top_aktorzy = {{top_aktorzy|safe}}
         var statystyki = {{statystyki|safe}}
+        var moviescore_df = {{moviescore_df|safe}}
+
+
+        // Want to use async/await? Add the `async` keyword to your outer function/method.
+        // const axios = require('axios');
+        async function getRecommendation() {
+            let rekomendacje = []
+            try {
+                const response = await axios.post('/recommendation', moviescore_df);
+                rekomendacje = response.data.data;
+            } catch (error) {
+                console.error(error);
+            }
+            return rekomendacje
+        }
+
 
         //=======  MAPA
         function init_map(rd) {
@@ -569,8 +538,7 @@
                     formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
                         ilosc = gatunki_ilosc[w.config.series[seriesIndex].name][gatunki_lata[dataPointIndex]]
                         return value + " (" + ilosc + " ocen)"
-    },
-
+                    },
                 },
             }
             };
@@ -589,9 +557,11 @@
                 show_dane: false,
                 dane: dane,
                 top_aktorzy: top_aktorzy,
-                statystyki: statystyki
+                statystyki: statystyki,
+                rekomendacje_loaded: false,
+                rekomendacje: []
             },
-            mounted: function () {
+            mounted: async function () {
 
                 init_oceny_histogram(this.$refs.oceny_histogram);
                 init_radar(this.$refs.radar);
@@ -601,10 +571,20 @@
                 init_map(this.$refs.mapa);
                 init_bubblechart(this.$refs.bubble_chart);
 
+                this.init_rekomendacje()
+
             },
             methods: {
                 submit_form: function (e) {
                     print('Form submitted', e)
+                },
+                async init_rekomendacje() {
+                    this.rekomendacje_loaded = false
+      
+                    this.rekomendacje = await getRecommendation();
+                    console.log('załadowane rekomendacje')
+                    console.log(this.rekomendacje)
+                    this.rekomendacje_loaded = true
                 },
                 csv_export: function () {
                     rows = this.dane;

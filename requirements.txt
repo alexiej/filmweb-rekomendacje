@@ -10,3 +10,4 @@ injectable
 numpy
 pyarrow
 surprise
+tqdm

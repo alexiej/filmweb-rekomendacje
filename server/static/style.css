@@ -230,12 +230,8 @@ button:focus {outline:0;}
 button:hover {
   bottom: 6px;
   box-shadow: 0 6px 18px 0 rgba(232,237,250,.5);
-
   background: rgba(232,237,250,.9);
-
-
   cursor: pointer;
-
 }
 
 /*
@@ -300,19 +296,28 @@ button#zobacz {
   margin-top: 1rem;
   display: grid;
   grid-template-columns: 1fr  1fr;
-  grid-template-rows: auto  auto 1fr 1fr;
+  grid-template-rows: auto  auto auto auto auto auto;
 
   grid-template-areas: "s  a"
 
   "o  g"
  
   "r  m"
+  "rk rk"
   "gh gh"
   "bc  bc";
 }
 
 #dashboard .box {
   margin: 0.5rem;
+}
+
+#dashboard .box span {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: Helvetica, Arial, sans-serif;
+  opacity: 1;
+  color: black;
 }
 
 #dashboard .statystyki {
@@ -334,6 +339,74 @@ button#zobacz {
 
 }
 
+.movie-list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  /* display: block; */
+  align-items: flex-start;
+}
+
+.movie-list::after {
+  content: "";
+  flex: auto;
+}
+
+.movie-item {
+  /* border: 1px solid red; */
+  /* margin: 0.5rem; */
+  display: block;
+  /* border: 1px solid red; */
+  margin: 0.5rem;
+  cursor: pointer;
+
+
+}
+
+.movie-item img {
+  width: 110px;
+  -webkit-transition: 1s ease-in-out;
+  -moz-transition: 1s ease-in-out;
+  -o-transition: 1s ease-in-out;
+  transition: 0.2s ease-in-out;
+}
+
+.movie-item .title {
+  max-width: 110px;
+
+  /* width: 100px; */
+}
+
+.movie-item:hover img {
+  border: 2px solid rgba(255,69,96,1);
+  border-radius: 5px;
+}
+
+.movie-item:active img {
+
+  transform: scale(0.8);
+}
+
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 2rem;
+}
+
 #dashboard .gatunki {
   grid-area: g;
 }
@@ -341,6 +414,11 @@ button#zobacz {
 #dashboard .gatunki_historia {
   grid-area: gh;
 }
+
+#dashboard .rekomendacje {
+  grid-area: rk;
+}
+
 #dashboard .radar {
   grid-area: r;
 }

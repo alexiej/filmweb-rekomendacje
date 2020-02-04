@@ -6,6 +6,10 @@ from filmweb_integrator.fwimdbmerge.utils import to_list
 from pathlib import Path
 import pyarrow.parquet as pq
 import pyarrow as pa
+from imdb import IMDb as ImdbServer
+import urllib.request 
+import pickle
+import os.path
 
 ROOT = str(Path(__file__).parent.parent.absolute())
 # import os; ROOT = os.getcwd()
@@ -18,7 +22,46 @@ IMDB_COVERS_CSV = ROOT + '/data_static/movie_covers.csv'
 IMDB_MOVIES_PARQUET = ROOT + '/data/imdb_movies.parquet.gzip'
 IMDB_COVERS_PARQUET = ROOT + '/data/imdb_covers.parquet.gzip'
 IMDB_ACTORS_PARQUET = ROOT + '/data/imdb_actors.parquet.gzip'
- 
+
+
+IMAGE_FOLDER = 'data/images'
+DATA_FOLDER = 'data/movies'
+# ecommendation_dataset.
+try:
+    os.mkdir(IMAGE_FOLDER)
+except:
+    print(IMAGE_FOLDER + ': folder exist')
+
+try:
+    os.mkdir(DATA_FOLDER)
+except:
+    print(DATA_FOLDER + ': folder exist')
+
+ia = ImdbServer()
+
+
+def get_imdb_movie(tmbdid: str):
+    """
+        return a tuple with the movie and id, and image if it's exist.
+        otherwirse try to load a movie and save it
+
+        image_file, pickle_file, movie
+    """
+    tmbdid = str(tmbdid).replace('tt','')
+
+    image_file = IMAGE_FOLDER + "/"+ str(tmbdid) + '.jpg'
+    pickle_file = DATA_FOLDER+"/"+tmbdid+".pkl"
+
+    if os.path.isfile(pickle_file):
+        movie = pickle.load(open(pickle_file,"rb"))
+        return tmbdid,movie
+
+    movie = ia.get_movie(tmbdid)
+    urllib.request.urlretrieve(movie['cover url'], image_file)
+    with open(pickle_file,"wb") as f:
+        pickle.dump(movie,f)
+    return tmbdid, movie
+
 class Imdb(object):
     def __init__(self):
         self.imdb = pd.read_parquet(IMDB_MOVIES_PARQUET, engine='pyarrow')
