@@ -35,7 +35,7 @@ class RecommenderSVD(Recommender):
         self.algorithm.fit(full_dataset)
 
         # watched movies
-        watched = {full_dataset.to_inner_iid((int(i[0]))): i[1] for i in moviescore_df[columns].values}
+        watched = {full_dataset.to_inner_iid(str(int(i[0]))): i[1] for i in moviescore_df[columns].values}
 
         # Calculate for all similar user, predictions
         test_items = [
