@@ -1,6 +1,9 @@
 from server import app
 import sys
 
+def application(environ, start_response):
+    return app(environ,start_response)
+
 if __name__ == '__main__':
     debug = False
     if "debug" in sys.argv:
