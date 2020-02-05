@@ -1,0 +1,60 @@
+Estimating biases using als...
+Computing the cosine similarity matrix...
+Done computing similarity matrix.
+Precalculations
+calculating MAE, RMSE
+LEAVE ONE OUT FIT/TEST
+LEAVE ONE OUT ANTI TEST PREDICTION/TOP-N, very long calculation
+HR
+cHR
+ARHR
+rHR
+BASED ON FULL DATASET
+Coverage
+Diversity
+Computing the cosine similarity matrix...
+Done computing similarity matrix.
+Novelty
+Mean Absolute Error: 0.6644683489223536
+Root Mean Square Error: 0.8675561127220297
+Hit Rate (HR): 0.02459016393442623
+Cumulative Hit Rate (cHR): 0.02459016393442623
+Average Reciprocal HitRate  (ARHR): 0.014430132708821231
+Rating  HitRate  (rHR): {4.0: 0.027777777777777776, 4.5: 0.05660377358490566, 5.0: 0.056910569105691054}
+Coverage: 0.919672131147541
+Diversity: 0.07898524675927909
+Novelty: 905.0616203879803
+--- FIT 772.1018297672272 seconds ---
+========================================================
+
+Recommendation from RecommenderSVDpp "arek":
+          titleType                                    primaryTitle                                      originalTitle isAdult startYear endYear runtimeMinutes                    genres  averageRating numVotes  movieId tmdbId                                   link ml_title ml_genres
+tt0047478     movie                                   Seven Samurai                               Shichinin no samurai       0      1954      \N            207    Action,Adventure,Drama            8.6   293816     2019    346  https://www.imdb.com/title/tt0047478/  0047478       346
+tt0050825     movie                                  Paths of Glory                                     Paths of Glory       0      1957      \N             88                 Drama,War            8.4   162758     1178    975  https://www.imdb.com/title/tt0050825/  0050825       975
+tt0056218     movie                        The Manchurian Candidate                           The Manchurian Candidate       0      1962      \N            126            Drama,Thriller            7.9    68499     1267    982  https://www.imdb.com/title/tt0056218/  0056218       982
+tt0061512     movie                                  Cool Hand Luke                                     Cool Hand Luke       0      1967      \N            127               Crime,Drama            8.1   152598     1276    903  https://www.imdb.com/title/tt0061512/  0061512       903
+tt0068646     movie                                   The Godfather                                      The Godfather       0      1972      \N            175               Crime,Drama            9.2  1495196      858    238  https://www.imdb.com/title/tt0068646/  0068646       238
+tt0071562     movie                          The Godfather: Part II                             The Godfather: Part II       0      1974      \N            202               Crime,Drama            9.0  1046723     1221    240  https://www.imdb.com/title/tt0071562/  0071562       240
+tt0082096     movie                                        Das Boot                                           Das Boot       0      1981      \N            149  Adventure,Drama,Thriller            8.3   216982     1233    387  https://www.imdb.com/title/tt0082096/  0082096       387
+tt0082432     movie                                       Gallipoli                                          Gallipoli       0      1981      \N            110   Adventure,Drama,History            7.4    34762     5747  11646  https://www.imdb.com/title/tt0082432/  0082432     11646
+tt0169858     movie  Neon Genesis Evangelion: The End of Evangelion  Shin seiki Evangelion Gekijô-ban: Air/Magokoro...       0      1997      \N             87    Action,Animation,Drama            8.2    31860    27156  18491  https://www.imdb.com/title/tt0169858/  0169858     18491
+tt0338013     movie           Eternal Sunshine of the Spotless Mind              Eternal Sunshine of the Spotless Mind       0      2004      \N            108      Drama,Romance,Sci-Fi            8.3   848476     7361     38  https://www.imdb.com/title/tt0338013/  0338013        38
+--- 817.8824110031128 seconds ---
+========================================================
+========================================================
+
+Recommendation from RecommenderSVDpp "mateusz":
+          titleType                                       primaryTitle                                      originalTitle isAdult startYear endYear runtimeMinutes                     genres  averageRating numVotes  movieId tmdbId                                   link ml_title ml_genres
+tt0055630     movie                                            Yojimbo                                            Yôjinbô       0      1961      \N            110      Action,Drama,Thriller            8.2   101781     3030  11878  https://www.imdb.com/title/tt0055630/  0055630     11878
+tt0056172     movie                                 Lawrence of Arabia                                 Lawrence of Arabia       0      1962      \N            228  Adventure,Biography,Drama            8.3   250211     1204    947  https://www.imdb.com/title/tt0056172/  0056172       947
+tt0057012     movie  Dr. Strangelove or: How I Learned to Stop Worr...  Dr. Strangelove or: How I Learned to Stop Worr...       0      1964      \N             95                     Comedy            8.4   425674      750    935  https://www.imdb.com/title/tt0057012/  0057012       935
+tt0057115     movie                                   The Great Escape                                   The Great Escape       0      1963      \N            172    Adventure,Drama,History            8.2   210372     1262   5925  https://www.imdb.com/title/tt0057115/  0057115      5925
+tt0061512     movie                                     Cool Hand Luke                                     Cool Hand Luke       0      1967      \N            127                Crime,Drama            8.1   152598     1276    903  https://www.imdb.com/title/tt0061512/  0061512       903
+tt0083658     movie                                       Blade Runner                                       Blade Runner       0      1982      \N            117     Action,Sci-Fi,Thriller            8.1   648497      541     78  https://www.imdb.com/title/tt0083658/  0083658        78
+tt0108052     movie                                   Schindler's List                                   Schindler's List       0      1993      \N            195    Biography,Drama,History            8.9  1133035      527    424  https://www.imdb.com/title/tt0108052/  0108052       424
+tt0110912     movie                                       Pulp Fiction                                       Pulp Fiction       0      1994      \N            154                Crime,Drama            8.9  1704490      296    680  https://www.imdb.com/title/tt0110912/  0110912       680
+tt0209144     movie                                            Memento                                            Memento       0      2000      \N            113           Mystery,Thriller            8.4  1057168     4226     77  https://www.imdb.com/title/tt0209144/  0209144        77
+tt0211915     movie                                             Amélie                Le fabuleux destin d'Amélie Poulain       0      2001      \N            122             Comedy,Romance            8.3   668067     4973    194  https://www.imdb.com/title/tt0211915/  0211915       194
+--- 914.1632769107819 seconds ---
+========================================================
+Module:  movies_recommender.RecommenderSVDpp  saved at:  /Users/klemenka/FINAL_PROJECTS/dw-poznan/filmweb-rekomendacje/movies_recommender/models/RecommenderSVDpp.pkl

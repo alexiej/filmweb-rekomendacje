@@ -61,8 +61,13 @@ class RecommenderItemBased(Recommender):
                 for i in heapq.nlargest(k, candidates, key = candidates.get)]
 
 if __name__ == '__main__':
+    from movies_recommender.RecommenderItemBased import RecommenderItemBased
+
     recommendation_dataset = RecommendationDataSet(movies=Movies())
     recommender = RecommenderItemBased(recommendation_dataset)
+    assert recommender.__module__[:len('movies_recommender.')] == 'movies_recommender.'
+
+    test_recommendation(recommender=recommender, example_items=['arek','mateusz'], anti_test=False)
 
     """ For test only
     %load_ext autoreload
@@ -87,4 +92,3 @@ if __name__ == '__main__':
 
     self.get_recommendation(moviescore_df,columns)
     """
-    test_recommendation(recommender=recommender, example_items=['arek'],anti_test=False)

@@ -7,18 +7,18 @@ from movies_analyzer.RecommendationDataset import RecommendationDataSet
 from movies_recommender.Evaluator import get_evaluation
 
 from movies_recommender.Recommender import Recommender, test_recommendation
-from surprise import SVD, KNNBasic
+from surprise import SVDpp, KNNBasic
 from movies_recommender.utils import get_top_n
 
 
-class RecommenderSVDSimilarUsers(Recommender):
+class RecommenderSVDppSimilarUsers(Recommender):
     """ 
         Instead of building new dataset when the new user is in, we get similar users,
         and based on that try to get similar movies
     """
     def __init__(self, recommendation_dataset):
-        super(RecommenderSVDSimilarUsers, self).__init__(recommendation_dataset)
-        self.algorithm = SVD()
+        super(RecommenderSVDppSimilarUsers, self).__init__(recommendation_dataset)
+        self.algorithm = SVDpp()
 
     def fit(self, dataset):
         return self.algorithm.fit(dataset)
@@ -51,8 +51,8 @@ class RecommenderSVDSimilarUsers(Recommender):
 
 if __name__ == '__main__':
     recommendation_dataset = RecommendationDataSet(movies=Movies())
-    from movies_recommender.RecommenderSVDSimilarUsers import RecommenderSVDSimilarUsers
-    recommender = RecommenderSVDSimilarUsers(recommendation_dataset)
+    from movies_recommender.RecommenderSVDppSimilarUsers import RecommenderSVDppSimilarUsers
+    recommender = RecommenderSVDppSimilarUsers(recommendation_dataset)
     test_recommendation(recommender=recommender, example_items=['arek','mateusz'], anti_test=True)
 
     """ For test only
@@ -64,7 +64,7 @@ if __name__ == '__main__':
     from movies_recommender.Recommender import get_moviescore_df
 
     recommendation_dataset = RecommendationDataSet(movies=Movies())
-    recommender = RecommenderSVDSimilarUsers(recommendation_dataset)
+    recommender = RecommenderSVDppSimilarUsers(recommendation_dataset)
     recommender.fit(recommender.recommendation_dataset.full_dataset)
 
     merger = Merger(filmweb=Filmweb(), imdb=recommender.movies.imdb)

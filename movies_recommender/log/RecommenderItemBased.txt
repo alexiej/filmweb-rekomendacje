@@ -1,15 +1,26 @@
+Estimating biases using als...
+Computing the cosine similarity matrix...
+Done computing similarity matrix.
+Precalculations
+Computing the cosine similarity matrix...
+Done computing similarity matrix.
+calculating MAE, RMSE
+BASED ON FULL DATASET
+Computing the cosine similarity matrix...
+Done computing similarity matrix.
+Coverage
+Diversity
+Computing the cosine similarity matrix...
+Done computing similarity matrix.
+Novelty
 Mean Absolute Error: 0.7610169078515616
 Root Mean Square Error: 0.9787736703737636
-Hit Rate (HR): 0.0
-Cumulative Hit Rate (cHR): 0.0
-Average Reciprocal HitRate  (ARHR): 0.0
-Rating  HitRate  (rHR): {}
 Coverage: 0.9885245901639345
 Diversity: 0.7204060469128939
 Novelty: 6933.130047106326
 Computing the cosine similarity matrix...
 Done computing similarity matrix.
---- FIT 17.888773202896118 seconds --- a
+--- FIT 19.221314907073975 seconds ---
 ========================================================
 
 Recommendation from RecommenderItemBased "arek":
@@ -24,5 +35,22 @@ tt0245429     movie     Spirited Away  Sen to Chihiro no kamikakushi       0    
 tt0289043     movie  28 Days Later...               28 Days Later...       0      2002      \N            113         Drama,Horror,Sci-Fi            7.6   353600     6502    170  https://www.imdb.com/title/tt0289043/  0289043       170
 tt0317248     movie       City of God                 Cidade de Deus       0      2002      \N            130                 Crime,Drama            8.6   661934     6016    598  https://www.imdb.com/title/tt0317248/  0317248       598
 tt0443706     movie            Zodiac                         Zodiac       0      2007      \N            157         Crime,Drama,Mystery            7.7   410031    51540   1949  https://www.imdb.com/title/tt0443706/  0443706      1949
---- 0.5928256511688232 seconds ---
+--- 0.5763850212097168 seconds ---
 ========================================================
+========================================================
+
+Recommendation from RecommenderItemBased "mateusz":
+          titleType         primaryTitle        originalTitle isAdult startYear endYear runtimeMinutes                    genres  averageRating numVotes  movieId tmdbId                                   link ml_title ml_genres
+tt0105236     movie       Reservoir Dogs       Reservoir Dogs       0      1992      \N             99      Crime,Drama,Thriller            8.3   858289     1089    500  https://www.imdb.com/title/tt0105236/  0105236       500
+tt0109830     movie         Forrest Gump         Forrest Gump       0      1994      \N            142             Drama,Romance            8.8  1672095      356     13  https://www.imdb.com/title/tt0109830/  0109830        13
+tt0110912     movie         Pulp Fiction         Pulp Fiction       0      1994      \N            154               Crime,Drama            8.9  1704490      296    680  https://www.imdb.com/title/tt0110912/  0110912       680
+tt0169547     movie      American Beauty      American Beauty       0      1999      \N            122                     Drama            8.3  1013277     2858     14  https://www.imdb.com/title/tt0169547/  0169547        14
+tt0209144     movie              Memento              Memento       0      2000      \N            113          Mystery,Thriller            8.4  1057168     4226     77  https://www.imdb.com/title/tt0209144/  0209144        77
+tt0264464     movie  Catch Me If You Can  Catch Me If You Can       0      2002      \N            141     Biography,Crime,Drama            8.1   750283     5989    640  https://www.imdb.com/title/tt0264464/  0264464       640
+tt0416449     movie                  300                  300       0      2006      \N            117      Action,Drama,Fantasy            7.6   704874    51662   1271  https://www.imdb.com/title/tt0416449/  0416449      1271
+tt0468569     movie      The Dark Knight      The Dark Knight       0      2008      \N            152        Action,Crime,Drama            9.0  2154844    58559    155  https://www.imdb.com/title/tt0468569/  0468569       155
+tt0480249     movie          I Am Legend          I Am Legend       0      2007      \N            101    Adventure,Drama,Sci-Fi            7.2   648856    56174   6479  https://www.imdb.com/title/tt0480249/  0480249      6479
+tt0499549     movie               Avatar               Avatar       0      2009      \N            162  Action,Adventure,Fantasy            7.8  1070735    72998  19995  https://www.imdb.com/title/tt0499549/  0499549     19995
+--- 0.5925970077514648 seconds ---
+========================================================
+Module:  movies_recommender.RecommenderItemBased  saved at:  /Users/klemenka/FINAL_PROJECTS/dw-poznan/filmweb-rekomendacje/movies_recommender/models/RecommenderItemBased.pkl

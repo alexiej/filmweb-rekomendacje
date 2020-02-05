@@ -51,7 +51,7 @@ if __name__ == '__main__':
     # AttributeError: Can't get attribute 'RecommenderUserBased' on <module '__main__' from 'server.py'>`
     from movies_recommender.RecommenderUserBased import RecommenderUserBased
     recommender = RecommenderUserBased(recommendation_dataset)
-    test_recommendation(recommender=recommender, example_items=['arek'], anti_test=False)
+    test_recommendation(recommender=recommender, example_items=['arek','mateusz'], anti_test=True)
 
     """ For test only
     %load_ext autoreload

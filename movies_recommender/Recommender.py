@@ -16,10 +16,11 @@ import pickle
 RECOMMENDER_PATH = Path(os.getcwd())/'movies_recommender'/'models'
 
 
-def load_recommender(name='RecommenderUserBased.pkl'):
+def load_recommender(name='SVDpp.pkl'):
     import pickle
     import os
     reccommender = pickle.load(open(RECOMMENDER_PATH/name,mode="rb"))
+    print('load recommender: ', name)
     return reccommender
 
 class Recommender(object):

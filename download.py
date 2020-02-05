@@ -11,4 +11,4 @@ recommendation_dataset = RecommendationDataSet(movies = Movies())
 # all imdb movies
 for tmbdid in tqdm(recommendation_dataset.movies.data.index):
     tmbdid = tmbdid.replace('tt','')
-    # get_imdb_movie(i)
+    get_imdb_movie(tmbdid)

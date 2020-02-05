@@ -37,7 +37,8 @@
                 <a class="logo" href="https://github.com/alexiej/filmweb-rekomendacje" target="_blank">
                     <img src="static/img/movie.png" alt="">
             
-                    <span>    FILMY REKOMENDACJE (FILMWEB)</span>
+                    <span>    FILMY REKOMENDACJE (FILMWEB) </span>
+                    <span v-if="example=='True'" style="color: rgb(255, 69, 96)">⚠️ DANE PRZYKŁADOWE ⚠️</span>
                 </a>
 
             </div>
@@ -198,6 +199,7 @@
         var top_aktorzy = {{top_aktorzy|safe}}
         var statystyki = {{statystyki|safe}}
         var moviescore_df = {{moviescore_df|safe}}
+        var example = "{{example|safe}}"
 
 
         // Want to use async/await? Add the `async` keyword to your outer function/method.
@@ -559,7 +561,8 @@
                 top_aktorzy: top_aktorzy,
                 statystyki: statystyki,
                 rekomendacje_loaded: false,
-                rekomendacje: []
+                rekomendacje: [],
+                example: example
             },
             mounted: async function () {
 

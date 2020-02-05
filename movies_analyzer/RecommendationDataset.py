@@ -58,7 +58,8 @@ class RecommendationDataSet:
         new_user_id, ir = self.get_ir_with_extended_user(moviescore_df, columns)
 
         # user based cosine similarities, without last one with is the user
-        similarity = similirarity_fn(self.full_dataset.n_users+1, 
+        similarity = similirarity_fn(
+                            self.full_dataset.n_users+1, 
                             ir, min_support=1)[new_user_id][:-1]
 
         similar_users = heapq.nlargest(k, enumerate(similarity), itemgetter(1))

@@ -35,7 +35,7 @@ class RecommenderSVD(Recommender):
         self.algorithm.fit(full_dataset)
 
         # watched movies
-        watched = {full_dataset.to_inner_iid(str(int(i[0]))): i[1] for i in moviescore_df[columns].values}
+        watched = {full_dataset.to_inner_iid(int(i[0])): i[1] for i in moviescore_df[columns].values}
 
         # Calculate for all similar user, predictions
         test_items = [
@@ -50,7 +50,12 @@ class RecommenderSVD(Recommender):
 
 if __name__ == '__main__':
     recommendation_dataset = RecommendationDataSet(movies=Movies())
+    from movies_recommender.RecommenderSVD import RecommenderSVD
     recommender = RecommenderSVD(recommendation_dataset)
+    assert recommender.__module__[:len('movies_recommender.')] == 'movies_recommender.'
+
+    test_recommendation(recommender=recommender, example_items=['arek','mateusz'], anti_test=True)
+
 
     """ For test only
     %load_ext autoreload
@@ -75,10 +80,3 @@ if __name__ == '__main__':
 
     self.get_recommendation(moviescore_df,columns)
     """
-    test_recommendation(recommender=recommender, example_items=['arek'])
-
-    # Save pathx
-    import os
-    from pathlib import Path
-    path = Path(os.getcwd())/'movies_recommender'/'models'/'SVD.pkl'
-    recommender.save(path)

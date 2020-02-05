@@ -25,6 +25,8 @@ JSON_GET = JSON_EXAMPLE
 JSON_MOVIESCORE = JSON_EXAMPLE
 IMAGE_FOLDER = '../data/images/'
 
+RECOMMENDER_NAME = 'RecommenderSVDppSimilarUsers.pkl'
+
 def debug_dump(json_text, filmweb_df, df):
     if app.debug:
         with open(JSON_EXAMPLE, "w") as text_file:
@@ -34,7 +36,7 @@ def debug_dump(json_text, filmweb_df, df):
 
 
 filmweb = Filmweb()
-recommender = load_recommender()
+recommender = load_recommender(RECOMMENDER_NAME)
 movies =  recommender.recommendation_dataset.movies
 imdb = movies.imdb
 merger = Merger(filmweb=filmweb, imdb=movies.imdb)
@@ -60,7 +62,9 @@ def image(pid):
 @app.route('/')
 @app.route('/ping')
 def ping():
-    return 'Hello world!'
+    json_text = open(JSON_GET, "r",encoding="utf-8").read()
+    return render_json(json_text, example=True)
+
 
 @app.route('/recommendation',methods=['POST'])
 def get_recommendation():
@@ -81,7 +85,7 @@ def get_recommendation():
        'data': recommendation.to_dict(orient='records')
     }
 
-def render_json(json_text):
+def render_json(json_text, example=False):
     if json_text is not None:
         filmweb_df, df = merger.get_data(get_json_df(json_text))
         debug_dump(json_text, filmweb_df, df)
@@ -105,6 +109,7 @@ def render_json(json_text):
         return render_template("index.html",
                                dane=records_data(df),
                                pie=pie,
+                               example=example,
                                radar=radar_chart_data(df),
                                hist=histogram_data(df),
                                gatunki_historia = gatunki_historia,
@@ -122,8 +127,7 @@ def render_json(json_text):
 @app.route('/example', methods=['GET'])
 def example():
     json_text = open(JSON_GET, "r",encoding="utf-8").read()
-    return render_json(json_text)
-
+    return render_json(json_text, example=True)
 
 
 @app.route('/render', methods=['GET', 'POST'])

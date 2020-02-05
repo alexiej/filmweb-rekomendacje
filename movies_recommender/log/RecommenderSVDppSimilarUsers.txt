@@ -1,0 +1,59 @@
+Estimating biases using als...
+Computing the cosine similarity matrix...
+Done computing similarity matrix.
+Precalculations
+calculating MAE, RMSE
+LEAVE ONE OUT FIT/TEST
+LEAVE ONE OUT ANTI TEST PREDICTION/TOP-N, very long calculation
+HR
+cHR
+ARHR
+rHR
+BASED ON FULL DATASET
+Coverage
+Diversity
+Computing the cosine similarity matrix...
+Done computing similarity matrix.
+Novelty
+Mean Absolute Error: 0.6649461779154294
+Root Mean Square Error: 0.8683666215435176
+Hit Rate (HR): 0.019672131147540985
+Cumulative Hit Rate (cHR): 0.019672131147540985
+Average Reciprocal HitRate  (ARHR): 0.010837887067395264
+Rating  HitRate  (rHR): {4.0: 0.011111111111111112, 4.5: 0.03773584905660377, 5.0: 0.06504065040650407}
+Coverage: 0.9114754098360656
+Diversity: 0.08690136887191025
+Novelty: 934.4689944667048
+--- FIT 792.9651341438293 seconds ---
+========================================================
+
+Recommendation from RecommenderSVDppSimilarUsers "arek":
+          titleType                  primaryTitle                 originalTitle isAdult startYear endYear runtimeMinutes                     genres  averageRating numVotes  movieId  tmdbId                                   link ml_title ml_genres
+tt0032599     movie               His Girl Friday               His Girl Friday       0      1940      \N             92       Comedy,Drama,Romance            7.9    49783      951    3085  https://www.imdb.com/title/tt0032599/  0032599      3085
+tt0032904     movie        The Philadelphia Story        The Philadelphia Story       0      1940      \N            112             Comedy,Romance            7.9    59803      898     981  https://www.imdb.com/title/tt0032904/  0032904       981
+tt0038787     movie                     Notorious                     Notorious       0      1946      \N            102    Drama,Film-Noir,Romance            7.9    87023      930     303  https://www.imdb.com/title/tt0038787/  0038787       303
+tt0043014     movie                  Sunset Blvd.                  Sunset Blvd.       0      1950      \N            110            Drama,Film-Noir            8.4   185774      922     599  https://www.imdb.com/title/tt0043014/  0043014       599
+tt0045152     movie           Singin' in the Rain           Singin' in the Rain       0      1952      \N            103     Comedy,Musical,Romance            8.3   203669      899     872  https://www.imdb.com/title/tt0045152/  0045152       872
+tt0056172     movie            Lawrence of Arabia            Lawrence of Arabia       0      1962      \N            228  Adventure,Biography,Drama            8.3   250211     1204     947  https://www.imdb.com/title/tt0056172/  0056172       947
+tt0061735     movie  Guess Who's Coming to Dinner  Guess Who's Coming to Dinner       0      1967      \N            108               Comedy,Drama            7.8    36123     3451    1879  https://www.imdb.com/title/tt0061735/  0061735      1879
+tt0110057     movie                   Hoop Dreams                   Hoop Dreams       0      1994      \N            170    Documentary,Drama,Sport            8.3    22773      246   14275  https://www.imdb.com/title/tt0110057/  0110057     14275
+tt1895587     movie                     Spotlight                     Spotlight       0      2015      \N            129      Biography,Crime,Drama            8.1   381025   142488  314365  https://www.imdb.com/title/tt1895587/  1895587    314365
+--- 2.0308451652526855 seconds ---
+========================================================
+========================================================
+
+Recommendation from RecommenderSVDppSimilarUsers "mateusz":
+          titleType                                    primaryTitle                                   originalTitle isAdult startYear endYear runtimeMinutes                     genres  averageRating numVotes  movieId tmdbId                                   link ml_title ml_genres
+tt0032904     movie                          The Philadelphia Story                          The Philadelphia Story       0      1940      \N            112             Comedy,Romance            7.9    59803      898    981  https://www.imdb.com/title/tt0032904/  0032904       981
+tt0038787     movie                                       Notorious                                       Notorious       0      1946      \N            102    Drama,Film-Noir,Romance            7.9    87023      930    303  https://www.imdb.com/title/tt0038787/  0038787       303
+tt0045152     movie                             Singin' in the Rain                             Singin' in the Rain       0      1952      \N            103     Comedy,Musical,Romance            8.3   203669      899    872  https://www.imdb.com/title/tt0045152/  0045152       872
+tt0050976     movie                                The Seventh Seal                             Det sjunde inseglet       0      1957      \N             96              Drama,Fantasy            8.2   148717     1237    490  https://www.imdb.com/title/tt0050976/  0050976       490
+tt0056172     movie                              Lawrence of Arabia                              Lawrence of Arabia       0      1962      \N            228  Adventure,Biography,Drama            8.3   250211     1204    947  https://www.imdb.com/title/tt0056172/  0056172       947
+tt0061735     movie                    Guess Who's Coming to Dinner                    Guess Who's Coming to Dinner       0      1967      \N            108               Comedy,Drama            7.8    36123     3451   1879  https://www.imdb.com/title/tt0061735/  0061735      1879
+tt0080684     movie  Star Wars: Episode V - The Empire Strikes Back  Star Wars: Episode V - The Empire Strikes Back       0      1980      \N            124   Action,Adventure,Fantasy            8.7  1087168     1196   1891  https://www.imdb.com/title/tt0080684/  0080684      1891
+tt0108052     movie                                Schindler's List                                Schindler's List       0      1993      \N            195    Biography,Drama,History            8.9  1133035      527    424  https://www.imdb.com/title/tt0108052/  0108052       424
+tt0109830     movie                                    Forrest Gump                                    Forrest Gump       0      1994      \N            142              Drama,Romance            8.8  1672095      356     13  https://www.imdb.com/title/tt0109830/  0109830        13
+tt0110057     movie                                     Hoop Dreams                                     Hoop Dreams       0      1994      \N            170    Documentary,Drama,Sport            8.3    22773      246  14275  https://www.imdb.com/title/tt0110057/  0110057     14275
+--- 2.024752140045166 seconds ---
+========================================================
+Module:  movies_recommender.RecommenderSVDppSimilarUsers  saved at:  /Users/klemenka/FINAL_PROJECTS/dw-poznan/filmweb-rekomendacje/movies_recommender/models/RecommenderSVDppSimilarUsers.pkl

@@ -1,31 +1,59 @@
 Estimating biases using als...
 Computing the cosine similarity matrix...
 Done computing similarity matrix.
+Precalculations
+calculating MAE, RMSE
+LEAVE ONE OUT FIT/TEST
+LEAVE ONE OUT ANTI TEST PREDICTION/TOP-N, very long calculation
+HR
+cHR
+ARHR
+rHR
+BASED ON FULL DATASET
+Coverage
+Diversity
 Computing the cosine similarity matrix...
 Done computing similarity matrix.
-Mean Absolute Error: 0.6746795309742898
-Root Mean Square Error: 0.8796962482604193
-Hit Rate (HR): 0.021311475409836064
-Cumulative Hit Rate (cHR): 0.021311475409836064
-Average Reciprocal HitRate  (ARHR): 0.008060109289617486
-Rating  HitRate  (rHR): {3.0: 0.008695652173913044, 3.5: 0.020833333333333332, 4.0: 0.016666666666666666, 4.5: 0.03773584905660377, 5.0: 0.04878048780487805}
-Coverage: 0.9163934426229509
-Diversity: 0.03380731062064024
-Novelty: 556.0283529192315
---- FIT 5.494091033935547 seconds ---
+Novelty
+Mean Absolute Error: 0.6759925538221909
+Root Mean Square Error: 0.8798490816510981
+Hit Rate (HR): 0.03278688524590164
+Cumulative Hit Rate (cHR): 0.03278688524590164
+Average Reciprocal HitRate  (ARHR): 0.010860655737704917
+Rating  HitRate  (rHR): {3.0: 0.008695652173913044, 4.0: 0.03888888888888889, 4.5: 0.09433962264150944, 5.0: 0.056910569105691054}
+Coverage: 0.919672131147541
+Diversity: 0.030094437300934973
+Novelty: 508.84354506276935
+--- FIT 5.552721977233887 seconds ---
 ========================================================
 
 Recommendation from RecommenderSVD "arek":
-          titleType                  primaryTitle                 originalTitle isAdult startYear endYear runtimeMinutes                    genres  averageRating numVotes  movieId tmdbId                                   link ml_title ml_genres
-tt0050212     movie  The Bridge on the River Kwai  The Bridge on the River Kwai       0      1957      \N            161       Adventure,Drama,War            8.1   190880     1250    826  https://www.imdb.com/title/tt0050212/  0050212       826
-tt0058385     movie                  My Fair Lady                  My Fair Lady       0      1964      \N            170      Drama,Family,Musical            7.8    81584      914  11113  https://www.imdb.com/title/tt0058385/  0058385     11113
-tt0059578     movie        For a Few Dollars More    Per qualche dollaro in più       0      1965      \N            132                   Western            8.3   214482     3681    938  https://www.imdb.com/title/tt0059578/  0059578       938
-tt0061512     movie                Cool Hand Luke                Cool Hand Luke       0      1967      \N            127               Crime,Drama            8.1   152598     1276    903  https://www.imdb.com/title/tt0061512/  0061512       903
-tt0071562     movie        The Godfather: Part II        The Godfather: Part II       0      1974      \N            202               Crime,Drama            9.0  1046723     1221    240  https://www.imdb.com/title/tt0071562/  0071562       240
-tt0088846     movie                        Brazil                        Brazil       0      1985      \N            132              Drama,Sci-Fi            7.9   178810     1199     68  https://www.imdb.com/title/tt0088846/  0088846        68
-tt0093779     movie            The Princess Bride            The Princess Bride       0      1987      \N             98  Adventure,Family,Fantasy            8.1   370021     1197   2493  https://www.imdb.com/title/tt0093779/  0093779      2493
-tt0097165     movie            Dead Poets Society            Dead Poets Society       0      1989      \N            128              Comedy,Drama            8.1   385949     1246    207  https://www.imdb.com/title/tt0097165/  0097165       207
-tt0110912     movie                  Pulp Fiction                  Pulp Fiction       0      1994      \N            154               Crime,Drama            8.9  1704490      296    680  https://www.imdb.com/title/tt0110912/  0110912       680
-tt0118694     movie          In the Mood for Love              Faa yeung nin wa       0      2000      \N             98             Drama,Romance            8.1   110619     4144    843  https://www.imdb.com/title/tt0118694/  0118694       843
---- 5.836965322494507 seconds ---
+          titleType                  primaryTitle                        originalTitle isAdult startYear endYear runtimeMinutes                  genres  averageRating numVotes  movieId tmdbId                                   link ml_title ml_genres
+tt0045152     movie           Singin' in the Rain                  Singin' in the Rain       0      1952      \N            103  Comedy,Musical,Romance            8.3   203669      899    872  https://www.imdb.com/title/tt0045152/  0045152       872
+tt0050212     movie  The Bridge on the River Kwai         The Bridge on the River Kwai       0      1957      \N            161     Adventure,Drama,War            8.1   190880     1250    826  https://www.imdb.com/title/tt0050212/  0050212       826
+tt0061512     movie                Cool Hand Luke                       Cool Hand Luke       0      1967      \N            127             Crime,Drama            8.1   152598     1276    903  https://www.imdb.com/title/tt0061512/  0061512       903
+tt0070735     movie                     The Sting                            The Sting       0      1973      \N            129      Comedy,Crime,Drama            8.3   226779     1234   9277  https://www.imdb.com/title/tt0070735/  0070735      9277
+tt0071230     movie               Blazing Saddles                      Blazing Saddles       0      1974      \N             93          Comedy,Western            7.7   118761     3671  11072  https://www.imdb.com/title/tt0071230/  0071230     11072
+tt0088846     movie                        Brazil                               Brazil       0      1985      \N            132            Drama,Sci-Fi            7.9   178810     1199     68  https://www.imdb.com/title/tt0088846/  0088846        68
+tt0110912     movie                  Pulp Fiction                         Pulp Fiction       0      1994      \N            154             Crime,Drama            8.9  1704490      296    680  https://www.imdb.com/title/tt0110912/  0110912       680
+tt0209144     movie                       Memento                              Memento       0      2000      \N            113        Mystery,Thriller            8.4  1057168     4226     77  https://www.imdb.com/title/tt0209144/  0209144        77
+tt0211915     movie                        Amélie  Le fabuleux destin d'Amélie Poulain       0      2001      \N            122          Comedy,Romance            8.3   668067     4973    194  https://www.imdb.com/title/tt0211915/  0211915       194
+tt0335266     movie           Lost in Translation                  Lost in Translation       0      2003      \N            102                   Drama            7.7   384417     6711    153  https://www.imdb.com/title/tt0335266/  0335266       153
+--- 5.938543081283569 seconds ---
 ========================================================
+========================================================
+
+Recommendation from RecommenderSVD "mateusz":
+          titleType                                       primaryTitle                                      originalTitle isAdult startYear endYear runtimeMinutes                     genres  averageRating numVotes  movieId tmdbId                                   link ml_title ml_genres
+tt0043014     movie                                       Sunset Blvd.                                       Sunset Blvd.       0      1950      \N            110            Drama,Film-Noir            8.4   185774      922    599  https://www.imdb.com/title/tt0043014/  0043014       599
+tt0056172     movie                                 Lawrence of Arabia                                 Lawrence of Arabia       0      1962      \N            228  Adventure,Biography,Drama            8.3   250211     1204    947  https://www.imdb.com/title/tt0056172/  0056172       947
+tt0057012     movie  Dr. Strangelove or: How I Learned to Stop Worr...  Dr. Strangelove or: How I Learned to Stop Worr...       0      1964      \N             95                     Comedy            8.4   425674      750    935  https://www.imdb.com/title/tt0057012/  0057012       935
+tt0060196     movie                     The Good, the Bad and the Ugly                    Il buono, il brutto, il cattivo       0      1966      \N            161                    Western            8.8   644288     1201    429  https://www.imdb.com/title/tt0060196/  0060196       429
+tt0071562     movie                             The Godfather: Part II                             The Godfather: Part II       0      1974      \N            202                Crime,Drama            9.0  1046723     1221    240  https://www.imdb.com/title/tt0071562/  0071562       240
+tt0076759     movie                 Star Wars: Episode IV - A New Hope                                          Star Wars       0      1977      \N            121   Action,Adventure,Fantasy            8.6  1156102      260     11  https://www.imdb.com/title/tt0076759/  0076759        11
+tt0081398     movie                                        Raging Bull                                        Raging Bull       0      1980      \N            129      Biography,Drama,Sport            8.2   299014     1228   1578  https://www.imdb.com/title/tt0081398/  0081398      1578
+tt0083658     movie                                       Blade Runner                                       Blade Runner       0      1982      \N            117     Action,Sci-Fi,Thriller            8.1   648497      541     78  https://www.imdb.com/title/tt0083658/  0083658        78
+tt0469494     movie                                There Will Be Blood                                There Will Be Blood       0      2007      \N            158                      Drama            8.2   477927    56782   7345  https://www.imdb.com/title/tt0469494/  0469494      7345
+--- 5.906677007675171 seconds ---
+========================================================
+Module:  movies_recommender.RecommenderSVD  saved at:  /Users/klemenka/FINAL_PROJECTS/dw-poznan/filmweb-rekomendacje/movies_recommender/models/RecommenderSVD.pkl
