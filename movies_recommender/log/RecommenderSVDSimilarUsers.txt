@@ -15,42 +15,46 @@ Diversity
 Computing the cosine similarity matrix...
 Done computing similarity matrix.
 Novelty
-Mean Absolute Error: 0.6746849866306537
-Root Mean Square Error: 0.8790439841751675
-Hit Rate (HR): 0.02622950819672131
-Cumulative Hit Rate (cHR): 0.02622950819672131
-Average Reciprocal HitRate  (ARHR): 0.006504683840749415
-Rating  HitRate  (rHR): {2.0: 0.022727272727272728, 3.0: 0.008695652173913044, 4.0: 0.027777777777777776, 4.5: 0.03773584905660377, 5.0: 0.056910569105691054}
-Coverage: 0.9245901639344263
-Diversity: 0.032685541744248314
-Novelty: 512.8624673872531
---- FIT 5.812650203704834 seconds ---
+Mean Absolute Error: 0.6740844469097699
+Root Mean Square Error: 0.8792114521868976
+Hit Rate (HR): 0.027868852459016394
+Cumulative Hit Rate (cHR): 0.027868852459016394
+Average Reciprocal HitRate  (ARHR): 0.01101743429612282
+Rating  HitRate  (rHR): {1.5: 0.1, 4.0: 0.03888888888888889, 4.5: 0.018867924528301886, 5.0: 0.06504065040650407}
+Coverage: 0.9180327868852459
+Diversity: 0.02975202780513686
+Novelty: 508.9813049168069
+--- FIT 6.412971019744873 seconds ---
 ========================================================
 
 Recommendation from RecommenderSVDSimilarUsers "arek":
-          titleType            primaryTitle           originalTitle isAdult startYear endYear runtimeMinutes                     genres  averageRating numVotes  movieId  tmdbId                                   link ml_title ml_genres
-tt0047396     movie             Rear Window             Rear Window       0      1954      \N            112           Mystery,Thriller            8.4   412568      904     567  https://www.imdb.com/title/tt0047396/  0047396       567
-tt0056172     movie      Lawrence of Arabia      Lawrence of Arabia       0      1962      \N            228  Adventure,Biography,Drama            8.3   250211     1204     947  https://www.imdb.com/title/tt0056172/  0056172       947
-tt0071562     movie  The Godfather: Part II  The Godfather: Part II       0      1974      \N            202                Crime,Drama            9.0  1046723     1221     240  https://www.imdb.com/title/tt0071562/  0071562       240
-tt0092067     movie       Castle in the Sky  Tenkû no shiro Rapyuta       0      1986      \N            125  Adventure,Animation,Drama            8.0   132392     6350   10515  https://www.imdb.com/title/tt0092067/  0092067     10515
-tt0110057     movie             Hoop Dreams             Hoop Dreams       0      1994      \N            170    Documentary,Drama,Sport            8.3    22773      246   14275  https://www.imdb.com/title/tt0110057/  0110057     14275
-tt0208092     movie                  Snatch                  Snatch       0      2000      \N            104               Comedy,Crime            8.3   737701     4011     107  https://www.imdb.com/title/tt0208092/  0208092       107
-tt1895587     movie               Spotlight               Spotlight       0      2015      \N            129      Biography,Crime,Drama            8.1   381025   142488  314365  https://www.imdb.com/title/tt1895587/  1895587    314365
-tt2582802     movie                Whiplash                Whiplash       0      2014      \N            106                Drama,Music            8.5   647041   112552  244786  https://www.imdb.com/title/tt2582802/  2582802    244786
---- 0.77506422996521 seconds ---
+          titleType                    primaryTitle                    originalTitle isAdult startYear endYear runtimeMinutes                     genres  averageRating numVotes  movieId tmdbId                                   link ml_title ml_genres
+tt0034583     movie                      Casablanca                       Casablanca       0      1942      \N            102          Drama,Romance,War            8.5   489915      912    289  https://www.imdb.com/title/tt0034583/  0034583       289
+tt0056172     movie              Lawrence of Arabia               Lawrence of Arabia       0      1962      \N            228  Adventure,Biography,Drama            8.3   250211     1204    947  https://www.imdb.com/title/tt0056172/  0056172       947
+tt0060196     movie  The Good, the Bad and the Ugly  Il buono, il brutto, il cattivo       0      1966      \N            161                    Western            8.8   644288     1201    429  https://www.imdb.com/title/tt0060196/  0060196       429
+tt0068646     movie                   The Godfather                    The Godfather       0      1972      \N            175                Crime,Drama            9.2  1495196      858    238  https://www.imdb.com/title/tt0068646/  0068646       238
+tt0110912     movie                    Pulp Fiction                     Pulp Fiction       0      1994      \N            154                Crime,Drama            8.9  1704490      296    680  https://www.imdb.com/title/tt0110912/  0110912       680
+tt0113568     movie              Ghost in the Shell                   Kôkaku Kidôtai       0      1995      \N             83     Action,Animation,Crime            8.0   119407      741   9323  https://www.imdb.com/title/tt0113568/  0113568      9323
+tt0118715     movie                The Big Lebowski                 The Big Lebowski       0      1998      \N            117         Comedy,Crime,Sport            8.1   682506     1732    115  https://www.imdb.com/title/tt0118715/  0118715       115
+tt0209144     movie                         Memento                          Memento       0      2000      \N            113           Mystery,Thriller            8.4  1057168     4226     77  https://www.imdb.com/title/tt0209144/  0209144        77
+tt0246578     movie                    Donnie Darko                     Donnie Darko       0      2001      \N            113      Drama,Sci-Fi,Thriller            8.0   710811     4878    141  https://www.imdb.com/title/tt0246578/  0246578       141
+--- 1.3760898113250732 seconds ---
 ========================================================
 ========================================================
 
 Recommendation from RecommenderSVDSimilarUsers "mateusz":
-          titleType                                       primaryTitle                                      originalTitle isAdult startYear endYear runtimeMinutes                     genres  averageRating numVotes  movieId tmdbId                                   link ml_title ml_genres
-tt0034583     movie                                         Casablanca                                         Casablanca       0      1942      \N            102          Drama,Romance,War            8.5   489915      912    289  https://www.imdb.com/title/tt0034583/  0034583       289
-tt0047396     movie                                        Rear Window                                        Rear Window       0      1954      \N            112           Mystery,Thriller            8.4   412568      904    567  https://www.imdb.com/title/tt0047396/  0047396       567
-tt0056172     movie                                 Lawrence of Arabia                                 Lawrence of Arabia       0      1962      \N            228  Adventure,Biography,Drama            8.3   250211     1204    947  https://www.imdb.com/title/tt0056172/  0056172       947
-tt0057012     movie  Dr. Strangelove or: How I Learned to Stop Worr...  Dr. Strangelove or: How I Learned to Stop Worr...       0      1964      \N             95                     Comedy            8.4   425674      750    935  https://www.imdb.com/title/tt0057012/  0057012       935
-tt0108052     movie                                   Schindler's List                                   Schindler's List       0      1993      \N            195    Biography,Drama,History            8.9  1133035      527    424  https://www.imdb.com/title/tt0108052/  0108052       424
-tt0110057     movie                                        Hoop Dreams                                        Hoop Dreams       0      1994      \N            170    Documentary,Drama,Sport            8.3    22773      246  14275  https://www.imdb.com/title/tt0110057/  0110057     14275
-tt0114814     movie                                 The Usual Suspects                                 The Usual Suspects       0      1995      \N            106     Crime,Mystery,Thriller            8.5   932560       50    629  https://www.imdb.com/title/tt0114814/  0114814       629
-tt0317248     movie                                        City of God                                     Cidade de Deus       0      2002      \N            130                Crime,Drama            8.6   661934     6016    598  https://www.imdb.com/title/tt0317248/  0317248       598
---- 0.7948789596557617 seconds ---
+          titleType                                    primaryTitle                                   originalTitle isAdult startYear endYear runtimeMinutes                     genres  averageRating numVotes  movieId tmdbId                                   link ml_title ml_genres
+tt0056172     movie                              Lawrence of Arabia                              Lawrence of Arabia       0      1962      \N            228  Adventure,Biography,Drama            8.3   250211     1204    947  https://www.imdb.com/title/tt0056172/  0056172       947
+tt0076759     movie              Star Wars: Episode IV - A New Hope                                       Star Wars       0      1977      \N            121   Action,Adventure,Fantasy            8.6  1156102      260     11  https://www.imdb.com/title/tt0076759/  0076759        11
+tt0080684     movie  Star Wars: Episode V - The Empire Strikes Back  Star Wars: Episode V - The Empire Strikes Back       0      1980      \N            124   Action,Adventure,Fantasy            8.7  1087168     1196   1891  https://www.imdb.com/title/tt0080684/  0080684      1891
+tt0082971     movie                         Raiders of the Lost Ark                         Raiders of the Lost Ark       0      1981      \N            115           Action,Adventure            8.4   834112     1198     85  https://www.imdb.com/title/tt0082971/  0082971        85
+tt0093779     movie                              The Princess Bride                              The Princess Bride       0      1987      \N             98   Adventure,Family,Fantasy            8.1   370021     1197   2493  https://www.imdb.com/title/tt0093779/  0093779      2493
+tt0105236     movie                                  Reservoir Dogs                                  Reservoir Dogs       0      1992      \N             99       Crime,Drama,Thriller            8.3   858289     1089    500  https://www.imdb.com/title/tt0105236/  0105236       500
+tt0110912     movie                                    Pulp Fiction                                    Pulp Fiction       0      1994      \N            154                Crime,Drama            8.9  1704490      296    680  https://www.imdb.com/title/tt0110912/  0110912       680
+tt0169547     movie                                 American Beauty                                 American Beauty       0      1999      \N            122                      Drama            8.3  1013277     2858     14  https://www.imdb.com/title/tt0169547/  0169547        14
+tt0209144     movie                                         Memento                                         Memento       0      2000      \N            113           Mystery,Thriller            8.4  1057168     4226     77  https://www.imdb.com/title/tt0209144/  0209144        77
+tt0211915     movie                                          Amélie             Le fabuleux destin d'Amélie Poulain       0      2001      \N            122             Comedy,Romance            8.3   668067     4973    194  https://www.imdb.com/title/tt0211915/  0211915       194
+--- 0.5362958908081055 seconds ---
 ========================================================
 Module:  movies_recommender.RecommenderSVDSimilarUsers  saved at:  /Users/klemenka/FINAL_PROJECTS/dw-poznan/filmweb-rekomendacje/movies_recommender/models/RecommenderSVDSimilarUsers.pkl
+--- Total calculation time: 23.701517820358276 seconds ---

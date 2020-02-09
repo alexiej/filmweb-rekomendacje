@@ -143,9 +143,9 @@ def Novelty(topNPredicted, rankings):
     return total / n
 
 
-def get_evaluation(recommender: 'Recommender', verbose=True, anti_test=True):
+def get_evaluation(recommender: 'Recommender',recommendation_dataset, verbose=True, anti_test=True):
     # algorithm = recommender.algorithm
-    recommendation_dataset = recommender.recommendation_dataset
+    # recommendation_dataset = recommender.recommendation_dataset
 
     metrics = {}
     if verbose: print('Precalculations')

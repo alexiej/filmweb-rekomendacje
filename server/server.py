@@ -13,7 +13,7 @@ from movies_analyzer.Movies import Movies, SMALL_MOVIELENS
 from movies_analyzer.Imdb import get_imdb_movie
 from movies_analyzer.data_provider import map_data, records_data,gatunki_rozszerz_dataframe,year_gatunek_data, histogram_data, flow_chart_data, pie_chart_data, radar_chart_data
 from movies_analyzer.data_provider import get_topn, bubble_data,get_top_actors
-from movies_recommender.Recommender import load_recommender
+from movies_recommender.Recommender import load_recommender,get_watched
 from movies_recommender.RecommenderUserBased import RecommenderUserBased
 
 ROOT = Path(os.getcwd()) / 'data_static'
@@ -25,7 +25,7 @@ JSON_GET = JSON_EXAMPLE
 JSON_MOVIESCORE = JSON_EXAMPLE
 IMAGE_FOLDER = '../data/images/'
 
-RECOMMENDER_NAME = 'RecommenderSVDppSimilarUsers.pkl'
+RECOMMENDER_NAME = 'RecommenderSVDSimilarUsers.pkl'
 
 def debug_dump(json_text, filmweb_df, df):
     if app.debug:
@@ -37,7 +37,7 @@ def debug_dump(json_text, filmweb_df, df):
 
 filmweb = Filmweb()
 recommender = load_recommender(RECOMMENDER_NAME)
-movies =  recommender.recommendation_dataset.movies
+movies =  recommender.movies
 imdb = movies.imdb
 merger = Merger(filmweb=filmweb, imdb=movies.imdb)
 
@@ -69,9 +69,10 @@ def ping():
 @app.route('/recommendation',methods=['POST'])
 def get_recommendation():
     moviescore_df = get_json_list_df(request.data)
-    moviescore_df['movieId'] = moviescore_df['movieId'].astype(str)
+    # moviescore_df['movieId'] = moviescore_df['movieId'].astype(str)
+    watched = get_watched(moviescore_df)
     
-    recommendation = recommender.get_recommendation(moviescore_df, columns=['movieId', 'OcenaImdb'])
+    recommendation = recommender.get_recommendation(watched, k=20, k_inner_item=5)
     recommendation = recommendation[['primaryTitle','startYear','runtimeMinutes','link','averageRating']]
     recommendation["image"] = ''
 

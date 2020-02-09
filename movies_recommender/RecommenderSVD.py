@@ -4,18 +4,17 @@ from operator import itemgetter
 
 from movies_analyzer.Movies import Movies
 from movies_analyzer.RecommendationDataset import RecommendationDataSet
-from movies_recommender.Evaluator import get_evaluation
-
-from movies_recommender.Recommender import Recommender, test_recommendation
+from movies_recommender.Recommender import Recommender
 from surprise import SVD, KNNBasic
 
 from movies_recommender.utils import get_top_n
 
 
 class RecommenderSVD(Recommender):
-    def __init__(self, recommendation_dataset):
-        super(RecommenderSVD, self).__init__(recommendation_dataset)
+    def __init__(self, recommendation_dataset: RecommendationDataSet):
+        super(RecommenderSVD, self).__init__(recommendation_dataset.movies)
         self.algorithm = SVD()
+        self.recommendation_dataset = recommendation_dataset
 
     def fit(self, dataset):
         return self.algorithm.fit(dataset)
@@ -23,11 +22,9 @@ class RecommenderSVD(Recommender):
     def test(self, test_set):
         return self.algorithm.test(test_set)
 
-    def get_recommendation(self,
-                           moviescore_df, columns, k=20):
+    def get_recommendation(self, watched, k=20):
         # get dataset 
-        new_user_id, dataset = self.recommendation_dataset.get_dataset_with_extended_user(moviescore_df, columns)
-        full_dataset = dataset.build_full_trainset()
+        new_user_id, full_dataset = self.recommendation_dataset.get_dataset_with_extended_user(watched)
         inner_user_id = full_dataset.to_inner_uid(new_user_id)
 
         # after new dataset we need again train our model with the new user for the whole 
@@ -35,7 +32,7 @@ class RecommenderSVD(Recommender):
         self.algorithm.fit(full_dataset)
 
         # watched movies
-        watched = {full_dataset.to_inner_iid(int(i[0])): i[1] for i in moviescore_df[columns].values}
+        watched = {full_dataset.to_inner_iid(key): value for key,value in watched.items()}
 
         # Calculate for all similar user, predictions
         test_items = [
@@ -49,13 +46,18 @@ class RecommenderSVD(Recommender):
 
 
 if __name__ == '__main__':
-    recommendation_dataset = RecommendationDataSet(movies=Movies())
+    from movies_recommender.Recommender import test_recommendation
     from movies_recommender.RecommenderSVD import RecommenderSVD
+    from movies_analyzer.RecommendationDataset import RecommendationDataSet
+    from movies_analyzer.Movies import Movies
+
+    movies = Movies()
+    recommendation_dataset = RecommendationDataSet(movies=movies)
     recommender = RecommenderSVD(recommendation_dataset)
+
     assert recommender.__module__[:len('movies_recommender.')] == 'movies_recommender.'
-
-    test_recommendation(recommender=recommender, example_items=['arek','mateusz'], anti_test=True)
-
+    test_recommendation(recommender, recommendation_dataset, 
+                        example_items=['arek','mateusz'], anti_test=True)
 
     """ For test only
     %load_ext autoreload
@@ -63,20 +65,16 @@ if __name__ == '__main__':
     
     from filmweb_integrator.fwimdbmerge.filmweb import Filmweb
     from filmweb_integrator.fwimdbmerge.merger import Merger, get_json_df
-    from movies_recommender.Recommender import get_moviescore_df
+    from movies_recommender.Recommender import get_moviescore_df, get_watched
 
-    recommendation_dataset = RecommendationDataSet(movies=Movies())
-    recommender = RecommenderSVD(recommendation_dataset)
-    recommender.fit(recommender.recommendation_dataset.full_dataset)
+    recommender.fit(recommendation_dataset.full_dataset)
     self = recommender
 
     # get recommendation for one user
-    merger = Merger(filmweb=Filmweb(), imdb=recommender.movies.imdb)
-    moviescore_df = get_moviescore_df(merger, recommender.movies,'arek')
+    merger = Merger(filmweb=Filmweb(), imdb=movies.imdb)
+    watched = get_watched(get_moviescore_df(merger, recommender.movies,'arek'))
     k = 20
     k_inner_item = 20
-    columns=['movieId', 'OcenaImdb']
 
-
-    self.get_recommendation(moviescore_df,columns)
+    self.get_recommendation(watched)
     """

@@ -46,56 +46,28 @@ class RecommendationDataSet:
         self.leave_one_out_anti_test_set = None
         self.similarity_algorithm = None        
 
-    def get_similar_user_ids(self, moviescore_df, columns, k=20, similirarity_fn = cosine):
-        """
-            using cosine similarity find similar users, based on the current one.
-        :param
-            moviescore_df: converted movielens dataframe with movies
-            columns: Tuple(str,str) - First column of MovieID, second of Imdb Score (1,5)
-        :return: dict(inner_user_id, similarity)
-        """
-        # cosine
-        new_user_id, ir = self.get_ir_with_extended_user(moviescore_df, columns)
-
-        # user based cosine similarities, without last one with is the user
-        similarity = similirarity_fn(
-                            self.full_dataset.n_users+1, 
-                            ir, min_support=1)[new_user_id][:-1]
-
-        similar_users = heapq.nlargest(k, enumerate(similarity), itemgetter(1))
-        return dict(similar_users)
-
-    def get_ir_with_extended_user(self, moviescore_df, columns):
-        """
-            Create ir dataset with new user, based only on the score of current movies.
-        :param
-        """
-        copy = self.full_dataset.ir.copy()
-        new_user_id = self.full_dataset.n_users
-        for index, row in moviescore_df.iterrows():
-            copy[
-                self.full_dataset.to_inner_iid(str(row[columns[0]]))
-            ].append( (new_user_id, row[columns[1]])  )
-           
-        return new_user_id, copy
-
-    def get_dataset_with_extended_user(self, moviescore_df, columns):
+    def get_dataset_with_extended_user(self, watched):
         """
             Create new dataset with new user, based only on the score of current movies.
         :param
         """
-        df = moviescore_df[columns].copy()
-        df.rename(columns={
-            columns[0]: 'movieId',
-            columns[1]: 'rating'
-        }, inplace=True)
+        df = pd.DataFrame.from_dict(watched, orient='index', columns=['rating'])
+        df.reset_index(inplace=True)
+        df.rename(columns={'index': 'movieId'},inplace=True)
+        
         new_user_id = max(self.dataset_df['userId']) + 1
         df['userId'] = new_user_id
-        df['timestamp'] = 0
-        rating_df = self.dataset_df.append(df, ignore_index=True, sort=False)
+        
+        rating_df = self.dataset_df[['userId', 'movieId', 'rating']].append(
+                                 df[['userId', 'movieId', 'rating']], ignore_index=True, sort=False)
+
+        rating_df['movieId'] = rating_df['movieId'].astype(str)
+        
         reader = Reader(rating_scale=(1, 5))
         dataset = Dataset.load_from_df(rating_df[['userId', 'movieId', 'rating']], reader)
-        return new_user_id, dataset
+        full_dataset = dataset.build_full_trainset()
+
+        return new_user_id, full_dataset
 
     def build_train_test(self, test_size=.25):
         # Train Set, Test Set to test results

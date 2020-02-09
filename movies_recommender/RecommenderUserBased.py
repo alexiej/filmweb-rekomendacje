@@ -1,17 +1,14 @@
 import heapq
 from collections import defaultdict
 from operator import itemgetter
-from surprise.prediction_algorithms.matrix_factorization import SVD
-
 from movies_analyzer.Movies import Movies
 from movies_analyzer.RecommendationDataset import RecommendationDataSet
-
-from movies_recommender.Recommender import Recommender, test_recommendation
+from movies_recommender.Recommender import Recommender
 from surprise import KNNBasic
 
 class RecommenderUserBased(Recommender):
-    def __init__(self, recommendation_dataset, similarity = 'cosine'):
-        super(RecommenderUserBased, self).__init__(recommendation_dataset)
+    def __init__(self, movies, similarity = 'cosine'):
+        super(RecommenderUserBased, self).__init__(movies)
         sim_options = {'name': similarity,
                        'user_based': True
                        }
@@ -23,12 +20,14 @@ class RecommenderUserBased(Recommender):
     def test(self, test_set):
         return self.algorithm.test(test_set)
 
-    def get_recommendation(self, moviescore_df, columns, k=20,  k_inner_item=200):
-        similar_users = self.recommendation_dataset.get_similar_user_ids(moviescore_df, columns, k=k_inner_item)
+    def get_recommendation(self, watched, k=20,  k_inner_item=200):
         full_dataset = self.algorithm.trainset
 
         # watched movies
-        watched = {full_dataset.to_inner_iid(str(int(i[0]))): i[1] for i in moviescore_df[columns].values}
+        watched = {full_dataset.to_inner_iid(key): value for key,value in watched.items()}
+
+        # get similar users
+        similar_users = self.get_similar_user_ids(watched, k=k_inner_item)
 
         # get most similar items, based on cosine similarity and most similar users
         candidates = defaultdict(float)
@@ -46,12 +45,18 @@ class RecommenderUserBased(Recommender):
         
 
 if __name__ == '__main__':
-    recommendation_dataset = RecommendationDataSet(movies=Movies())
-    # Require for working saving pickle to load not from module 
-    # AttributeError: Can't get attribute 'RecommenderUserBased' on <module '__main__' from 'server.py'>`
+    from movies_recommender.Recommender import test_recommendation
     from movies_recommender.RecommenderUserBased import RecommenderUserBased
-    recommender = RecommenderUserBased(recommendation_dataset)
-    test_recommendation(recommender=recommender, example_items=['arek','mateusz'], anti_test=True)
+    from movies_analyzer.RecommendationDataset import RecommendationDataSet
+    from movies_analyzer.Movies import Movies
+
+    movies = Movies()
+    recommendation_dataset = RecommendationDataSet(movies=movies)
+    recommender = RecommenderUserBased(movies)
+
+    assert recommender.__module__[:len('movies_recommender.')] == 'movies_recommender.'
+    test_recommendation(recommender, recommendation_dataset, 
+                        example_items=['arek','mateusz'], anti_test=False)
 
     """ For test only
     %load_ext autoreload
@@ -59,19 +64,16 @@ if __name__ == '__main__':
     
     from filmweb_integrator.fwimdbmerge.filmweb import Filmweb
     from filmweb_integrator.fwimdbmerge.merger import Merger, get_json_df
-    from movies_recommender.Recommender import get_moviescore_df
+    from movies_recommender.Recommender import get_moviescore_df, get_watched
 
-    recommendation_dataset = RecommendationDataSet(movies=Movies())
-    recommender = RecommenderUserBased(recommendation_dataset)
-    recommender.fit(recommender.recommendation_dataset.full_dataset)
+    recommender.fit(recommendation_dataset.full_dataset)
+    self = recommender
 
-    merger = Merger(filmweb=Filmweb(), imdb=recommender.movies.imdb)
-    moviescore_df = get_moviescore_df(merger, recommender.movies,'arek')
+    # get recommendation for one user
+    merger = Merger(filmweb=Filmweb(), imdb=movies.imdb)
+    watched = get_watched(get_moviescore_df(merger, recommender.movies,'arek'))
     k = 20
     k_inner_item = 20
-    columns=['movieId', 'OcenaImdb']
 
-    self = recommender
-    self.get_recommendation(moviescore_df,columns)
+    self.get_recommendation(watched)
     """
-
